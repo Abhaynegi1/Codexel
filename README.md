@@ -134,12 +134,13 @@ Detailed architectural and planning documents are available in the [`docs/`](./d
 - 📐 [**System Architecture & Technical Specs**](./docs/ARCHITECTURE.md) — Comprehensive technical design, analysis pipeline, security sandboxing, caching strategy, and database schema.
 - 🗺️ [**Development Roadmap & Milestones**](./docs/ROADMAP.md) — Phased rollout plan from Phase 0 (Foundation) to Milestone 1 and full production rollout.
 - 📋 [**Repository Intelligence Model Specification**](./docs/REPOSITORY_MODEL.md) — Exact TypeScript type definitions and JSON schemas representing the core data contract.
+- 🎨 [**Design System & UI Specification**](./docs/DESIGN_SYSTEM.md) — Light-first editorial design system, typography, and blueprint visual guidelines.
 
 ---
 
 ## 🚀 Development Milestones & Phasing
 
-- [ ] **Phase 0 — Project Foundation**: Monorepo setup (Turborepo/pnpm), shared configs, database migrations, base UI.
+- [x] **Phase 0 — Project Foundation**: Monorepo setup (Turborepo/pnpm), shared configs, database migrations, base UI. (Completed)
 - [ ] **Phase 1 — Repository Ingestion**: Secure shallow cloning, temporary workspace sandboxing, rate limiting, and size boundaries.
 - [ ] **Phase 2 — Basic Analyzer**: Deterministic file scanning, manifest analysis, tech stack detection, and statistics.
 - [ ] **Phase 3 — Code Intelligence**: AST parsing, module import/export graph, React component extraction.

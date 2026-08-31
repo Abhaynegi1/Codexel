@@ -51,18 +51,18 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 0 — Project Foundation & Monorepo Setup
+### Phase 0 — Project Foundation & Monorepo Setup (Completed)
 
 - **Objective**: Establish a production-grade TypeScript monorepo with strict linting, shared packages, and database infrastructure.
 - **Key Tasks**:
-  - [ ] Initialize monorepo workspace (`pnpm` workspaces + Turborepo).
-  - [ ] Scaffold `apps/web` (Next.js 14+ App Router, Tailwind CSS, TypeScript).
-  - [ ] Scaffold `apps/worker` (Node.js TypeScript background worker, BullMQ).
-  - [ ] Scaffold `packages/analyzer` (Standalone TypeScript static analysis library).
-  - [ ] Scaffold `packages/shared` (Zod schemas, types, DTO contracts).
-  - [ ] Scaffold `packages/ui` (Shared design system primitives with Tailwind).
-  - [ ] Setup `database/` package with Drizzle ORM, migrations, and PostgreSQL connection pool.
-  - [ ] Configure CI pipelines (linting, typechecks, formatting).
+  - [x] Initialize monorepo workspace (`pnpm` workspaces + Turborepo).
+  - [x] Scaffold `apps/web` (Next.js 15 App Router, Tailwind CSS, TypeScript).
+  - [x] Scaffold `apps/worker` (Node.js TypeScript background worker, BullMQ).
+  - [x] Scaffold `packages/analyzer` (Standalone TypeScript static analysis library).
+  - [x] Scaffold `packages/shared` (Zod schemas, types, DTO contracts).
+  - [x] Scaffold `packages/ui` (Shared design system primitives with Tailwind).
+  - [x] Setup `database/` package with Drizzle ORM, migrations, and PostgreSQL connection pool.
+  - [x] Configure CI pipelines (linting, typechecks, formatting).
 - **Deliverable**: Web app loads, database migration runs cleanly, packages import across the monorepo without circular dependencies.
 
 ---
@@ -224,8 +224,8 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 | Phase | Description | Deliverable | Status |
 | :--- | :--- | :--- | :--- |
-| **0** | Project Foundation | Monorepo, Next.js, Tailwind, Drizzle, Turborepo | ⏳ Next |
-| **1** | Repo Ingestion | GitHub URL cloner, sandbox isolation, cleanup | 📅 Planned |
+| **0** | Project Foundation | Monorepo, Next.js, Tailwind, Drizzle, Turborepo | ✅ Complete |
+| **1** | Repo Ingestion | GitHub URL cloner, sandbox isolation, cleanup | ⏳ Next |
 | **2** | Basic Scanner | Ignore engine, package detector, stats summary | 📅 Planned |
 | **3** | Code Intelligence | AST parsing, import graph, React component catalog | 📅 Planned |
 | **4** | Architecture Explorer | React Flow interactive graph canvas | 📅 Planned |
