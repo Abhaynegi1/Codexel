@@ -2,54 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 5.5%;
-    --card-foreground: 0 0% 98%;
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 240 5% 14%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 5% 18%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 263.4 70% 50.4%;
-    --accent-foreground: 210 20% 98%;
-    --border: 240 6% 16%;
-    --input: 240 6% 16%;
-    --ring: 263.4 70% 50.4%;
-    --radius: 0.75rem;
-  }
+:root {
+  --bg-color: #F8F7F3;
+  --surface-color: #FFFFFF;
+  --surface-secondary: #F3F2EE;
+  --border-color: #E5E2DA;
+  --border-strong: #D5D1C8;
+  --text-primary: #171717;
+  --text-secondary: #5F5C56;
+  --text-muted: #8B8881;
+  --primary-accent: #F59E0B;
 }
 
 body {
-  color: hsl(var(--foreground));
-  background: hsl(var(--background));
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text-primary);
+  background-color: var(--bg-color);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Glassmorphism utilities */
-.glass-panel {
-  background: rgba(18, 18, 24, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Subtle blueprint dot matrix background */
+.bg-blueprint-grid {
+  background-size: 24px 24px;
+  background-image: radial-gradient(circle, #D5D1C8 1px, transparent 1px);
 }
 
-.glass-panel-glow {
-  background: rgba(24, 20, 36, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(168, 85, 247, 0.2);
-  box-shadow: 0 0 35px -5px rgba(168, 85, 247, 0.15);
+/* Structured technical panel */
+.technical-panel {
+  background-color: #FFFFFF;
+  border: 1px solid #E5E2DA;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
 }
 
-/* Subtle grid background */
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+.technical-panel-secondary {
+  background-color: #F3F2EE;
+  border: 1px solid #E5E2DA;
 }
