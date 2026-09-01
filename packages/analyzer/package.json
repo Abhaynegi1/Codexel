@@ -8,11 +8,13 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:harness": "tsx src/ingestion/harness.ts"
+    "test:harness": "tsx src/ingestion/harness.ts",
+    "test:scan": "tsx src/harness.ts"
   },
   "dependencies": {
     "@codexel/shared": "workspace:*",
     "fast-glob": "^3.3.3",
+    "ignore": "^7.0.8",
     "picomatch": "^4.0.2"
   },
   "devDependencies": {

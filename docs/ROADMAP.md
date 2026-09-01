@@ -83,14 +83,14 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 2 — Basic Scanner & Technology Detector
+### Phase 2 — Basic Scanner & Technology Detector (Completed)
 
 - **Objective**: Walk the local repository, filter irrelevant files, and deterministically identify toolchains and frameworks.
 - **Key Tasks**:
-  - [ ] Build high-performance recursive directory scanner with configurable ignore engine (`.gitignore`, `node_modules`, `dist`, `.next`, `.git`, lockfiles).
-  - [ ] Compute repository file inventory and aggregate statistics (file counts, lines of code, extensions).
-  - [ ] Parse `package.json` manifests (dependencies, devDependencies, scripts).
-  - [ ] Implement deterministic framework detection rules:
+  - [x] Build high-performance recursive directory scanner with configurable ignore engine (`.gitignore`, `node_modules`, `dist`, `.next`, `.git`, lockfiles).
+  - [x] Compute repository file inventory and aggregate statistics (file counts, lines of code, extensions).
+  - [x] Parse `package.json` manifests (dependencies, devDependencies, scripts).
+  - [x] Implement deterministic framework detection rules:
     - React, Next.js, Vite, Remix, Astro, Vue.
     - Tailwind CSS, PostCSS, CSS Modules, Styled Components.
     - Drizzle, Prisma, Supabase, Mongoose.
@@ -226,8 +226,8 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 | :----- | :-------------------- | :------------------------------------------------- | :---------- |
 | **0**  | Project Foundation    | Monorepo, Next.js, Tailwind, Drizzle, Turborepo    | ✅ Complete |
 | **1**  | Repo Ingestion        | GitHub URL cloner, sandbox isolation, cleanup      | ✅ Complete |
-| **2**  | Basic Scanner         | Ignore engine, package detector, stats summary     | ⏳ Next     |
-| **3**  | Code Intelligence     | AST parsing, import graph, React component catalog | 📅 Planned  |
+| **2**  | Basic Scanner         | Ignore engine, package detector, stats summary     | ✅ Complete |
+| **3**  | Code Intelligence     | AST parsing, import graph, React component catalog | ⏳ Next     |
 | **4**  | Architecture Explorer | React Flow interactive graph canvas                | 📅 Planned  |
 | **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | 📅 Planned  |
 | **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | 📅 Planned  |

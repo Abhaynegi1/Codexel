@@ -31,10 +31,16 @@ export async function analyzeRepository(
 ): Promise<RepositoryModel> {
   const startTime = Date.now();
 
+  const scanStart = Date.now();
   const fileSystem = await scanFileSystem({
     workspacePath: options.workspacePath,
   });
-  const technologyStack = await detectTechnologies(options.workspacePath);
+  const technologyStack = await detectTechnologies(
+    options.workspacePath,
+    fileSystem.files,
+  );
+  const scanningMs = Date.now() - scanStart;
+
   const dependencyGraph = await parseAstAndDependencies(options.workspacePath);
   const architecture = await classifyArchitecture(options.workspacePath);
   const components = await extractComponentInventory(options.workspacePath);
@@ -68,7 +74,7 @@ export async function analyzeRepository(
       totalDurationMs,
       timings: {
         cloningMs: 0,
-        scanningMs: 0,
+        scanningMs,
         astParsingMs: 0,
         graphBuildingMs: 0,
         designExtractionMs: 0,
