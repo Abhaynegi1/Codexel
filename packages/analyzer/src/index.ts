@@ -2,16 +2,23 @@ import type { RepositoryModel } from "@codexel/shared";
 import { CURRENT_SCHEMA_VERSION, ANALYZER_ENGINE_VERSION } from "./model/index";
 import { scanFileSystem } from "./scanner/index";
 import { detectTechnologies } from "./detectors/index";
-import { parseAstAndDependencies } from "./parsers/index";
+import {
+  parseAllSourceFiles,
+  createAliasResolver,
+  buildDependencyGraph,
+  parseAstAndDependencies,
+} from "./parsers/index";
 import { classifyArchitecture } from "./architecture/index";
 import { extractComponentInventory } from "./components/index";
 import { extractDesignSystem } from "./design/index";
+import { detectRoutes } from "./routes/index";
 
 export * from "./scanner/index";
 export * from "./detectors/index";
 export * from "./parsers/index";
-export * from "./architecture/index";
 export * from "./components/index";
+export * from "./routes/index";
+export * from "./architecture/index";
 export * from "./design/index";
 export * from "./model/index";
 export * from "./ingestion/index";
@@ -31,6 +38,7 @@ export async function analyzeRepository(
 ): Promise<RepositoryModel> {
   const startTime = Date.now();
 
+  // 1. Filesystem Scan & Technology Detection
   const scanStart = Date.now();
   const fileSystem = await scanFileSystem({
     workspacePath: options.workspacePath,
@@ -41,9 +49,37 @@ export async function analyzeRepository(
   );
   const scanningMs = Date.now() - scanStart;
 
-  const dependencyGraph = await parseAstAndDependencies(options.workspacePath);
+  // 2. AST Parsing & Dependency Graph
+  const astStart = Date.now();
+  const resolver = await createAliasResolver(
+    options.workspacePath,
+    fileSystem.files,
+  );
+  const astSummaries = await parseAllSourceFiles(
+    options.workspacePath,
+    fileSystem.files,
+  );
+  const astParsingMs = Date.now() - astStart;
+
+  const graphStart = Date.now();
+  const dependencyGraph = buildDependencyGraph(
+    fileSystem.files,
+    astSummaries,
+    resolver,
+  );
+  const graphBuildingMs = Date.now() - graphStart;
+
+  // 3. Component & Route Discovery
+  const components = await extractComponentInventory(
+    options.workspacePath,
+    fileSystem.files,
+    astSummaries,
+    resolver,
+  );
+  const routes = detectRoutes(fileSystem.files, astSummaries);
+
+  // 4. Architecture & Design System (Skeletons for Phase 4 & 6)
   const architecture = await classifyArchitecture(options.workspacePath);
-  const components = await extractComponentInventory(options.workspacePath);
   const designSystem = await extractDesignSystem(options.workspacePath);
 
   const totalDurationMs = Date.now() - startTime;
@@ -64,10 +100,7 @@ export async function analyzeRepository(
     architecture,
     components,
     dependencyGraph,
-    routes: {
-      routerType: "unknown",
-      routes: [],
-    },
+    routes,
     designSystem,
     analysisStats: {
       engineVersion: ANALYZER_ENGINE_VERSION,
@@ -75,8 +108,8 @@ export async function analyzeRepository(
       timings: {
         cloningMs: 0,
         scanningMs,
-        astParsingMs: 0,
-        graphBuildingMs: 0,
+        astParsingMs,
+        graphBuildingMs,
         designExtractionMs: 0,
       },
       peakMemoryMb: 0,

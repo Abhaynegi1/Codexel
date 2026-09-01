@@ -99,17 +99,17 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 3 — Code Intelligence & AST Parsing
+### Phase 3 — Code Intelligence & AST Parsing (Completed)
 
 - **Objective**: Parse JavaScript and TypeScript files into concrete symbol and import graphs.
 - **Key Tasks**:
-  - [ ] Integrate TypeScript Compiler API / Babel parser for AST traversal.
-  - [ ] Extract file-level imports and exports (named, default, dynamic).
-  - [ ] Resolve module import paths against `tsconfig.json` path aliases (`@/*`).
-  - [ ] Build Directed Acyclic Graph (DAG) of file-to-file module dependencies.
-  - [ ] Detect React components (function and class components, exported JSX).
-  - [ ] Extract component metadata: name, line range, props interfaces, imported child components.
-  - [ ] Detect routing entry points (Next.js App router `page.tsx`/`layout.tsx`, Pages router, React Router).
+  - [x] Integrate TypeScript Compiler API / Babel parser for AST traversal.
+  - [x] Extract file-level imports and exports (named, default, dynamic).
+  - [x] Resolve module import paths against `tsconfig.json` path aliases (`@/*`).
+  - [x] Build Directed Acyclic Graph (DAG) of file-to-file module dependencies.
+  - [x] Detect React components (function and class components, exported JSX).
+  - [x] Extract component metadata: name, line range, props interfaces, imported child components.
+  - [x] Detect routing entry points (Next.js App router `page.tsx`/`layout.tsx`, Pages router, React Router).
 - **Deliverable**: Complete code graph connecting every file and component with its imports and usages.
 
 ---
@@ -227,8 +227,8 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 | **0**  | Project Foundation    | Monorepo, Next.js, Tailwind, Drizzle, Turborepo    | ✅ Complete |
 | **1**  | Repo Ingestion        | GitHub URL cloner, sandbox isolation, cleanup      | ✅ Complete |
 | **2**  | Basic Scanner         | Ignore engine, package detector, stats summary     | ✅ Complete |
-| **3**  | Code Intelligence     | AST parsing, import graph, React component catalog | ⏳ Next     |
-| **4**  | Architecture Explorer | React Flow interactive graph canvas                | 📅 Planned  |
+| **3**  | Code Intelligence     | AST parsing, import graph, React component catalog | ✅ Complete |
+| **4**  | Architecture Explorer | React Flow interactive graph canvas                | ⏳ Next     |
 | **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | 📅 Planned  |
 | **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | 📅 Planned  |
 | **7**  | Component Preview     | Sandboxed iframe preview                           | 📅 Planned  |

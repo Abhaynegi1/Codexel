@@ -15,7 +15,8 @@
     "@codexel/shared": "workspace:*",
     "fast-glob": "^3.3.3",
     "ignore": "^7.0.8",
-    "picomatch": "^4.0.2"
+    "picomatch": "^4.0.2",
+    "typescript": "^5.7.3"
   },
   "devDependencies": {
     "@types/node": "^22.20.1",
