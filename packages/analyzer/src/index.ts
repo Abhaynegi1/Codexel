@@ -14,6 +14,7 @@ export * from "./architecture/index";
 export * from "./components/index";
 export * from "./design/index";
 export * from "./model/index";
+export * from "./ingestion/index";
 
 export interface AnalyzeRepositoryOptions {
   workspacePath: string;
@@ -25,10 +26,14 @@ export interface AnalyzeRepositoryOptions {
   isPrivate?: boolean;
 }
 
-export async function analyzeRepository(options: AnalyzeRepositoryOptions): Promise<RepositoryModel> {
+export async function analyzeRepository(
+  options: AnalyzeRepositoryOptions,
+): Promise<RepositoryModel> {
   const startTime = Date.now();
 
-  const fileSystem = await scanFileSystem({ workspacePath: options.workspacePath });
+  const fileSystem = await scanFileSystem({
+    workspacePath: options.workspacePath,
+  });
   const technologyStack = await detectTechnologies(options.workspacePath);
   const dependencyGraph = await parseAstAndDependencies(options.workspacePath);
   const architecture = await classifyArchitecture(options.workspacePath);

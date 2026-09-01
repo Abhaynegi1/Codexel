@@ -37,13 +37,21 @@ export default function HowToUsePage() {
       {/* Navigation */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-foreground font-semibold text-lg tracking-tight">
-            <span className="text-primary font-bold text-xl leading-none">◇</span>
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-foreground font-semibold text-lg tracking-tight"
+          >
+            <span className="text-primary font-bold text-xl leading-none">
+              ◇
+            </span>
             <span>codexel</span>
           </Link>
 
           <div className="flex items-center gap-5 text-sm text-foreground-secondary font-medium">
-            <Link href="/" className="flex items-center gap-1 hover:text-foreground transition-colors">
+            <Link
+              href="/"
+              className="flex items-center gap-1 hover:text-foreground transition-colors"
+            >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Explorer</span>
             </Link>
@@ -73,8 +81,10 @@ export default function HowToUsePage() {
           </h1>
 
           <p className="text-base sm:text-lg text-foreground-secondary leading-relaxed max-w-3xl">
-            Codexel transforms unfamiliar repositories into structured, visual intelligence. Below is an interactive
-            demonstration of the architecture canvas and an explanation of the core analysis pipeline.
+            Codexel transforms unfamiliar repositories into structured, visual
+            intelligence. Below is an interactive demonstration of the
+            architecture canvas and an explanation of the core analysis
+            pipeline.
           </p>
         </section>
 
@@ -94,7 +104,9 @@ export default function HowToUsePage() {
               <div className="flex items-center gap-3">
                 <span className="text-primary font-bold">◇</span>
                 <span className="font-semibold text-foreground">taxonomy</span>
-                <span className="text-foreground-muted font-mono">Next.js &bull; TypeScript &bull; Tailwind &bull; PostgreSQL</span>
+                <span className="text-foreground-muted font-mono">
+                  Next.js &bull; TypeScript &bull; Tailwind &bull; PostgreSQL
+                </span>
               </div>
               <div className="flex items-center gap-4 text-foreground-secondary font-mono text-[11px]">
                 <span>342 files</span>
@@ -110,7 +122,9 @@ export default function HowToUsePage() {
               <div className="lg:col-span-8 p-8 flex flex-col justify-between border-r border-border relative bg-blueprint-grid">
                 <div className="flex items-center justify-between text-xs font-mono text-foreground-muted">
                   <span>Architecture Hierarchy (DAG)</span>
-                  <span className="text-[11px] text-foreground-secondary">Click node to inspect metadata</span>
+                  <span className="text-[11px] text-foreground-secondary">
+                    Click node to inspect metadata
+                  </span>
                 </div>
 
                 {/* Simulated Architecture Nodes Hierarchy */}
@@ -133,7 +147,9 @@ export default function HowToUsePage() {
                         : "border-border bg-surface hover:border-border-strong text-foreground"
                     }`}
                   >
-                    <div className="text-[10px] font-mono uppercase tracking-wider text-primary">Root Application</div>
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-primary">
+                      Root Application
+                    </div>
                     <div className="text-sm font-semibold">Web App</div>
                   </div>
 
@@ -143,9 +159,24 @@ export default function HowToUsePage() {
                   {/* Layer 2: Frontend & Feature Nodes */}
                   <div className="flex flex-wrap items-center justify-center gap-4">
                     {[
-                      { name: "Dashboard", path: "src/app/dashboard", category: "Frontend", color: "text-semantic-blue" },
-                      { name: "Auth", path: "src/lib/auth", category: "Authentication", color: "text-semantic-purple" },
-                      { name: "Marketing", path: "src/app/(marketing)", category: "Frontend", color: "text-semantic-blue" },
+                      {
+                        name: "Dashboard",
+                        path: "src/app/dashboard",
+                        category: "Frontend",
+                        color: "text-semantic-blue",
+                      },
+                      {
+                        name: "Auth",
+                        path: "src/lib/auth",
+                        category: "Authentication",
+                        color: "text-semantic-purple",
+                      },
+                      {
+                        name: "Marketing",
+                        path: "src/app/(marketing)",
+                        category: "Frontend",
+                        color: "text-semantic-blue",
+                      },
                     ].map((node) => (
                       <div
                         key={node.name}
@@ -165,7 +196,9 @@ export default function HowToUsePage() {
                             : "border-border bg-surface hover:border-border-strong text-foreground"
                         }`}
                       >
-                        <div className={`text-[10px] font-mono ${node.color}`}>{node.category}</div>
+                        <div className={`text-[10px] font-mono ${node.color}`}>
+                          {node.category}
+                        </div>
                         <div className="text-xs font-semibold">{node.name}</div>
                       </div>
                     ))}
@@ -192,7 +225,9 @@ export default function HowToUsePage() {
                         : "border-border bg-surface hover:border-border-strong text-foreground"
                     }`}
                   >
-                    <div className="text-[10px] font-mono text-foreground-muted">Design System Primitives</div>
+                    <div className="text-[10px] font-mono text-foreground-muted">
+                      Design System Primitives
+                    </div>
                     <div className="text-xs font-semibold">UI Components</div>
                   </div>
 
@@ -218,7 +253,9 @@ export default function HowToUsePage() {
                           : "border-border bg-surface hover:border-border-strong text-foreground"
                       }`}
                     >
-                      <div className="text-[10px] font-mono text-semantic-green">Backend/API</div>
+                      <div className="text-[10px] font-mono text-semantic-green">
+                        Backend/API
+                      </div>
                       <div className="text-xs font-semibold">API Layer</div>
                     </div>
 
@@ -242,14 +279,21 @@ export default function HowToUsePage() {
                           : "border-border bg-surface hover:border-border-strong text-foreground"
                       }`}
                     >
-                      <div className="text-[10px] font-mono text-primary">Database</div>
-                      <div className="text-xs font-semibold">PostgreSQL (Drizzle)</div>
+                      <div className="text-[10px] font-mono text-primary">
+                        Database
+                      </div>
+                      <div className="text-xs font-semibold">
+                        PostgreSQL (Drizzle)
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between text-[11px] text-foreground-muted font-mono pt-4 border-t border-border">
-                  <span>Semantic Colors: Blue = Frontend &bull; Green = API &bull; Orange = App/DB &bull; Purple = Auth</span>
+                  <span>
+                    Semantic Colors: Blue = Frontend &bull; Green = API &bull;
+                    Orange = App/DB &bull; Purple = Auth
+                  </span>
                   <span>100% Deterministic AST</span>
                 </div>
               </div>
@@ -268,23 +312,35 @@ export default function HowToUsePage() {
                         {selectedNode.category}
                       </span>
                     </div>
-                    <div className="text-xs font-mono text-foreground-muted truncate">{selectedNode.path}</div>
+                    <div className="text-xs font-mono text-foreground-muted truncate">
+                      {selectedNode.path}
+                    </div>
                   </div>
 
                   <div className="space-y-3 pt-2 text-xs">
                     <div className="p-3 rounded-md bg-surface border border-border space-y-1">
-                      <div className="text-foreground-muted">Classification Type</div>
-                      <div className="font-semibold text-foreground">{selectedNode.type}</div>
+                      <div className="text-foreground-muted">
+                        Classification Type
+                      </div>
+                      <div className="font-semibold text-foreground">
+                        {selectedNode.type}
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
                       <div className="p-3 rounded-md bg-surface border border-border space-y-1">
-                        <div className="text-foreground-muted">Dependencies</div>
-                        <div className="font-semibold text-foreground">{selectedNode.dependencies} modules</div>
+                        <div className="text-foreground-muted">
+                          Dependencies
+                        </div>
+                        <div className="font-semibold text-foreground">
+                          {selectedNode.dependencies} modules
+                        </div>
                       </div>
                       <div className="p-3 rounded-md bg-surface border border-border space-y-1">
                         <div className="text-foreground-muted">Used by</div>
-                        <div className="font-semibold text-foreground">{selectedNode.usedBy}</div>
+                        <div className="font-semibold text-foreground">
+                          {selectedNode.usedBy}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -312,26 +368,41 @@ export default function HowToUsePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="technical-panel p-5 rounded-lg space-y-2.5">
-              <div className="text-xs font-mono text-primary font-semibold">STEP 01</div>
-              <h3 className="font-semibold text-foreground text-sm">Provide Repository</h3>
+              <div className="text-xs font-mono text-primary font-semibold">
+                STEP 01
+              </div>
+              <h3 className="font-semibold text-foreground text-sm">
+                Provide Repository
+              </h3>
               <p className="text-xs text-foreground-secondary leading-relaxed">
-                Paste any public GitHub repository URL or drag-and-drop a local project folder directly onto the canvas.
+                Paste any public GitHub repository URL or drag-and-drop a local
+                project folder directly onto the canvas.
               </p>
             </div>
 
             <div className="technical-panel p-5 rounded-lg space-y-2.5">
-              <div className="text-xs font-mono text-primary font-semibold">STEP 02</div>
-              <h3 className="font-semibold text-foreground text-sm">Deterministic Parsing</h3>
+              <div className="text-xs font-mono text-primary font-semibold">
+                STEP 02
+              </div>
+              <h3 className="font-semibold text-foreground text-sm">
+                Deterministic Parsing
+              </h3>
               <p className="text-xs text-foreground-secondary leading-relaxed">
-                The engine inspects ASTs, traverses module imports, and catalogs design tokens. Zero code execution.
+                The engine inspects ASTs, traverses module imports, and catalogs
+                design tokens. Zero code execution.
               </p>
             </div>
 
             <div className="technical-panel p-5 rounded-lg space-y-2.5">
-              <div className="text-xs font-mono text-primary font-semibold">STEP 03</div>
-              <h3 className="font-semibold text-foreground text-sm">Explore & Reuse</h3>
+              <div className="text-xs font-mono text-primary font-semibold">
+                STEP 03
+              </div>
+              <h3 className="font-semibold text-foreground text-sm">
+                Explore & Reuse
+              </h3>
               <p className="text-xs text-foreground-secondary leading-relaxed">
-                Navigate the architecture graph, view component props, and copy full transitive dependency closures.
+                Navigate the architecture graph, view component props, and copy
+                full transitive dependency closures.
               </p>
             </div>
           </div>
@@ -351,18 +422,27 @@ export default function HowToUsePage() {
                   <Layers className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground text-base">1. Architecture Blueprint</h3>
-                  <div className="text-xs font-mono text-foreground-muted">Interactive Module DAG & Boundaries</div>
+                  <h3 className="font-semibold text-foreground text-base">
+                    1. Architecture Blueprint
+                  </h3>
+                  <div className="text-xs font-mono text-foreground-muted">
+                    Interactive Module DAG & Boundaries
+                  </div>
                 </div>
               </div>
               <p className="text-xs sm:text-sm text-foreground-secondary leading-relaxed">
-                Instead of guessing folder structures, Codexel maps your codebase into a directional graph. It identifies
-                application entry points, frontend views, backend routes, and database models. Nodes are classified with
-                verifiable evidence directly linking to source files.
+                Instead of guessing folder structures, Codexel maps your
+                codebase into a directional graph. It identifies application
+                entry points, frontend views, backend routes, and database
+                models. Nodes are classified with verifiable evidence directly
+                linking to source files.
               </p>
               <div className="p-3 rounded-md bg-surface-secondary border border-border text-xs font-mono text-foreground-muted flex items-center gap-2">
                 <GitBranch className="w-4 h-4 text-primary" />
-                <span>Semantic Colors: Blue = Frontend &bull; Green = API &bull; Orange = Root & Database &bull; Purple = Auth</span>
+                <span>
+                  Semantic Colors: Blue = Frontend &bull; Green = API &bull;
+                  Orange = Root & Database &bull; Purple = Auth
+                </span>
               </div>
             </div>
 
@@ -373,23 +453,33 @@ export default function HowToUsePage() {
                   <ComponentIcon className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground text-base">2. Component Explorer</h3>
-                  <div className="text-xs font-mono text-foreground-muted">Auto-generated Component Inventory</div>
+                  <h3 className="font-semibold text-foreground text-base">
+                    2. Component Explorer
+                  </h3>
+                  <div className="text-xs font-mono text-foreground-muted">
+                    Auto-generated Component Inventory
+                  </div>
                 </div>
               </div>
               <p className="text-xs sm:text-sm text-foreground-secondary leading-relaxed">
-                Codexel automatically inventories all React/UI components. For each component, you can inspect its exported
-                props interface, child component render tree, and which pages or features import it.
+                Codexel automatically inventories all React/UI components. For
+                each component, you can inspect its exported props interface,
+                child component render tree, and which pages or features import
+                it.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 <div className="p-3 rounded-md bg-surface-secondary border border-border space-y-1.5">
-                  <div className="text-xs font-semibold text-foreground">Props Inspection</div>
+                  <div className="text-xs font-semibold text-foreground">
+                    Props Inspection
+                  </div>
                   <div className="text-[11px] font-mono text-foreground-muted">
                     variant, size, disabled, asChild, children
                   </div>
                 </div>
                 <div className="p-3 rounded-md bg-surface-secondary border border-border space-y-1.5">
-                  <div className="text-xs font-semibold text-foreground">1-Click Closure Copy</div>
+                  <div className="text-xs font-semibold text-foreground">
+                    1-Click Closure Copy
+                  </div>
                   <div className="text-[11px] font-mono text-foreground-muted">
                     Copies component + helper utils + required npm packages
                   </div>
@@ -404,14 +494,19 @@ export default function HowToUsePage() {
                   <Palette className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground text-base">3. Design System Extraction</h3>
-                  <div className="text-xs font-mono text-foreground-muted">Tokens, CSS Variables, Typography & Colors</div>
+                  <h3 className="font-semibold text-foreground text-base">
+                    3. Design System Extraction
+                  </h3>
+                  <div className="text-xs font-mono text-foreground-muted">
+                    Tokens, CSS Variables, Typography & Colors
+                  </div>
                 </div>
               </div>
               <p className="text-xs sm:text-sm text-foreground-secondary leading-relaxed">
-                Underlying design tokens are extracted directly from repository stylesheets, `:root` CSS variables, and
-                Tailwind configuration files. View the extracted color palette swatches, font families, line heights, and
-                most recurring utility classes.
+                Underlying design tokens are extracted directly from repository
+                stylesheets, `:root` CSS variables, and Tailwind configuration
+                files. View the extracted color palette swatches, font families,
+                line heights, and most recurring utility classes.
               </p>
             </div>
 
@@ -422,13 +517,18 @@ export default function HowToUsePage() {
                   <Code2 className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground text-base">4. Source Traceability</h3>
-                  <div className="text-xs font-mono text-foreground-muted">Exact File & Line-Range Verification</div>
+                  <h3 className="font-semibold text-foreground text-base">
+                    4. Source Traceability
+                  </h3>
+                  <div className="text-xs font-mono text-foreground-muted">
+                    Exact File & Line-Range Verification
+                  </div>
                 </div>
               </div>
               <p className="text-xs sm:text-sm text-foreground-secondary leading-relaxed">
-                Nothing is hallucinated. Every node, dependency, or component in Codexel can be clicked to reveal its exact
-                underlying file path, line numbers, and original source implementation.
+                Nothing is hallucinated. Every node, dependency, or component in
+                Codexel can be clicked to reveal its exact underlying file path,
+                line numbers, and original source implementation.
               </p>
             </div>
           </div>
@@ -440,27 +540,41 @@ export default function HowToUsePage() {
             <div className="flex items-center justify-between text-xs font-mono text-foreground-muted border-b border-border pb-3">
               <div className="flex items-center gap-2">
                 <ComponentIcon className="w-3.5 h-3.5 text-semantic-blue" />
-                <span className="font-semibold text-foreground">AUTOMATIC COMPONENT CATALOG</span>
+                <span className="font-semibold text-foreground">
+                  AUTOMATIC COMPONENT CATALOG
+                </span>
               </div>
               <span>Button.tsx</span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-4 rounded-md bg-surface-secondary border border-border space-y-3">
-                <div className="text-xs font-semibold text-foreground">Button Primitive</div>
+                <div className="text-xs font-semibold text-foreground">
+                  Button Primitive
+                </div>
                 <div className="py-3 flex items-center gap-2">
-                  <button type="button" className="px-3.5 py-1.5 rounded-md bg-primary text-white text-xs font-medium">
+                  <button
+                    type="button"
+                    className="px-3.5 py-1.5 rounded-md bg-primary text-white text-xs font-medium"
+                  >
                     Continue
                   </button>
-                  <button type="button" className="px-3.5 py-1.5 rounded-md border border-border bg-surface text-xs font-medium">
+                  <button
+                    type="button"
+                    className="px-3.5 py-1.5 rounded-md border border-border bg-surface text-xs font-medium"
+                  >
                     Ghost
                   </button>
                 </div>
-                <div className="text-[11px] font-mono text-foreground-muted">6 variants &bull; 3 sizes</div>
+                <div className="text-[11px] font-mono text-foreground-muted">
+                  6 variants &bull; 3 sizes
+                </div>
               </div>
 
               <div className="p-4 rounded-md bg-surface-secondary border border-border space-y-3">
-                <div className="text-xs font-semibold text-foreground">1-Click Closure Bundle</div>
+                <div className="text-xs font-semibold text-foreground">
+                  1-Click Closure Bundle
+                </div>
                 <div className="space-y-1 text-[11px] font-mono text-foreground-secondary">
                   <div className="flex items-center gap-1.5 text-semantic-green">
                     <CheckCircle2 className="w-3.5 h-3.5" />
@@ -475,7 +589,9 @@ export default function HowToUsePage() {
                     <span>utils.ts (cn helper)</span>
                   </div>
                 </div>
-                <div className="text-[11px] text-primary font-mono font-medium">[ Copy Component Bundle ]</div>
+                <div className="text-[11px] text-primary font-mono font-medium">
+                  [ Copy Component Bundle ]
+                </div>
               </div>
             </div>
           </div>
@@ -484,7 +600,9 @@ export default function HowToUsePage() {
             <div className="flex items-center justify-between text-xs font-mono text-foreground-muted border-b border-border pb-3">
               <div className="flex items-center gap-2">
                 <Palette className="w-3.5 h-3.5 text-primary" />
-                <span className="font-semibold text-foreground">EXTRACTED DESIGN SYSTEM</span>
+                <span className="font-semibold text-foreground">
+                  EXTRACTED DESIGN SYSTEM
+                </span>
               </div>
               <span>tokens.json</span>
             </div>
@@ -492,35 +610,62 @@ export default function HowToUsePage() {
             <div className="space-y-3">
               <div className="flex items-center justify-between text-xs p-2.5 rounded-md bg-surface-secondary border border-border">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded border border-border" style={{ backgroundColor: "#F59E0B" }} />
+                  <div
+                    className="w-5 h-5 rounded border border-border"
+                    style={{ backgroundColor: "#F59E0B" }}
+                  />
                   <div>
-                    <div className="font-semibold text-foreground">Primary Accent</div>
-                    <div className="text-[10px] font-mono text-foreground-muted">--primary</div>
+                    <div className="font-semibold text-foreground">
+                      Primary Accent
+                    </div>
+                    <div className="text-[10px] font-mono text-foreground-muted">
+                      --primary
+                    </div>
                   </div>
                 </div>
-                <span className="font-mono text-xs text-foreground-secondary">#F59E0B</span>
+                <span className="font-mono text-xs text-foreground-secondary">
+                  #F59E0B
+                </span>
               </div>
 
               <div className="flex items-center justify-between text-xs p-2.5 rounded-md bg-surface-secondary border border-border">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded border border-border" style={{ backgroundColor: "#F8F7F3" }} />
+                  <div
+                    className="w-5 h-5 rounded border border-border"
+                    style={{ backgroundColor: "#F8F7F3" }}
+                  />
                   <div>
-                    <div className="font-semibold text-foreground">Editorial Background</div>
-                    <div className="text-[10px] font-mono text-foreground-muted">--bg-color</div>
+                    <div className="font-semibold text-foreground">
+                      Editorial Background
+                    </div>
+                    <div className="text-[10px] font-mono text-foreground-muted">
+                      --bg-color
+                    </div>
                   </div>
                 </div>
-                <span className="font-mono text-xs text-foreground-secondary">#F8F7F3</span>
+                <span className="font-mono text-xs text-foreground-secondary">
+                  #F8F7F3
+                </span>
               </div>
 
               <div className="flex items-center justify-between text-xs p-2.5 rounded-md bg-surface-secondary border border-border">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded border border-border" style={{ backgroundColor: "#171717" }} />
+                  <div
+                    className="w-5 h-5 rounded border border-border"
+                    style={{ backgroundColor: "#171717" }}
+                  />
                   <div>
-                    <div className="font-semibold text-foreground">Text Primary</div>
-                    <div className="text-[10px] font-mono text-foreground-muted">--text-primary</div>
+                    <div className="font-semibold text-foreground">
+                      Text Primary
+                    </div>
+                    <div className="text-[10px] font-mono text-foreground-muted">
+                      --text-primary
+                    </div>
                   </div>
                 </div>
-                <span className="font-mono text-xs text-foreground-secondary">#171717</span>
+                <span className="font-mono text-xs text-foreground-secondary">
+                  #171717
+                </span>
               </div>
             </div>
           </div>
@@ -533,9 +678,11 @@ export default function HowToUsePage() {
             <span>Security & Privacy Axiom: Analyze, Never Execute</span>
           </h2>
           <p className="text-xs sm:text-sm text-foreground-secondary leading-relaxed">
-            Codexel treats every repository as untrusted input. It never runs arbitrary scripts (`npm install`, build commands,
-            or execution hooks). Repositories are analyzed statically using Abstract Syntax Tree (AST) parsing and shallow
-            ephemeral workspaces that are purged immediately upon model generation.
+            Codexel treats every repository as untrusted input. It never runs
+            arbitrary scripts (`npm install`, build commands, or execution
+            hooks). Repositories are analyzed statically using Abstract Syntax
+            Tree (AST) parsing and shallow ephemeral workspaces that are purged
+            immediately upon model generation.
           </p>
         </section>
 

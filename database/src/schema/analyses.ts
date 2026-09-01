@@ -1,4 +1,11 @@
-import { pgTable, uuid, varchar, timestamp, pgEnum, jsonb } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  uuid,
+  varchar,
+  timestamp,
+  pgEnum,
+  jsonb,
+} from "drizzle-orm/pg-core";
 import { repositories } from "./repositories";
 import type { RepositoryModel, AnalysisExecutionStats } from "@codexel/shared";
 
@@ -25,8 +32,12 @@ export const analyses = pgTable("analyses", {
     message?: string;
     stack?: string;
   }>(),
-  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .defaultNow()
+    .notNull(),
 });
 
 export type Analysis = typeof analyses.$inferSelect;

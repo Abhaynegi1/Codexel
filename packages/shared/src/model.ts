@@ -12,7 +12,14 @@ export interface RepositoryMetadata {
 export interface TechnologyTag {
   name: string;
   version?: string;
-  category: "framework" | "styling" | "database" | "state" | "ui-library" | "tooling" | "testing";
+  category:
+    | "framework"
+    | "styling"
+    | "database"
+    | "state"
+    | "ui-library"
+    | "tooling"
+    | "testing";
   evidence: {
     filePath: string;
     matchedPackage?: string;
@@ -56,7 +63,13 @@ export interface FileSystemSummary {
 export interface ArchitectureLayer {
   id: string;
   name: string;
-  role: "ui" | "features" | "server" | "infrastructure" | "shared-utils" | "unknown";
+  role:
+    | "ui"
+    | "features"
+    | "server"
+    | "infrastructure"
+    | "shared-utils"
+    | "unknown";
   directoryPaths: string[];
   fileCount: number;
   isConfirmedFact: boolean;
@@ -153,7 +166,12 @@ export interface RouteEntry {
 }
 
 export interface RouteInventory {
-  routerType: "next-app-router" | "next-pages-router" | "react-router" | "express" | "unknown";
+  routerType:
+    | "next-app-router"
+    | "next-pages-router"
+    | "react-router"
+    | "express"
+    | "unknown";
   routes: RouteEntry[];
 }
 
@@ -208,4 +226,39 @@ export interface RepositoryModel {
   routes: RouteInventory;
   designSystem: DesignSystemSummary;
   analysisStats: AnalysisExecutionStats;
+}
+
+export interface ParsedGitHubUrl {
+  owner: string;
+  repo: string;
+  cleanUrl: string;
+  cloneUrl: string;
+  ref?: string;
+  subpath?: string;
+}
+
+export interface IngestionLimits {
+  maxFiles: number;
+  maxSizeBytes: number;
+  fetchTimeoutMs: number;
+  remoteTimeoutMs: number;
+}
+
+export interface RemoteRepoInfo {
+  commitSha: string;
+  defaultBranch: string;
+  resolvedRef: string;
+  cacheKey: string;
+}
+
+export interface SandboxMetadata {
+  ephemeralPath: string;
+  owner: string;
+  repo: string;
+  commitSha: string;
+  defaultBranch: string;
+  fileCount: number;
+  sizeBytes: number;
+  clonedAt: string;
+  cloneDurationMs: number;
 }

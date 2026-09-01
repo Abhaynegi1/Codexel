@@ -155,6 +155,7 @@ Detailed architectural and planning documents are available in the [`docs/`](./d
 ## 🔒 Security & Sandboxing Principles
 
 Repositories represent untrusted third-party code. Codexel adheres to strict isolation rules:
+
 - **Zero Arbitrary Execution**: Analysis relies on static AST parsing and filesystem inspection. `npm install`, build scripts, or code execution are prohibited during ingestion and analysis.
 - **Resource Constraints**: Strict limits on repository file size, depth, total AST node count, and analysis timeouts to prevent denial-of-service.
 - **Sandboxed Cleanup**: Ephemeral clone workspaces are cleaned up immediately following model extraction.

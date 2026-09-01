@@ -6,7 +6,9 @@ export interface ScanOptions {
   customIgnores?: string[];
 }
 
-export async function scanFileSystem(options: ScanOptions): Promise<FileSystemSummary> {
+export async function scanFileSystem(
+  options: ScanOptions,
+): Promise<FileSystemSummary> {
   // Skeleton implementation for Phase 0 foundation
   return {
     totalFiles: 0,

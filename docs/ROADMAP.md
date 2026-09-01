@@ -67,18 +67,18 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 1 — Repository Ingestion & Sandboxing
+### Phase 1 — Repository Ingestion & Sandboxing (Completed)
 
 - **Objective**: Safely receive, validate, shallow-clone, and isolate a public GitHub repository.
 - **Key Tasks**:
-  - [ ] Implement GitHub URL parser and normalizer (handles branch/tag syntax).
-  - [ ] Implement remote commit SHA resolution (`git ls-remote`) for cache key generation.
-  - [ ] Build isolated shallow cloner (`git clone --depth 1`) in a secure ephemeral directory.
-  - [ ] Implement strict safety boundaries:
+  - [x] Implement GitHub URL parser and normalizer (handles branch/tag syntax).
+  - [x] Implement remote commit SHA resolution (`git ls-remote`) for cache key generation.
+  - [x] Build isolated shallow cloner (`git clone --depth 1`) in a secure ephemeral directory.
+  - [x] Implement strict safety boundaries:
     - Max 10,000 files.
     - Max 150 MB repository size.
     - 60-second fetch timeout.
-  - [ ] Implement post-analysis guaranteed cleanup hooks (`rm -rf` temp sandboxes).
+  - [x] Implement post-analysis guaranteed cleanup hooks (`rm -rf` temp sandboxes).
 - **Deliverable**: Command / test harness that takes a GitHub URL, creates an ephemeral local clone, validates bounds, and purges the workspace on completion.
 
 ---
@@ -222,17 +222,17 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ## 📊 Summary of Phase Milestones & Status
 
-| Phase | Description | Deliverable | Status |
-| :--- | :--- | :--- | :--- |
-| **0** | Project Foundation | Monorepo, Next.js, Tailwind, Drizzle, Turborepo | ✅ Complete |
-| **1** | Repo Ingestion | GitHub URL cloner, sandbox isolation, cleanup | ⏳ Next |
-| **2** | Basic Scanner | Ignore engine, package detector, stats summary | 📅 Planned |
-| **3** | Code Intelligence | AST parsing, import graph, React component catalog | 📅 Planned |
-| **4** | Architecture Explorer | React Flow interactive graph canvas | 📅 Planned |
-| **5** | Component Explorer | Component inventory, source viewer, usage graph | 📅 Planned |
-| **6** | Design Intelligence | Color swatches, CSS vars, Tailwind tokens | 📅 Planned |
-| **7** | Component Preview | Sandboxed iframe preview | 📅 Planned |
-| **8** | Component Reuse | Dependency closure export ("Copy Component") | 📅 Planned |
-| **9** | Grounded AI Layer | Fact-based Q&A without hallucinations | 📅 Planned |
-| **10** | Local Workspaces | Drag-and-drop local directory analysis | 📅 Planned |
-| **11** | Codexel CLI | `codexel analyze .` command-line utility | 📅 Planned |
+| Phase  | Description           | Deliverable                                        | Status      |
+| :----- | :-------------------- | :------------------------------------------------- | :---------- |
+| **0**  | Project Foundation    | Monorepo, Next.js, Tailwind, Drizzle, Turborepo    | ✅ Complete |
+| **1**  | Repo Ingestion        | GitHub URL cloner, sandbox isolation, cleanup      | ✅ Complete |
+| **2**  | Basic Scanner         | Ignore engine, package detector, stats summary     | ⏳ Next     |
+| **3**  | Code Intelligence     | AST parsing, import graph, React component catalog | 📅 Planned  |
+| **4**  | Architecture Explorer | React Flow interactive graph canvas                | 📅 Planned  |
+| **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | 📅 Planned  |
+| **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | 📅 Planned  |
+| **7**  | Component Preview     | Sandboxed iframe preview                           | 📅 Planned  |
+| **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | 📅 Planned  |
+| **9**  | Grounded AI Layer     | Fact-based Q&A without hallucinations              | 📅 Planned  |
+| **10** | Local Workspaces      | Drag-and-drop local directory analysis             | 📅 Planned  |
+| **11** | Codexel CLI           | `codexel analyze .` command-line utility           | 📅 Planned  |

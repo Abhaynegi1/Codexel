@@ -91,7 +91,14 @@ export interface TechnologyStack {
 export interface TechnologyTag {
   name: string;
   version?: string;
-  category: "framework" | "styling" | "database" | "state" | "ui-library" | "tooling" | "testing";
+  category:
+    | "framework"
+    | "styling"
+    | "database"
+    | "state"
+    | "ui-library"
+    | "tooling"
+    | "testing";
   evidence: {
     filePath: string;
     matchedPackage?: string;
@@ -139,7 +146,13 @@ export interface ArchitectureSummary {
 export interface ArchitectureLayer {
   id: string;
   name: string; // e.g. "Presentation", "Domain Features", "Server / API", "Data Layer"
-  role: "ui" | "features" | "server" | "infrastructure" | "shared-utils" | "unknown";
+  role:
+    | "ui"
+    | "features"
+    | "server"
+    | "infrastructure"
+    | "shared-utils"
+    | "unknown";
   directoryPaths: string[];
   fileCount: number;
   isConfirmedFact: boolean;
@@ -252,7 +265,12 @@ export interface GraphEdge {
 
 ```typescript
 export interface RouteInventory {
-  routerType: "next-app-router" | "next-pages-router" | "react-router" | "express" | "unknown";
+  routerType:
+    | "next-app-router"
+    | "next-pages-router"
+    | "react-router"
+    | "express"
+    | "unknown";
   routes: Array<{
     routePath: string; // e.g. '/dashboard/analytics' or '/api/auth/[...nextauth]'
     filePath: string;
@@ -339,7 +357,11 @@ export interface AnalysisExecutionStats {
         "name": "Next.js",
         "version": "^14.0.0",
         "category": "framework",
-        "evidence": { "filePath": "package.json", "matchedPackage": "next", "description": "Found Next.js dependency" }
+        "evidence": {
+          "filePath": "package.json",
+          "matchedPackage": "next",
+          "description": "Found Next.js dependency"
+        }
       }
     ],
     "styling": [
@@ -347,7 +369,10 @@ export interface AnalysisExecutionStats {
         "name": "Tailwind CSS",
         "version": "^3.4.0",
         "category": "styling",
-        "evidence": { "filePath": "tailwind.config.js", "description": "Tailwind configuration file detected" }
+        "evidence": {
+          "filePath": "tailwind.config.js",
+          "description": "Tailwind configuration file detected"
+        }
       }
     ],
     "database": [
@@ -355,7 +380,10 @@ export interface AnalysisExecutionStats {
         "name": "Prisma",
         "version": "^5.0.0",
         "category": "database",
-        "evidence": { "filePath": "prisma/schema.prisma", "description": "Prisma schema detected" }
+        "evidence": {
+          "filePath": "prisma/schema.prisma",
+          "description": "Prisma schema detected"
+        }
       }
     ],
     "stateManagement": [],
@@ -363,7 +391,10 @@ export interface AnalysisExecutionStats {
       {
         "name": "Radix UI",
         "category": "ui-library",
-        "evidence": { "filePath": "package.json", "description": "Detected multiple @radix-ui/* packages" }
+        "evidence": {
+          "filePath": "package.json",
+          "description": "Detected multiple @radix-ui/* packages"
+        }
       }
     ],
     "buildTools": []
@@ -393,17 +424,43 @@ export interface AnalysisExecutionStats {
         "exportName": "Button",
         "category": "ui-primitive",
         "props": [
-          { "name": "variant", "type": "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", "isRequired": false, "defaultValue": "'default'" },
-          { "name": "size", "type": "'default' | 'sm' | 'lg' | 'icon'", "isRequired": false, "defaultValue": "'default'" },
-          { "name": "asChild", "type": "boolean", "isRequired": false, "defaultValue": "false" }
+          {
+            "name": "variant",
+            "type": "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'",
+            "isRequired": false,
+            "defaultValue": "'default'"
+          },
+          {
+            "name": "size",
+            "type": "'default' | 'sm' | 'lg' | 'icon'",
+            "isRequired": false,
+            "defaultValue": "'default'"
+          },
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "isRequired": false,
+            "defaultValue": "false"
+          }
         ],
         "childComponents": ["Slot"],
         "usedBy": [
-          { "filePath": "components/site-header.tsx", "componentName": "SiteHeader" },
-          { "filePath": "components/post-item.tsx", "componentName": "PostItem" }
+          {
+            "filePath": "components/site-header.tsx",
+            "componentName": "SiteHeader"
+          },
+          {
+            "filePath": "components/post-item.tsx",
+            "componentName": "PostItem"
+          }
         ],
         "localDependencies": ["lib/utils.ts"],
-        "externalPackageDependencies": ["@radix-ui/react-slot", "class-variance-authority", "clsx", "tailwind-merge"]
+        "externalPackageDependencies": [
+          "@radix-ui/react-slot",
+          "class-variance-authority",
+          "clsx",
+          "tailwind-merge"
+        ]
       }
     ]
   },
@@ -417,12 +474,27 @@ export interface AnalysisExecutionStats {
   },
   "designSystem": {
     "colorPalette": [
-      { "name": "primary", "value": "hsl(222.2 47.4% 11.2%)", "source": "css-variable" },
-      { "name": "primary-foreground", "value": "hsl(210 40% 98%)", "source": "css-variable" }
+      {
+        "name": "primary",
+        "value": "hsl(222.2 47.4% 11.2%)",
+        "source": "css-variable"
+      },
+      {
+        "name": "primary-foreground",
+        "value": "hsl(210 40% 98%)",
+        "source": "css-variable"
+      }
     ],
     "typography": {
       "fontFamilies": ["Inter", "Cal Sans"],
-      "fontSizes": ["0.75rem", "0.875rem", "1rem", "1.125rem", "1.25rem", "1.5rem"],
+      "fontSizes": [
+        "0.75rem",
+        "0.875rem",
+        "1rem",
+        "1.125rem",
+        "1.25rem",
+        "1.5rem"
+      ],
       "fontWeights": ["400", "500", "600", "700"]
     },
     "spacing": ["0.25rem", "0.5rem", "0.75rem", "1rem", "1.5rem", "2rem"],

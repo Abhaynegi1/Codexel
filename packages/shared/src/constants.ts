@@ -7,6 +7,13 @@ export const DEFAULT_ANALYZER_LIMITS = {
   TIMEOUT_MS: 90_000, // 90 seconds
 } as const;
 
+export const DEFAULT_INGESTION_LIMITS = {
+  maxFiles: 10_000,
+  maxSizeBytes: 150 * 1024 * 1024, // 150 MB
+  fetchTimeoutMs: 60_000, // 60 seconds
+  remoteTimeoutMs: 30_000, // 30 seconds
+} as const;
+
 export const DEFAULT_IGNORE_PATTERNS = [
   "**/node_modules/**",
   "**/.git/**",

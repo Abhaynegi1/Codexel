@@ -26,7 +26,7 @@ export const TechnologyStackSchema = z.object({
       name: z.string(),
       percentage: z.number().min(0).max(100),
       fileCount: z.number().int().nonnegative(),
-    })
+    }),
   ),
   frameworks: z.array(TechnologyTagSchema),
   styling: z.array(TechnologyTagSchema),
@@ -57,7 +57,14 @@ export const FileSystemSummarySchema = z.object({
 export const ArchitectureLayerSchema = z.object({
   id: z.string(),
   name: z.string(),
-  role: z.enum(["ui", "features", "server", "infrastructure", "shared-utils", "unknown"]),
+  role: z.enum([
+    "ui",
+    "features",
+    "server",
+    "infrastructure",
+    "shared-utils",
+    "unknown",
+  ]),
   directoryPaths: z.array(z.string()),
   fileCount: z.number().int().nonnegative(),
   isConfirmedFact: z.boolean(),
@@ -111,7 +118,7 @@ export const DiscoveredComponentSchema = z.object({
     z.object({
       filePath: z.string(),
       componentName: z.string().optional(),
-    })
+    }),
   ),
   localDependencies: z.array(z.string()),
   externalPackageDependencies: z.array(z.string()),
@@ -153,7 +160,9 @@ export const RouteEntrySchema = z.object({
   routePath: z.string(),
   filePath: z.string(),
   kind: z.enum(["page", "api", "layout"]),
-  httpMethods: z.array(z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"])).optional(),
+  httpMethods: z
+    .array(z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]))
+    .optional(),
 });
 
 export const RouteInventorySchema = z.object({
@@ -173,7 +182,7 @@ export const DesignSystemSummarySchema = z.object({
       name: z.string(),
       value: z.string(),
       source: z.enum(["css-variable", "tailwind-config", "theme-object"]),
-    })
+    }),
   ),
   typography: z.object({
     fontFamilies: z.array(z.string()),
@@ -187,7 +196,7 @@ export const DesignSystemSummarySchema = z.object({
     z.object({
       className: z.string(),
       count: z.number().int().nonnegative(),
-    })
+    }),
   ),
   libraries: z.object({
     uiPrimitiveLibrary: z.string().optional(),
@@ -229,4 +238,43 @@ export const RepositoryModelSchema = z.object({
   routes: RouteInventorySchema,
   designSystem: DesignSystemSummarySchema,
   analysisStats: AnalysisExecutionStatsSchema,
+});
+
+export const ParsedGitHubUrlSchema = z.object({
+  owner: z.string().min(1),
+  repo: z.string().min(1),
+  cleanUrl: z.string().url(),
+  cloneUrl: z.string().url(),
+  ref: z.string().optional(),
+  subpath: z.string().optional(),
+});
+
+export const IngestionLimitsSchema = z.object({
+  maxFiles: z.number().int().positive().default(10_000),
+  maxSizeBytes: z
+    .number()
+    .int()
+    .positive()
+    .default(150 * 1024 * 1024),
+  fetchTimeoutMs: z.number().int().positive().default(60_000),
+  remoteTimeoutMs: z.number().int().positive().default(30_000),
+});
+
+export const RemoteRepoInfoSchema = z.object({
+  commitSha: z.string().min(7),
+  defaultBranch: z.string().min(1),
+  resolvedRef: z.string().min(1),
+  cacheKey: z.string().min(1),
+});
+
+export const SandboxMetadataSchema = z.object({
+  ephemeralPath: z.string(),
+  owner: z.string(),
+  repo: z.string(),
+  commitSha: z.string(),
+  defaultBranch: z.string(),
+  fileCount: z.number().int().nonnegative(),
+  sizeBytes: z.number().int().nonnegative(),
+  clonedAt: z.string(),
+  cloneDurationMs: z.number().nonnegative(),
 });

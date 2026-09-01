@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { CURRENT_SCHEMA_VERSION, ANALYZER_ENGINE_VERSION } from "@codexel/shared";
+import {
+  CURRENT_SCHEMA_VERSION,
+  ANALYZER_ENGINE_VERSION,
+} from "@codexel/shared";
 
 export async function GET() {
   return NextResponse.json({

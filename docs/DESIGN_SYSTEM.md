@@ -22,37 +22,37 @@ Codexel is built as a **visual developer workspace**, not a generic SaaS dashboa
 
 ### 2.1. Neutral Surface & Text Palette
 
-| Token | Hex | Role |
-| :--- | :--- | :--- |
-| `Background` | `#F8F7F3` | Main canvas, warm editorial paper tone |
-| `Surface` | `#FFFFFF` | Primary cards, panels, node bodies |
-| `Surface Secondary` | `#F3F2EE` | Sidebar, secondary containers, code blocks |
-| `Border` | `#E5E2DA` | Standard thin structural dividers (1px solid) |
-| `Border Strong` | `#D5D1C8` | Active borders, hover states, node borders |
-| `Text Primary` | `#171717` | Headlines, primary labels, component titles |
-| `Text Secondary` | `#5F5C56` | Body text, descriptions, path breadcrumbs |
-| `Text Muted` | `#8B8881` | Technical metadata, counts, placeholders |
+| Token               | Hex       | Role                                          |
+| :------------------ | :-------- | :-------------------------------------------- |
+| `Background`        | `#F8F7F3` | Main canvas, warm editorial paper tone        |
+| `Surface`           | `#FFFFFF` | Primary cards, panels, node bodies            |
+| `Surface Secondary` | `#F3F2EE` | Sidebar, secondary containers, code blocks    |
+| `Border`            | `#E5E2DA` | Standard thin structural dividers (1px solid) |
+| `Border Strong`     | `#D5D1C8` | Active borders, hover states, node borders    |
+| `Text Primary`      | `#171717` | Headlines, primary labels, component titles   |
+| `Text Secondary`    | `#5F5C56` | Body text, descriptions, path breadcrumbs     |
+| `Text Muted`        | `#8B8881` | Technical metadata, counts, placeholders      |
 
 ### 2.2. Brand Accent (Warm Amber / Orange)
 
-| Token | Hex | Role |
-| :--- | :--- | :--- |
-| `Primary` | `#F59E0B` | Primary CTAs, active tab indicator, selected node border |
-| `Primary Hover` | `#D97706` | Hover state for interactive primary actions |
-| `Primary Soft` | `#FEF3C7` | Soft background badge for active node or selection |
-| `Primary Dark` | `#B45309` | High-contrast text on primary soft backgrounds |
+| Token           | Hex       | Role                                                     |
+| :-------------- | :-------- | :------------------------------------------------------- |
+| `Primary`       | `#F59E0B` | Primary CTAs, active tab indicator, selected node border |
+| `Primary Hover` | `#D97706` | Hover state for interactive primary actions              |
+| `Primary Soft`  | `#FEF3C7` | Soft background badge for active node or selection       |
+| `Primary Dark`  | `#B45309` | High-contrast text on primary soft backgrounds           |
 
 ### 2.3. Semantic Hierarchy (Architecture & Categories)
 
-| Category | Hex | Meaning / Role |
-| :--- | :--- | :--- |
-| **Application / Root** | `#F59E0B` | App entry points, root modules |
-| **Frontend / UI** | `#3B82F6` | Pages, layouts, UI components, client features |
-| **Backend / API** | `#22C55E` | Server routes, API endpoints, microservices |
-| **Database / Storage** | `#F59E0B` | ORM schemas, database models, storage clients |
-| **Authentication** | `#8B5CF6` | Auth middleware, session providers, token handlers |
-| **External Service** | `#14B8A6` | Third-party SDKs, Stripe, payment, analytics |
-| **Error / Destructive** | `#EF4444` | Failures, breaking dependencies, alerts |
+| Category                | Hex       | Meaning / Role                                     |
+| :---------------------- | :-------- | :------------------------------------------------- |
+| **Application / Root**  | `#F59E0B` | App entry points, root modules                     |
+| **Frontend / UI**       | `#3B82F6` | Pages, layouts, UI components, client features     |
+| **Backend / API**       | `#22C55E` | Server routes, API endpoints, microservices        |
+| **Database / Storage**  | `#F59E0B` | ORM schemas, database models, storage clients      |
+| **Authentication**      | `#8B5CF6` | Auth middleware, session providers, token handlers |
+| **External Service**    | `#14B8A6` | Third-party SDKs, Stripe, payment, analytics       |
+| **Error / Destructive** | `#EF4444` | Failures, breaking dependencies, alerts            |
 
 ---
 
@@ -63,16 +63,16 @@ Codexel is built as a **visual developer workspace**, not a generic SaaS dashboa
 
 ### Typographic Scale
 
-| Level | Size | Weight | Line Height | Role |
-| :--- | :--- | :--- | :--- | :--- |
-| **Hero** | `56px–64px` | `700` | `1.05` | Main landing headline |
-| **Hero Mobile** | `38px–42px` | `700` | `1.1` | Mobile headline |
-| **Page Title** | `28px–32px` | `600` | `1.15` | Section / View headline |
-| **Section Title** | `20px–24px` | `600` | `1.2` | Feature headers, explorer views |
-| **Card Title** | `15px–16px` | `600` | `1.3` | Node titles, component cards |
-| **Body** | `14px–15px` | `400` | `1.5` | Descriptions, panel text |
-| **Metadata / Badges**| `12px–13px` | `500` | `1.4` | File counts, timings, tags |
-| **Code / Paths** | `13px–14px` | `400` | `1.5` | Code snippets, file paths, props |
+| Level                 | Size        | Weight | Line Height | Role                             |
+| :-------------------- | :---------- | :----- | :---------- | :------------------------------- |
+| **Hero**              | `56px–64px` | `700`  | `1.05`      | Main landing headline            |
+| **Hero Mobile**       | `38px–42px` | `700`  | `1.1`       | Mobile headline                  |
+| **Page Title**        | `28px–32px` | `600`  | `1.15`      | Section / View headline          |
+| **Section Title**     | `20px–24px` | `600`  | `1.2`       | Feature headers, explorer views  |
+| **Card Title**        | `15px–16px` | `600`  | `1.3`       | Node titles, component cards     |
+| **Body**              | `14px–15px` | `400`  | `1.5`       | Descriptions, panel text         |
+| **Metadata / Badges** | `12px–13px` | `500`  | `1.4`       | File counts, timings, tags       |
+| **Code / Paths**      | `13px–14px` | `400`  | `1.5`       | Code snippets, file paths, props |
 
 ---
 

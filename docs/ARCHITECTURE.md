@@ -2,7 +2,7 @@
 
 > **Version**: 1.0.0-draft  
 > **Status**: Approved Foundation  
-> **Author**: Codexel Engineering  
+> **Author**: Codexel Engineering
 
 ---
 
@@ -156,14 +156,14 @@ GitHub URL ──► Validate Format ──► Resolve Commit SHA (Git LS-Remote
 
 Detection uses deterministic file existence and package dependency markers:
 
-| Layer | Deterministic Marker Files | Package.json Signatures |
-| :--- | :--- | :--- |
-| **Frameworks** | `next.config.*`, `vite.config.*`, `astro.config.*`, `remix.config.*` | `next`, `vite`, `@remix-run/react`, `astro`, `nuxt`, `vue` |
-| **UI Libraries** | `components.json` (shadcn), `tailwind.config.*` | `@radix-ui/*`, `@chakra-ui/*`, `@mui/material`, `antd` |
-| **Styling** | `tailwind.config.*`, `postcss.config.*`, `*.module.css` | `tailwindcss`, `@vanilla-extract/css`, `styled-components` |
-| **State / Query** | `src/store/*`, `zustand`, `redux` files | `zustand`, `@reduxjs/toolkit`, `@tanstack/react-query` |
-| **Database / ORM** | `drizzle.config.*`, `prisma/schema.prisma` | `drizzle-orm`, `@prisma/client`, `typeorm`, `kysely` |
-| **APIs / Backend** | `app/api/**`, `pages/api/**`, `trpc/**`, `server/**` | `@trpc/server`, `express`, `fastify`, `hono` |
+| Layer              | Deterministic Marker Files                                           | Package.json Signatures                                    |
+| :----------------- | :------------------------------------------------------------------- | :--------------------------------------------------------- |
+| **Frameworks**     | `next.config.*`, `vite.config.*`, `astro.config.*`, `remix.config.*` | `next`, `vite`, `@remix-run/react`, `astro`, `nuxt`, `vue` |
+| **UI Libraries**   | `components.json` (shadcn), `tailwind.config.*`                      | `@radix-ui/*`, `@chakra-ui/*`, `@mui/material`, `antd`     |
+| **Styling**        | `tailwind.config.*`, `postcss.config.*`, `*.module.css`              | `tailwindcss`, `@vanilla-extract/css`, `styled-components` |
+| **State / Query**  | `src/store/*`, `zustand`, `redux` files                              | `zustand`, `@reduxjs/toolkit`, `@tanstack/react-query`     |
+| **Database / ORM** | `drizzle.config.*`, `prisma/schema.prisma`                           | `drizzle-orm`, `@prisma/client`, `typeorm`, `kysely`       |
+| **APIs / Backend** | `app/api/**`, `pages/api/**`, `trpc/**`, `server/**`                 | `@trpc/server`, `express`, `fastify`, `hono`               |
 
 ---
 
