@@ -137,6 +137,9 @@ importers:
       picomatch:
         specifier: ^4.0.2
         version: 4.0.7
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
     devDependencies:
       '@types/node':
         specifier: ^22.20.1
@@ -144,9 +147,6 @@ importers:
       tsx:
         specifier: ^4.23.13
         version: 4.23.13
-      typescript:
-        specifier: ^5.7.3
-        version: 5.9.3
       vitest:
         specifier: ^4.1.11
         version: 4.1.11(@types/node@22.20.1)(vite@8.2.2(@types/node@22.20.1)(esbuild@0.28.2)(jiti@1.21.7)(tsx@4.23.13))
