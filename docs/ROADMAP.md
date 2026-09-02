@@ -155,14 +155,14 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 7 — Isolated Component Preview
+### Phase 7 — Isolated Component Preview (Completed)
 
 - **Objective**: Render supported frontend components in a safe, sandboxed preview environment.
 - **Key Tasks**:
-  - [ ] Research and implement sandboxed iframe rendering container.
-  - [ ] Package component source alongside required styling into an isolated preview bundle.
-  - [ ] Provide fallback placeholder when dynamic runtime dependencies prevent safe rendering.
-  - [ ] Ensure strict CSP headers preventing any network requests or storage access from sandboxed components.
+  - [x] Research and implement sandboxed iframe rendering container.
+  - [x] Package component source alongside required styling into an isolated preview bundle.
+  - [x] Provide fallback placeholder when dynamic runtime dependencies prevent safe rendering.
+  - [x] Ensure strict CSP headers preventing any network requests or storage access from sandboxed components.
 - **Deliverable**: Live visual rendering of standalone UI primitives inside a secure iframe.
 
 ---
@@ -231,8 +231,8 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 | **4**  | Architecture Explorer | React Flow interactive graph canvas                | ✅ Complete |
 | **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | ✅ Complete |
 | **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | ✅ Complete |
-| **7**  | Component Preview     | Sandboxed iframe preview                           | ⏳ Next     |
-| **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | 📅 Planned  |
+| **7**  | Component Preview     | Sandboxed iframe preview                           | ✅ Complete |
+| **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | ⏳ Next     |
 | **9**  | Grounded AI Layer     | Fact-based Q&A without hallucinations              | 📅 Planned  |
 | **10** | Local Workspaces      | Drag-and-drop local directory analysis             | 📅 Planned  |
 | **11** | Codexel CLI           | `codexel analyze .` command-line utility           | 📅 Planned  |
