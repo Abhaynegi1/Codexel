@@ -2,10 +2,19 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FolderUp, ArrowRight, ExternalLink, BookOpen } from "lucide-react";
 
 export default function HomePage() {
+  const router = useRouter();
   const [repoUrl, setRepoUrl] = useState("github.com/shadcn-ui/ui");
+
+  const handleExplore = (targetUrl?: string) => {
+    const urlToExplore = targetUrl || repoUrl;
+    if (urlToExplore.trim()) {
+      router.push(`/explore?repo=${encodeURIComponent(urlToExplore.trim())}`);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground bg-blueprint-grid flex flex-col justify-between">
@@ -61,7 +70,13 @@ export default function HomePage() {
 
         {/* Primary Repository Interaction Card */}
         <div className="pt-2 max-w-2xl mx-auto space-y-4">
-          <div className="technical-panel p-4 rounded-lg space-y-3 shadow-subtle text-left">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleExplore();
+            }}
+            className="technical-panel p-4 rounded-lg space-y-3 shadow-subtle text-left"
+          >
             <div className="flex items-center justify-between text-xs text-foreground-muted font-mono">
               <div className="flex items-center gap-2">
                 <svg
@@ -87,24 +102,25 @@ export default function HomePage() {
                 />
               </div>
               <button
-                type="button"
+                type="submit"
                 className="px-5 py-2.5 rounded-md bg-primary hover:bg-primary-hover text-white font-medium text-sm transition-colors flex items-center justify-center gap-1.5 shrink-0"
               >
                 <span>Explore</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-          </div>
+          </form>
 
           {/* Folder Drop Secondary Option */}
           <div className="flex items-center justify-center gap-2 text-xs text-foreground-muted font-mono">
             <span>or</span>
             <button
               type="button"
+              onClick={() => handleExplore("local/project")}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-dashed border-border-strong bg-surface hover:bg-surface-secondary text-foreground-secondary transition-colors"
             >
               <FolderUp className="w-3.5 h-3.5 text-primary" />
-              <span>Drop a repository folder</span>
+              <span>Explore local workspace sample</span>
             </button>
           </div>
 
@@ -116,8 +132,12 @@ export default function HomePage() {
                 <button
                   key={slug}
                   type="button"
-                  onClick={() => setRepoUrl(`github.com/${slug}`)}
-                  className="px-2 py-0.5 rounded bg-surface border border-border text-foreground-secondary hover:border-border-strong transition-colors"
+                  onClick={() => {
+                    const u = `github.com/${slug}`;
+                    setRepoUrl(u);
+                    handleExplore(u);
+                  }}
+                  className="px-2 py-0.5 rounded bg-surface border border-border text-foreground-secondary hover:border-border-strong hover:text-foreground transition-colors"
                 >
                   {slug}
                 </button>

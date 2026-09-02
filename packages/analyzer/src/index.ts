@@ -78,8 +78,14 @@ export async function analyzeRepository(
   );
   const routes = detectRoutes(fileSystem.files, astSummaries);
 
-  // 4. Architecture & Design System (Skeletons for Phase 4 & 6)
-  const architecture = await classifyArchitecture(options.workspacePath);
+  // 4. Architecture & Design System
+  const architecture = await classifyArchitecture({
+    workspacePath: options.workspacePath,
+    files: fileSystem.files,
+    dependencyGraph,
+    routes,
+    components,
+  });
   const designSystem = await extractDesignSystem(options.workspacePath);
 
   const totalDurationMs = Date.now() - startTime;

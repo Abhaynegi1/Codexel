@@ -114,16 +114,16 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 4 — Architecture Explorer (Interactive Visualizer)
+### Phase 4 — Architecture Explorer (Interactive Visualizer) (Completed)
 
 - **Objective**: Create the primary visual overview of the codebase using interactive node-edge diagrams.
 - **Key Tasks**:
-  - [ ] Integrate React Flow with custom styling and node layouts.
-  - [ ] Synthesize higher-level architectural nodes (UI layer, Feature domains, Server APIs, Data models).
-  - [ ] Render interactive module relationship graphs with pan, zoom, and minimap.
-  - [ ] Build filterable node views (e.g., "Show only API routes", "Show only components", "Filter by directory").
-  - [ ] Provide drawer/panel on node selection showing source file paths, imports, and dependents.
-  - [ ] Implement responsive canvas controls and dark mode theme.
+  - [x] Integrate React Flow with custom styling and node layouts.
+  - [x] Synthesize higher-level architectural nodes (UI layer, Feature domains, Server APIs, Data models).
+  - [x] Render interactive module relationship graphs with pan, zoom, and minimap.
+  - [x] Build filterable node views (e.g., "Show only API routes", "Show only components", "Filter by directory").
+  - [x] Provide drawer/panel on node selection showing source file paths, imports, and dependents.
+  - [x] Implement responsive canvas controls and dark mode theme.
 - **Deliverable**: Interactive browser canvas visualizing the entire architecture of an analyzed GitHub repository.
 
 ---
@@ -228,8 +228,8 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 | **1**  | Repo Ingestion        | GitHub URL cloner, sandbox isolation, cleanup      | ✅ Complete |
 | **2**  | Basic Scanner         | Ignore engine, package detector, stats summary     | ✅ Complete |
 | **3**  | Code Intelligence     | AST parsing, import graph, React component catalog | ✅ Complete |
-| **4**  | Architecture Explorer | React Flow interactive graph canvas                | ⏳ Next     |
-| **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | 📅 Planned  |
+| **4**  | Architecture Explorer | React Flow interactive graph canvas                | ✅ Complete |
+| **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | ⏳ Next     |
 | **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | 📅 Planned  |
 | **7**  | Component Preview     | Sandboxed iframe preview                           | 📅 Planned  |
 | **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | 📅 Planned  |

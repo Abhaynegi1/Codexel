@@ -10,9 +10,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@codexel/analyzer": "workspace:*",
     "@codexel/database": "workspace:*",
     "@codexel/shared": "workspace:*",
     "@codexel/ui": "workspace:*",
+    "@dagrejs/dagre": "^3.1.1",
+    "@xyflow/react": "^12.11.6",
     "clsx": "^2.1.1",
     "lucide-react": "^0.475.0",
     "next": "^15.1.7",
@@ -21,6 +24,7 @@
     "tailwind-merge": "^3.0.2"
   },
   "devDependencies": {
+    "@types/dagre": "^0.7.54",
     "@types/node": "^22.13.9",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
