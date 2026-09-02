@@ -60,7 +60,10 @@ export function ComponentFallbackPlaceholder({
             </div>
             <ul className="space-y-1.5 pl-1">
               {blockers.map((blocker, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-foreground-secondary">
+                <li
+                  key={idx}
+                  className="flex items-start gap-2 text-foreground-secondary"
+                >
                   <span className="text-amber-500 font-bold">•</span>
                   <span>{blocker}</span>
                 </li>
@@ -87,13 +90,16 @@ export function ComponentFallbackPlaceholder({
                 </span>
               </div>
               <span className="text-[10px] text-foreground-muted">
-                {component.props.length} props • {component.childComponents.length} children
+                {component.props.length} props •{" "}
+                {component.childComponents.length} children
               </span>
             </div>
 
             {/* Simulated props schema */}
             <div className="text-[11px] space-y-1">
-              <div className="text-foreground-muted text-[10px] uppercase">Declared Props:</div>
+              <div className="text-foreground-muted text-[10px] uppercase">
+                Declared Props:
+              </div>
               {component.props.length > 0 ? (
                 <div className="grid grid-cols-2 gap-1.5">
                   {component.props.slice(0, 4).map((p) => (
@@ -101,7 +107,9 @@ export function ComponentFallbackPlaceholder({
                       key={p.name}
                       className="px-2 py-1 rounded bg-surface border border-border/60 flex items-center justify-between text-[10px]"
                     >
-                      <span className="text-primary font-semibold truncate">{p.name}</span>
+                      <span className="text-primary font-semibold truncate">
+                        {p.name}
+                      </span>
                       <span className="text-foreground-muted truncate max-w-[80px] text-right">
                         {p.type}
                       </span>
@@ -109,14 +117,18 @@ export function ComponentFallbackPlaceholder({
                   ))}
                 </div>
               ) : (
-                <div className="text-foreground-muted italic text-[10px]">None</div>
+                <div className="text-foreground-muted italic text-[10px]">
+                  None
+                </div>
               )}
             </div>
 
             {/* Child tree */}
             {component.childComponents.length > 0 && (
               <div className="text-[11px] space-y-1 pt-1 border-t border-border/40">
-                <div className="text-foreground-muted text-[10px] uppercase">Nested Children:</div>
+                <div className="text-foreground-muted text-[10px] uppercase">
+                  Nested Children:
+                </div>
                 <div className="flex flex-wrap gap-1.5">
                   {component.childComponents.map((child) => (
                     <span

@@ -14,13 +14,21 @@
     "check:docs": "node scripts/check-docs.mjs",
     "check:hygiene": "pnpm format:check && pnpm check:duplication && pnpm check:docs",
     "db:generate": "pnpm --filter @codexel/database run db:generate",
-    "db:migrate": "pnpm --filter @codexel/database run db:migrate"
+    "db:migrate": "pnpm --filter @codexel/database run db:migrate",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "jscpd": "^5.1.1",
+    "lint-staged": "^17.4.1",
     "prettier": "^3.4.2",
     "turbo": "^2.4.4",
     "typescript": "^5.7.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,md,json}": [
+      "prettier --write"
+    ]
   },
   "packageManager": "pnpm@10.33.0"
 }

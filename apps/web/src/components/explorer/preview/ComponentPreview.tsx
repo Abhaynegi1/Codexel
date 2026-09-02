@@ -72,7 +72,8 @@ export function ComponentPreview({
     return defaults;
   }, [component]);
 
-  const [propValues, setPropValues] = useState<Record<string, any>>(initialPropValues);
+  const [propValues, setPropValues] =
+    useState<Record<string, any>>(initialPropValues);
 
   // Reset props when component changes
   useEffect(() => {
@@ -93,7 +94,14 @@ export function ComponentPreview({
       background,
       zoomLevel,
     });
-  }, [feasibility.isRenderable, component, propValues, background, zoomLevel, reloadKey]);
+  }, [
+    feasibility.isRenderable,
+    component,
+    propValues,
+    background,
+    zoomLevel,
+    reloadKey,
+  ]);
 
   const handlePropChange = (name: string, value: any) => {
     setPropValues((prev) => ({
@@ -327,7 +335,9 @@ export function ComponentPreview({
               <div className="space-y-1.5">
                 <label className="text-[11px] font-mono font-semibold text-foreground-secondary flex items-center justify-between">
                   <span>children / label</span>
-                  <span className="text-[9px] text-foreground-muted font-normal">string</span>
+                  <span className="text-[9px] text-foreground-muted font-normal">
+                    string
+                  </span>
                 </label>
                 <input
                   type="text"
@@ -343,7 +353,12 @@ export function ComponentPreview({
 
               {/* Inspect other detected props */}
               {component.props.map((prop) => {
-                if (prop.name === "children" || prop.name === "text" || prop.name === "className" || prop.name === "asChild") {
+                if (
+                  prop.name === "children" ||
+                  prop.name === "text" ||
+                  prop.name === "className" ||
+                  prop.name === "asChild"
+                ) {
                   return null;
                 }
 
@@ -363,7 +378,9 @@ export function ComponentPreview({
                     {enumOpts.length > 0 ? (
                       <select
                         value={propValues[prop.name] ?? enumOpts[0]}
-                        onChange={(e) => handlePropChange(prop.name, e.target.value)}
+                        onChange={(e) =>
+                          handlePropChange(prop.name, e.target.value)
+                        }
                         className="w-full text-xs font-mono bg-surface-secondary border border-border rounded-md px-2 py-1.5 text-foreground focus:outline-none focus:border-primary"
                       >
                         {enumOpts.map((opt) => (
@@ -379,7 +396,9 @@ export function ComponentPreview({
                           type="checkbox"
                           id={`prop-${prop.name}`}
                           checked={Boolean(propValues[prop.name])}
-                          onChange={(e) => handlePropChange(prop.name, e.target.checked)}
+                          onChange={(e) =>
+                            handlePropChange(prop.name, e.target.checked)
+                          }
                           className="w-3.5 h-3.5 rounded text-primary focus:ring-0 border-border"
                         />
                         <label
@@ -394,7 +413,9 @@ export function ComponentPreview({
                       <input
                         type="text"
                         value={propValues[prop.name] || ""}
-                        onChange={(e) => handlePropChange(prop.name, e.target.value)}
+                        onChange={(e) =>
+                          handlePropChange(prop.name, e.target.value)
+                        }
                         placeholder={prop.defaultValue || "default"}
                         className="w-full text-xs font-mono bg-surface-secondary border border-border rounded-md px-2.5 py-1.5 text-foreground focus:outline-none focus:border-primary"
                       />
@@ -412,7 +433,9 @@ export function ComponentPreview({
                   <input
                     type="checkbox"
                     checked={Boolean(propValues.disabled)}
-                    onChange={(e) => handlePropChange("disabled", e.target.checked)}
+                    onChange={(e) =>
+                      handlePropChange("disabled", e.target.checked)
+                    }
                     className="w-3.5 h-3.5 rounded text-primary focus:ring-0 border-border"
                   />
                 </div>
@@ -426,7 +449,8 @@ export function ComponentPreview({
                 <span>Strict CSP Enforced</span>
               </div>
               <p className="text-[10px] font-mono leading-tight text-foreground-muted">
-                Isolated sandbox execution with null origin. Parent storage &amp; network exfiltration blocked.
+                Isolated sandbox execution with null origin. Parent storage
+                &amp; network exfiltration blocked.
               </p>
             </div>
           </div>

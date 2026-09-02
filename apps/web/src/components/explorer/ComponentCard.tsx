@@ -132,7 +132,9 @@ export function ComponentCard({
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          {["ui-primitive", "form", "modal", "navigation"].includes(component.category) && (
+          {["ui-primitive", "form", "modal", "navigation"].includes(
+            component.category,
+          ) && (
             <span
               title="Live Sandboxed Preview Available"
               className="flex items-center gap-1 text-[9px] font-mono font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20"

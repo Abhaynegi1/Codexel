@@ -75,7 +75,8 @@ export function evaluatePreviewFeasibility(component: DiscoveredComponent): {
   return {
     isRenderable: true,
     blockers: [],
-    reason: "Component is a standalone UI primitive suitable for isolated preview.",
+    reason:
+      "Component is a standalone UI primitive suitable for isolated preview.",
   };
 }
 
