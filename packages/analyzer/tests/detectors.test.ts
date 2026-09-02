@@ -15,7 +15,9 @@ describe("Technology & Manifest Detectors", () => {
   let tempDir: string;
 
   beforeEach(async () => {
-    tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "codexel-detector-test-"));
+    tempDir = await fs.mkdtemp(
+      path.join(os.tmpdir(), "codexel-detector-test-"),
+    );
   });
 
   afterEach(async () => {
@@ -74,7 +76,9 @@ describe("Technology & Manifest Detectors", () => {
   it("detects frameworks, styling, database, UI libraries, and tooling from a Next.js fullstack fixture", async () => {
     // Scaffold fixture workspace
     await fs.mkdir(path.join(tempDir, "src", "app"), { recursive: true });
-    await fs.mkdir(path.join(tempDir, "src", "components"), { recursive: true });
+    await fs.mkdir(path.join(tempDir, "src", "components"), {
+      recursive: true,
+    });
 
     // package.json with dependencies
     const packageJsonContent = {
@@ -102,11 +106,23 @@ describe("Technology & Manifest Detectors", () => {
       path.join(tempDir, "package.json"),
       JSON.stringify(packageJsonContent, null, 2),
     );
-    await fs.writeFile(path.join(tempDir, "tailwind.config.ts"), "export default {};");
-    await fs.writeFile(path.join(tempDir, "drizzle.config.ts"), "export default {};");
+    await fs.writeFile(
+      path.join(tempDir, "tailwind.config.ts"),
+      "export default {};",
+    );
+    await fs.writeFile(
+      path.join(tempDir, "drizzle.config.ts"),
+      "export default {};",
+    );
     await fs.writeFile(path.join(tempDir, "components.json"), "{}");
-    await fs.writeFile(path.join(tempDir, "src", "app", "page.tsx"), "export default function Page() {}");
-    await fs.writeFile(path.join(tempDir, "src", "components", "dialog.tsx"), "export const D = 1;");
+    await fs.writeFile(
+      path.join(tempDir, "src", "app", "page.tsx"),
+      "export default function Page() {}",
+    );
+    await fs.writeFile(
+      path.join(tempDir, "src", "components", "dialog.tsx"),
+      "export const D = 1;",
+    );
 
     const scanResult = await scanFileSystem({ workspacePath: tempDir });
     const stack = await detectTechnologies(tempDir, scanResult.files);

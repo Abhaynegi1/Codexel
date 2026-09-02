@@ -1,4 +1,4 @@
-name: CI
+name: CI & Code Hygiene Gatekeeper
 
 on:
   push:
@@ -6,8 +6,13 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
+    name: Code Hygiene & Verification Pipeline
     runs-on: ubuntu-latest
 
     steps:
@@ -28,8 +33,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Typecheck
+      - name: 1. Code Formatting Check (Prettier)
+        run: pnpm run format:check
+
+      - name: 2. Anti-Duplication & DRY Audit (jscpd)
+        run: pnpm run check:duplication
+
+      - name: 3. Documentation Integrity & Hygiene
+        run: pnpm run check:docs
+
+      - name: 4. Strict Typecheck (All Packages)
         run: pnpm run typecheck
 
-      - name: Build
+      - name: 5. Unit & Integration Tests
+        run: pnpm run test
+
+      - name: 6. Production Bundle Build
         run: pnpm run build

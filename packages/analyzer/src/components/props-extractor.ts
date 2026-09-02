@@ -34,7 +34,9 @@ export function extractComponentProps(
       for (const member of paramNode.type.members) {
         if (ts.isPropertySignature(member) && member.name) {
           const name = member.name.getText(sourceFile);
-          const typeText = member.type ? member.type.getText(sourceFile) : "any";
+          const typeText = member.type
+            ? member.type.getText(sourceFile)
+            : "any";
           const isRequired = !member.questionToken && !defaultValues.has(name);
           props.push({
             name,
@@ -48,9 +50,16 @@ export function extractComponentProps(
     }
 
     // B. Type reference: `ButtonProps` -> search in sourceFile for `interface ButtonProps` or `type ButtonProps = ...`
-    if (ts.isTypeReferenceNode(paramNode.type) && ts.isIdentifier(paramNode.type.typeName)) {
+    if (
+      ts.isTypeReferenceNode(paramNode.type) &&
+      ts.isIdentifier(paramNode.type.typeName)
+    ) {
       const typeRefName = paramNode.type.typeName.text;
-      const resolvedProps = findPropsInTypeDeclaration(typeRefName, sourceFile, defaultValues);
+      const resolvedProps = findPropsInTypeDeclaration(
+        typeRefName,
+        sourceFile,
+        defaultValues,
+      );
       if (resolvedProps.length > 0) {
         return resolvedProps;
       }
@@ -88,7 +97,9 @@ function findPropsInTypeDeclaration(
       for (const member of node.members) {
         if (ts.isPropertySignature(member) && member.name) {
           const name = member.name.getText(sourceFile);
-          const typeText = member.type ? member.type.getText(sourceFile) : "any";
+          const typeText = member.type
+            ? member.type.getText(sourceFile)
+            : "any";
           const isRequired = !member.questionToken && !defaultValues.has(name);
           result.push({
             name,
@@ -103,8 +114,11 @@ function findPropsInTypeDeclaration(
         for (const member of node.type.members) {
           if (ts.isPropertySignature(member) && member.name) {
             const name = member.name.getText(sourceFile);
-            const typeText = member.type ? member.type.getText(sourceFile) : "any";
-            const isRequired = !member.questionToken && !defaultValues.has(name);
+            const typeText = member.type
+              ? member.type.getText(sourceFile)
+              : "any";
+            const isRequired =
+              !member.questionToken && !defaultValues.has(name);
             result.push({
               name,
               type: typeText,

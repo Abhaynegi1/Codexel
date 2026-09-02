@@ -43,12 +43,18 @@ export function calculateLanguageStats(files: FileMetadata[]): LanguageStats {
 
   for (const file of files) {
     const ext = file.extension.toLowerCase();
-    const lang = EXTENSION_TO_LANGUAGE[ext] || (ext ? ext.slice(1).toUpperCase() : "Other");
+    const lang =
+      EXTENSION_TO_LANGUAGE[ext] ||
+      (ext ? ext.slice(1).toUpperCase() : "Other");
     counts.set(lang, (counts.get(lang) || 0) + 1);
   }
 
   const totalFiles = files.length;
-  const languages: Array<{ name: string; percentage: number; fileCount: number }> = [];
+  const languages: Array<{
+    name: string;
+    percentage: number;
+    fileCount: number;
+  }> = [];
 
   for (const [name, count] of counts.entries()) {
     const rawPct = (count / totalFiles) * 100;
@@ -66,7 +72,9 @@ export function calculateLanguageStats(files: FileMetadata[]): LanguageStats {
 
   // Determine primaryLanguage: first look for dominant source language, else top overall
   let primaryLanguage = "Unknown";
-  const dominantSource = languages.find((l) => PRIORITY_SOURCE_LANGUAGES.has(l.name));
+  const dominantSource = languages.find((l) =>
+    PRIORITY_SOURCE_LANGUAGES.has(l.name),
+  );
   if (dominantSource) {
     primaryLanguage = dominantSource.name;
   } else if (languages.length > 0 && languages[0]) {

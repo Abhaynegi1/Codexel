@@ -19,7 +19,11 @@ import "@xyflow/react/dist/style.css";
 import type { RepositoryModel } from "@codexel/shared";
 import { ModuleNode, type ModuleNodeData } from "./nodes/ModuleNode";
 import { LayerNode, type LayerNodeData } from "./nodes/LayerNode";
-import { ExplorerToolbar, type ExplorerViewMode, type ExplorerFilterRole } from "./ExplorerToolbar";
+import {
+  ExplorerToolbar,
+  type ExplorerViewMode,
+  type ExplorerFilterRole,
+} from "./ExplorerToolbar";
 import { NodeInspector } from "./NodeInspector";
 import { getLayoutedElements, type LayoutDirection } from "./layout";
 
@@ -58,12 +62,14 @@ function InnerArchitectureCanvas({
 
   // Build raw nodes & edges for "Architecture Layers" view
   const { architectureNodes, architectureEdges } = useMemo(() => {
-    const nodes: Node<LayerNodeData>[] = model.architecture.layers.map((layer) => ({
-      id: layer.id,
-      type: "layerNode",
-      position: { x: 0, y: 0 },
-      data: { layer },
-    }));
+    const nodes: Node<LayerNodeData>[] = model.architecture.layers.map(
+      (layer) => ({
+        id: layer.id,
+        type: "layerNode",
+        position: { x: 0, y: 0 },
+        data: { layer },
+      }),
+    );
 
     const edges: Edge[] = model.architecture.boundaries.map((boundary) => ({
       id: `boundary:${boundary.sourceLayerId}->${boundary.targetLayerId}`,
@@ -94,39 +100,49 @@ function InnerArchitectureCanvas({
 
   // Build raw nodes & edges for "Module Graph" view
   const { moduleNodes, moduleEdges } = useMemo(() => {
-    const nodes: Node<ModuleNodeData>[] = model.dependencyGraph.nodes.map((n) => {
-      // Determine role from file path or category
-      let role: ModuleNodeData["role"] = "shared-utils";
-      const p = (n.data.filePath || n.id).toLowerCase();
+    const nodes: Node<ModuleNodeData>[] = model.dependencyGraph.nodes.map(
+      (n) => {
+        // Determine role from file path or category
+        let role: ModuleNodeData["role"] = "shared-utils";
+        const p = (n.data.filePath || n.id).toLowerCase();
 
-      if (n.type === "package") {
-        role = "package";
-      } else if (p.includes("/ui/") || p.includes("components/ui")) {
-        role = "ui";
-      } else if (p.includes("/api/") || p.includes("route.ts") || p.includes("pages/api")) {
-        role = "server";
-      } else if (p.includes("database") || p.includes("db") || p.includes("schema")) {
-        role = "infrastructure";
-      } else if (p.includes("features/") || p.includes("modules/")) {
-        role = "features";
-      }
+        if (n.type === "package") {
+          role = "package";
+        } else if (p.includes("/ui/") || p.includes("components/ui")) {
+          role = "ui";
+        } else if (
+          p.includes("/api/") ||
+          p.includes("route.ts") ||
+          p.includes("pages/api")
+        ) {
+          role = "server";
+        } else if (
+          p.includes("database") ||
+          p.includes("db") ||
+          p.includes("schema")
+        ) {
+          role = "infrastructure";
+        } else if (p.includes("features/") || p.includes("modules/")) {
+          role = "features";
+        }
 
-      return {
-        id: n.id,
-        type: "moduleNode",
-        position: { x: 0, y: 0 },
-        data: {
-          label: n.label,
-          filePath: n.data.filePath || n.id,
-          role,
-          linesOfCode: n.data.linesOfCode,
-          componentCount: n.data.componentCount,
-          inDegree: n.data.inDegree,
-          outDegree: n.data.outDegree,
-          isExternal: n.type === "package",
-        },
-      };
-    });
+        return {
+          id: n.id,
+          type: "moduleNode",
+          position: { x: 0, y: 0 },
+          data: {
+            label: n.label,
+            filePath: n.data.filePath || n.id,
+            role,
+            linesOfCode: n.data.linesOfCode,
+            componentCount: n.data.componentCount,
+            inDegree: n.data.inDegree,
+            outDegree: n.data.outDegree,
+            isExternal: n.type === "package",
+          },
+        };
+      },
+    );
 
     const edges: Edge[] = model.dependencyGraph.edges.map((e) => ({
       id: e.id,
@@ -211,7 +227,9 @@ function InnerArchitectureCanvas({
     direction,
   ]);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node>(activeNodes as Node[]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>(
+    activeNodes as Node[],
+  );
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(activeEdges);
 
   // Sync state whenever activeNodes/activeEdges update

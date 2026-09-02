@@ -18,8 +18,7 @@ export async function detectTechnologies(
   scannedFiles?: FileMetadata[],
 ): Promise<TechnologyStack> {
   // If files were not provided by caller, run scanner to obtain file list
-  const files =
-    scannedFiles ?? (await scanFileSystem({ workspacePath })).files;
+  const files = scannedFiles ?? (await scanFileSystem({ workspacePath })).files;
 
   // 1. Parse all workspace package.json manifests
   const manifests = await parseWorkspaceManifests(workspacePath, files);

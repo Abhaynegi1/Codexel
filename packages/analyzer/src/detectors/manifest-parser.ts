@@ -28,10 +28,20 @@ export async function parseSingleManifest(
       filePath: normalizeRelativePath(relativePath),
       name: typeof json.name === "string" ? json.name : undefined,
       version: typeof json.version === "string" ? json.version : undefined,
-      dependencies: json.dependencies && typeof json.dependencies === "object" ? json.dependencies : {},
-      devDependencies: json.devDependencies && typeof json.devDependencies === "object" ? json.devDependencies : {},
-      peerDependencies: json.peerDependencies && typeof json.peerDependencies === "object" ? json.peerDependencies : {},
-      scripts: json.scripts && typeof json.scripts === "object" ? json.scripts : {},
+      dependencies:
+        json.dependencies && typeof json.dependencies === "object"
+          ? json.dependencies
+          : {},
+      devDependencies:
+        json.devDependencies && typeof json.devDependencies === "object"
+          ? json.devDependencies
+          : {},
+      peerDependencies:
+        json.peerDependencies && typeof json.peerDependencies === "object"
+          ? json.peerDependencies
+          : {},
+      scripts:
+        json.scripts && typeof json.scripts === "object" ? json.scripts : {},
     };
   } catch {
     return null;

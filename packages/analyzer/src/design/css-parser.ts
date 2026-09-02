@@ -50,7 +50,9 @@ export function normalizeCssColor(raw: string): string {
 /**
  * Parses CSS stylesheet contents to extract custom properties and classified design tokens.
  */
-export function parseCssVariablesFromContent(cssContent: string): ParsedCssTokens {
+export function parseCssVariablesFromContent(
+  cssContent: string,
+): ParsedCssTokens {
   const variables: Record<string, string> = {};
   const colors: DesignTokenColor[] = [];
   const fontFamilies = new Set<string>();

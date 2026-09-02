@@ -3,7 +3,13 @@ import type { RouteInventory, RouteEntry, FileMetadata } from "@codexel/shared";
 import { RouteInventorySchema } from "@codexel/shared";
 import type { FileAstSummary } from "../parsers/ast-walker";
 
-const HTTP_METHODS = new Set(["GET", "POST", "PUT", "DELETE", "PATCH"] as const);
+const HTTP_METHODS = new Set([
+  "GET",
+  "POST",
+  "PUT",
+  "DELETE",
+  "PATCH",
+] as const);
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -51,7 +57,8 @@ export function detectRoutes(
   let hasPagesRouter = false;
 
   // Regex patterns for Next.js routing
-  const appRouteRegex = /(?:^|\/)app\/(.*\/)?(page|layout|route)\.(tsx|jsx|js|ts)$/i;
+  const appRouteRegex =
+    /(?:^|\/)app\/(.*\/)?(page|layout|route)\.(tsx|jsx|js|ts)$/i;
   const pagesRouteRegex = /(?:^|\/)pages\/(.*)\.(tsx|jsx|js|ts)$/i;
 
   for (const file of files) {

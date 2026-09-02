@@ -35,7 +35,9 @@ export function ComponentDetailView({
   onSelectComponentById,
   onSelectComponentByName,
 }: ComponentDetailViewProps) {
-  const [activeTab, setActiveTab] = useState<"code" | "props" | "usage" | "deps">("code");
+  const [activeTab, setActiveTab] = useState<
+    "code" | "props" | "usage" | "deps"
+  >("code");
   const [copiedPath, setCopiedPath] = useState(false);
 
   const handleCopyPath = () => {
@@ -63,7 +65,9 @@ export function ComponentDetailView({
                 {component.category.replace("-", " ")}
               </span>
               <span className="text-[10px] font-mono text-foreground-muted px-1.5 py-0.5 rounded bg-surface border border-border">
-                {component.isDefaultExport ? "default export" : `named: ${component.exportName}`}
+                {component.isDefaultExport
+                  ? "default export"
+                  : `named: ${component.exportName}`}
               </span>
             </div>
 
@@ -161,12 +165,17 @@ export function ComponentDetailView({
           <div className="h-full flex flex-col space-y-3">
             <div className="flex items-center justify-between text-[11px] text-foreground-muted">
               <span>Verified component AST declaration</span>
-              <span>Lines {component.lineStart} - {component.lineEnd}</span>
+              <span>
+                Lines {component.lineStart} - {component.lineEnd}
+              </span>
             </div>
 
             <div className="flex-1 min-h-[360px]">
               <CodeViewer
-                code={component.sourceCode || `// Component source from ${component.filePath}\nexport function ${component.name}() {\n  // Source code is located at lines ${component.lineStart}-${component.lineEnd}\n}`}
+                code={
+                  component.sourceCode ||
+                  `// Component source from ${component.filePath}\nexport function ${component.name}() {\n  // Source code is located at lines ${component.lineStart}-${component.lineEnd}\n}`
+                }
                 language="tsx"
                 filePath={component.filePath}
                 lineStart={component.lineStart}
@@ -181,14 +190,18 @@ export function ComponentDetailView({
         {activeTab === "props" && (
           <div className="space-y-4">
             <div className="text-[11px] text-foreground-muted">
-              Props interface extracted deterministically via TypeScript compiler:
+              Props interface extracted deterministically via TypeScript
+              compiler:
             </div>
 
             {component.props.length === 0 ? (
               <div className="p-8 text-center bg-surface-secondary/40 rounded-lg border border-border text-foreground-muted space-y-1">
-                <p className="font-semibold text-foreground text-xs">No Props Interface</p>
+                <p className="font-semibold text-foreground text-xs">
+                  No Props Interface
+                </p>
                 <p className="text-[11px]">
-                  This component does not accept parameters or uses an unparameterized signature.
+                  This component does not accept parameters or uses an
+                  unparameterized signature.
                 </p>
               </div>
             ) : (
@@ -197,7 +210,9 @@ export function ComponentDetailView({
                   <thead>
                     <tr className="border-b border-border bg-surface-secondary/60 text-foreground-muted text-[10px] uppercase tracking-wider">
                       <th className="py-2.5 px-3 font-semibold">Prop Name</th>
-                      <th className="py-2.5 px-3 font-semibold">TypeScript Type</th>
+                      <th className="py-2.5 px-3 font-semibold">
+                        TypeScript Type
+                      </th>
                       <th className="py-2.5 px-3 font-semibold">Required</th>
                       <th className="py-2.5 px-3 font-semibold">Default</th>
                     </tr>
@@ -258,9 +273,12 @@ export function ComponentDetailView({
 
             {component.usedBy.length === 0 ? (
               <div className="p-8 text-center bg-surface-secondary/40 rounded-lg border border-border text-foreground-muted space-y-1">
-                <p className="font-semibold text-foreground text-xs">No Direct Usages Found</p>
+                <p className="font-semibold text-foreground text-xs">
+                  No Direct Usages Found
+                </p>
                 <p className="text-[11px]">
-                  This component is either an entry point (e.g. Page or Layout), exported for an external consumer, or unreferenced.
+                  This component is either an entry point (e.g. Page or Layout),
+                  exported for an external consumer, or unreferenced.
                 </p>
               </div>
             ) : (
@@ -287,7 +305,9 @@ export function ComponentDetailView({
                     {usage.componentName && (
                       <button
                         type="button"
-                        onClick={() => onSelectComponentByName(usage.componentName!)}
+                        onClick={() =>
+                          onSelectComponentByName(usage.componentName!)
+                        }
                         className="flex items-center gap-1 text-[11px] text-primary hover:underline shrink-0"
                       >
                         <span>Jump to Component</span>
@@ -321,7 +341,8 @@ export function ComponentDetailView({
                       type="button"
                       disabled={!child.component}
                       onClick={() =>
-                        child.component && onSelectComponentById(child.component.id)
+                        child.component &&
+                        onSelectComponentById(child.component.id)
                       }
                       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-mono border transition-colors ${
                         child.component
@@ -335,7 +356,9 @@ export function ComponentDetailView({
                       }
                     >
                       <Layers className="w-3 h-3 text-primary" />
-                      <span className="font-semibold">&lt;{child.name}&gt;</span>
+                      <span className="font-semibold">
+                        &lt;{child.name}&gt;
+                      </span>
                       {child.component && (
                         <ArrowRight className="w-2.5 h-2.5 text-primary opacity-70" />
                       )}
@@ -372,7 +395,8 @@ export function ComponentDetailView({
             {/* External Package Dependencies */}
             <div className="space-y-2.5">
               <span className="text-[10px] font-bold text-foreground-muted uppercase tracking-wider">
-                External Packages ({component.externalPackageDependencies.length})
+                External Packages (
+                {component.externalPackageDependencies.length})
               </span>
               {component.externalPackageDependencies.length === 0 ? (
                 <p className="text-foreground-muted text-[11px]">

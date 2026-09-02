@@ -14,7 +14,8 @@ import {
 import type { LayoutDirection } from "./layout";
 
 export type ExplorerViewMode = "architecture" | "modules";
-export type ExplorerFilterRole = "all" | "ui" | "features" | "server" | "infrastructure" | "shared-utils";
+export type ExplorerFilterRole =
+  "all" | "ui" | "features" | "server" | "infrastructure" | "shared-utils";
 
 interface ExplorerToolbarProps {
   viewMode: ExplorerViewMode;

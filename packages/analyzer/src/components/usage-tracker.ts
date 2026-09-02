@@ -14,7 +14,10 @@ export function buildComponentInventory(
   const discovered: DiscoveredComponent[] = [];
 
   // Map of component name -> list of DiscoveredComponent IDs
-  const nameToComponents = new Map<string, { id: string; filePath: string; name: string }[]>();
+  const nameToComponents = new Map<
+    string,
+    { id: string; filePath: string; name: string }[]
+  >();
 
   // 1. Initial pass: build base DiscoveredComponent records
   for (const [filePath, raws] of rawComponentsByFile.entries()) {
@@ -66,7 +69,10 @@ export function buildComponentInventory(
   // - B imports file A, or
   // - B's components render C in their JSX children
   for (const comp of discovered) {
-    const usedBySet = new Map<string, { filePath: string; componentName?: string }>();
+    const usedBySet = new Map<
+      string,
+      { filePath: string; componentName?: string }
+    >();
 
     for (const otherComp of discovered) {
       if (otherComp.id === comp.id) continue;

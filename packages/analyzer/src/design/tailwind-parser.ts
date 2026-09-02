@@ -35,13 +35,19 @@ function extractObjectProperties(
       const propName = prop.name.getText(sourceFile).replace(/['"]/g, "");
       const init = prop.initializer;
 
-      if (ts.isStringLiteral(init) || ts.isNoSubstitutionTemplateLiteral(init)) {
+      if (
+        ts.isStringLiteral(init) ||
+        ts.isNoSubstitutionTemplateLiteral(init)
+      ) {
         result[propName] = init.text;
       } else if (ts.isObjectLiteralExpression(init)) {
         result[propName] = extractObjectProperties(init, sourceFile);
       } else if (ts.isArrayLiteralExpression(init)) {
         result[propName] = init.elements
-          .filter((el) => ts.isStringLiteral(el) || ts.isNoSubstitutionTemplateLiteral(el))
+          .filter(
+            (el) =>
+              ts.isStringLiteral(el) || ts.isNoSubstitutionTemplateLiteral(el),
+          )
           .map((el) => (el as ts.StringLiteral).text);
       } else {
         result[propName] = init.getText(sourceFile);
@@ -120,7 +126,10 @@ export async function parseTailwindConfig(
       const extendObj = themeObj.extend || {};
 
       // 1. Colors from theme or theme.extend
-      const colorsObj = { ...(themeObj.colors || {}), ...(extendObj.colors || {}) };
+      const colorsObj = {
+        ...(themeObj.colors || {}),
+        ...(extendObj.colors || {}),
+      };
       for (const [key, val] of Object.entries(colorsObj)) {
         if (typeof val === "string") {
           colors.push({
@@ -143,7 +152,10 @@ export async function parseTailwindConfig(
       }
 
       // 2. Font Families
-      const fontObj = { ...(themeObj.fontFamily || {}), ...(extendObj.fontFamily || {}) };
+      const fontObj = {
+        ...(themeObj.fontFamily || {}),
+        ...(extendObj.fontFamily || {}),
+      };
       for (const [, val] of Object.entries(fontObj)) {
         if (Array.isArray(val)) {
           for (const f of val) {
@@ -157,7 +169,10 @@ export async function parseTailwindConfig(
       }
 
       // 3. Border Radii
-      const radiiObj = { ...(themeObj.borderRadius || {}), ...(extendObj.borderRadius || {}) };
+      const radiiObj = {
+        ...(themeObj.borderRadius || {}),
+        ...(extendObj.borderRadius || {}),
+      };
       for (const [, val] of Object.entries(radiiObj)) {
         if (typeof val === "string" && !borderRadii.includes(val)) {
           borderRadii.push(val);
@@ -165,7 +180,10 @@ export async function parseTailwindConfig(
       }
 
       // 4. Spacing
-      const spacingObj = { ...(themeObj.spacing || {}), ...(extendObj.spacing || {}) };
+      const spacingObj = {
+        ...(themeObj.spacing || {}),
+        ...(extendObj.spacing || {}),
+      };
       for (const [, val] of Object.entries(spacingObj)) {
         if (typeof val === "string" && !spacing.includes(val)) {
           spacing.push(val);

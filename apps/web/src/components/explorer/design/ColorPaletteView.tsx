@@ -30,13 +30,32 @@ export function ColorPaletteView({
       const lower = color.name.toLowerCase();
       let role: ColorFilterRole = "all";
 
-      if (lower.includes("bg") || lower.includes("background") || lower.includes("card") || lower.includes("border") || lower.includes("input")) {
+      if (
+        lower.includes("bg") ||
+        lower.includes("background") ||
+        lower.includes("card") ||
+        lower.includes("border") ||
+        lower.includes("input")
+      ) {
         role = "base";
-      } else if (lower.includes("primary") || lower.includes("ring") || lower.includes("brand")) {
+      } else if (
+        lower.includes("primary") ||
+        lower.includes("ring") ||
+        lower.includes("brand")
+      ) {
         role = "brand";
-      } else if (lower.includes("secondary") || lower.includes("accent") || lower.includes("muted")) {
+      } else if (
+        lower.includes("secondary") ||
+        lower.includes("accent") ||
+        lower.includes("muted")
+      ) {
         role = "accent";
-      } else if (lower.includes("destructive") || lower.includes("error") || lower.includes("success") || lower.includes("warning")) {
+      } else if (
+        lower.includes("destructive") ||
+        lower.includes("error") ||
+        lower.includes("success") ||
+        lower.includes("warning")
+      ) {
         role = "semantic";
       }
 
@@ -51,7 +70,10 @@ export function ColorPaletteView({
       }
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
-        return color.name.toLowerCase().includes(q) || color.value.toLowerCase().includes(q);
+        return (
+          color.name.toLowerCase().includes(q) ||
+          color.value.toLowerCase().includes(q)
+        );
       }
       return true;
     });

@@ -62,7 +62,9 @@ describe("Design System Intelligence & Token Extraction", () => {
   });
 
   it("scans JSX/TSX files for top recurring Tailwind utility classes", async () => {
-    await fs.mkdir(path.join(tempDir, "src", "components"), { recursive: true });
+    await fs.mkdir(path.join(tempDir, "src", "components"), {
+      recursive: true,
+    });
 
     await fs.writeFile(
       path.join(tempDir, "src", "components", "Card.tsx"),
@@ -149,6 +151,8 @@ describe("Design System Intelligence & Token Extraction", () => {
     expect(() => DesignSystemSummarySchema.parse(summary)).not.toThrow();
     expect(summary.colorPalette.length).toBeGreaterThanOrEqual(2);
     expect(summary.libraries.iconLibrary).toBe("Lucide React");
-    expect(summary.topTailwindClasses.some((c) => c.className === "flex")).toBe(true);
+    expect(summary.topTailwindClasses.some((c) => c.className === "flex")).toBe(
+      true,
+    );
   });
 });

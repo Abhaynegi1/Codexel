@@ -108,7 +108,9 @@ export function classifyFile(filePath: string): {
   const ext = path.extname(filePath).toLowerCase();
   const isSource = SOURCE_EXTENSIONS.has(ext);
   const isConfig = isConfigFile(filePath);
-  const language = EXTENSION_TO_LANGUAGE[ext] || (ext ? ext.slice(1).toUpperCase() : "Unknown");
+  const language =
+    EXTENSION_TO_LANGUAGE[ext] ||
+    (ext ? ext.slice(1).toUpperCase() : "Unknown");
 
   return {
     extension: ext,

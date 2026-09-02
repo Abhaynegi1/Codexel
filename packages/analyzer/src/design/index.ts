@@ -10,9 +10,27 @@ export * from "./tailwind-parser";
 export * from "./utility-scanner";
 export * from "./library-detector";
 
-const DEFAULT_FONT_SIZES = ["12px", "14px", "16px", "18px", "20px", "24px", "30px", "36px"];
+const DEFAULT_FONT_SIZES = [
+  "12px",
+  "14px",
+  "16px",
+  "18px",
+  "20px",
+  "24px",
+  "30px",
+  "36px",
+];
 const DEFAULT_FONT_WEIGHTS = ["400", "500", "600", "700"];
-const DEFAULT_SPACING = ["4px", "8px", "12px", "16px", "20px", "24px", "32px", "48px"];
+const DEFAULT_SPACING = [
+  "4px",
+  "8px",
+  "12px",
+  "16px",
+  "20px",
+  "24px",
+  "32px",
+  "48px",
+];
 const DEFAULT_RADII = ["4px", "8px", "12px", "16px", "9999px"];
 
 /**
@@ -36,7 +54,14 @@ export async function extractDesignSystem(
   const libraries = await detectDesignLibraries(workspacePath);
 
   // Merge color palette without duplicates
-  const colorMap = new Map<string, { name: string; value: string; source: "css-variable" | "tailwind-config" | "theme-object" }>();
+  const colorMap = new Map<
+    string,
+    {
+      name: string;
+      value: string;
+      source: "css-variable" | "tailwind-config" | "theme-object";
+    }
+  >();
 
   // Prioritize CSS variables
   for (const c of cssTokens.colors) {
@@ -67,7 +92,8 @@ export async function extractDesignSystem(
   const fontWeights = Array.from(
     new Set([...cssTokens.fontWeights, ...tailwindTokens.fontWeights]),
   );
-  const finalFontWeights = fontWeights.length > 0 ? fontWeights : DEFAULT_FONT_WEIGHTS;
+  const finalFontWeights =
+    fontWeights.length > 0 ? fontWeights : DEFAULT_FONT_WEIGHTS;
 
   // Spacing
   const spacing = Array.from(

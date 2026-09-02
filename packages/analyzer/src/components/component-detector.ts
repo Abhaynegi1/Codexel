@@ -96,7 +96,11 @@ function classifyComponentCategory(
   const lowerPath = filePath.toLowerCase();
   const baseName = path.basename(filePath).toLowerCase();
 
-  if (baseName.startsWith("page.") || lowerPath.includes("/pages/") || lowerPath.includes("/app/")) {
+  if (
+    baseName.startsWith("page.") ||
+    lowerPath.includes("/pages/") ||
+    lowerPath.includes("/app/")
+  ) {
     if (baseName.startsWith("page.")) return "page";
     if (baseName.startsWith("layout.")) return "layout";
   }
@@ -186,9 +190,11 @@ export function detectComponentsInFile(
     // 1. Function Declaration: `function Button(props: ButtonProps) { return <button />; }`
     if (ts.isFunctionDeclaration(node)) {
       const isDefault =
-        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.DefaultKeyword) || false;
+        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.DefaultKeyword) ||
+        false;
       const isExported =
-        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword) || false;
+        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword) ||
+        false;
 
       let name = node.name?.text || "";
       if (!name && (isDefault || isRouteFile)) {
@@ -214,7 +220,8 @@ export function detectComponentsInFile(
     // 2. Variable Statement with Arrow Function: `export const Button = (props) => <button />`
     else if (ts.isVariableStatement(node)) {
       const isExported =
-        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword) || false;
+        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword) ||
+        false;
 
       for (const decl of node.declarationList.declarations) {
         if (
@@ -246,9 +253,11 @@ export function detectComponentsInFile(
     else if (ts.isClassDeclaration(node)) {
       const name = node.name?.text || "";
       const isDefault =
-        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.DefaultKeyword) || false;
+        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.DefaultKeyword) ||
+        false;
       const isExported =
-        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword) || false;
+        node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword) ||
+        false;
 
       if (/^[A-Z]/.test(name) && node.heritageClauses) {
         // Find render() method

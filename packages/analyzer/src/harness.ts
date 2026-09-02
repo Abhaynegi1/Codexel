@@ -27,26 +27,49 @@ async function runAnalysis(
   });
 
   console.log("\n========================================================");
-  console.log(` 📊 Repository Model: ${model.metadata.owner}/${model.metadata.name}`);
+  console.log(
+    ` 📊 Repository Model: ${model.metadata.owner}/${model.metadata.name}`,
+  );
   console.log("========================================================");
 
   // 1. Filesystem
   console.log("\n📁 Filesystem Inventory:");
-  console.log(`   • Total Files:           ${model.fileSystem.totalFiles.toLocaleString()}`);
-  console.log(`   • Total Directories:     ${model.fileSystem.totalDirectories.toLocaleString()}`);
-  console.log(`   • Lines of Code:         ${model.fileSystem.totalLinesOfCode.toLocaleString()}`);
-  console.log(`   • Ignored Paths Count:   ${model.fileSystem.ignoredCount.toLocaleString()}`);
-  console.log(`   • Root Folders:          ${model.fileSystem.rootDirectories.join(", ") || "(none)"}`);
+  console.log(
+    `   • Total Files:           ${model.fileSystem.totalFiles.toLocaleString()}`,
+  );
+  console.log(
+    `   • Total Directories:     ${model.fileSystem.totalDirectories.toLocaleString()}`,
+  );
+  console.log(
+    `   • Lines of Code:         ${model.fileSystem.totalLinesOfCode.toLocaleString()}`,
+  );
+  console.log(
+    `   • Ignored Paths Count:   ${model.fileSystem.ignoredCount.toLocaleString()}`,
+  );
+  console.log(
+    `   • Root Folders:          ${model.fileSystem.rootDirectories.join(", ") || "(none)"}`,
+  );
 
   // 2. Languages
   console.log("\n💻 Languages Breakdown:");
-  console.log(`   • Primary Language:      ${model.technologyStack.primaryLanguage}`);
+  console.log(
+    `   • Primary Language:      ${model.technologyStack.primaryLanguage}`,
+  );
   for (const lang of model.technologyStack.languages.slice(0, 6)) {
-    console.log(`     - ${lang.name.padEnd(16)}: ${lang.percentage.toFixed(1)}% (${lang.fileCount} files)`);
+    console.log(
+      `     - ${lang.name.padEnd(16)}: ${lang.percentage.toFixed(1)}% (${lang.fileCount} files)`,
+    );
   }
 
   // 3. Technologies
-  const printSection = (title: string, items: Array<{ name: string; version?: string; evidence: { filePath: string; description: string } }>) => {
+  const printSection = (
+    title: string,
+    items: Array<{
+      name: string;
+      version?: string;
+      evidence: { filePath: string; description: string };
+    }>,
+  ) => {
     if (items.length === 0) return;
     console.log(`\n🧩 ${title}:`);
     for (const item of items) {
@@ -64,8 +87,12 @@ async function runAnalysis(
 
   // 4. Dependency Graph
   console.log("\n🕸️  Dependency Graph (DAG):");
-  console.log(`   • Total Graph Nodes:     ${model.dependencyGraph.nodes.length.toLocaleString()}`);
-  console.log(`   • Total Import Edges:    ${model.dependencyGraph.edges.length.toLocaleString()}`);
+  console.log(
+    `   • Total Graph Nodes:     ${model.dependencyGraph.nodes.length.toLocaleString()}`,
+  );
+  console.log(
+    `   • Total Import Edges:    ${model.dependencyGraph.edges.length.toLocaleString()}`,
+  );
   const topHubs = [...model.dependencyGraph.nodes]
     .sort((a, b) => (b.data.inDegree || 0) - (a.data.inDegree || 0))
     .slice(0, 5)
@@ -73,20 +100,32 @@ async function runAnalysis(
   if (topHubs.length > 0) {
     console.log("   • Most Imported Modules (High In-Degree):");
     for (const hub of topHubs) {
-      console.log(`     - ${hub.label} (${hub.id}) ➔ imported by ${hub.data.inDegree} files`);
+      console.log(
+        `     - ${hub.label} (${hub.id}) ➔ imported by ${hub.data.inDegree} files`,
+      );
     }
   }
 
   // 5. Component Inventory
   console.log("\n⚛️  React Component Inventory:");
-  console.log(`   • Total Components:      ${model.components.totalComponents.toLocaleString()}`);
+  console.log(
+    `   • Total Components:      ${model.components.totalComponents.toLocaleString()}`,
+  );
   for (const comp of model.components.components.slice(0, 8)) {
-    const propsCount = comp.props.length > 0 ? ` [${comp.props.length} props]` : "";
-    const childrenCount = comp.childComponents.length > 0 ? ` [renders: ${comp.childComponents.join(", ")}]` : "";
-    console.log(`   • ${comp.name} (${comp.category}) ➔ ${comp.filePath}:${comp.lineStart}${propsCount}${childrenCount}`);
+    const propsCount =
+      comp.props.length > 0 ? ` [${comp.props.length} props]` : "";
+    const childrenCount =
+      comp.childComponents.length > 0
+        ? ` [renders: ${comp.childComponents.join(", ")}]`
+        : "";
+    console.log(
+      `   • ${comp.name} (${comp.category}) ➔ ${comp.filePath}:${comp.lineStart}${propsCount}${childrenCount}`,
+    );
   }
   if (model.components.totalComponents > 8) {
-    console.log(`     ... and ${model.components.totalComponents - 8} more components`);
+    console.log(
+      `     ... and ${model.components.totalComponents - 8} more components`,
+    );
   }
 
   // 6. Routes
@@ -94,16 +133,28 @@ async function runAnalysis(
   console.log(`   • Router Type:           ${model.routes.routerType}`);
   console.log(`   • Total Routes:          ${model.routes.routes.length}`);
   for (const route of model.routes.routes) {
-    const methods = route.httpMethods ? ` [${route.httpMethods.join(", ")}]` : "";
-    console.log(`   • ${route.routePath.padEnd(20)} (${route.kind})${methods} ➔ ${route.filePath}`);
+    const methods = route.httpMethods
+      ? ` [${route.httpMethods.join(", ")}]`
+      : "";
+    console.log(
+      `   • ${route.routePath.padEnd(20)} (${route.kind})${methods} ➔ ${route.filePath}`,
+    );
   }
 
   // 7. Execution Timings
   console.log("\n⏱️  Analysis Timings:");
-  console.log(`   • Filesystem Scan:       ${model.analysisStats.timings.scanningMs} ms`);
-  console.log(`   • AST Parsing:           ${model.analysisStats.timings.astParsingMs} ms`);
-  console.log(`   • Graph Construction:    ${model.analysisStats.timings.graphBuildingMs} ms`);
-  console.log(`   • Total Execution Time:  ${model.analysisStats.totalDurationMs} ms`);
+  console.log(
+    `   • Filesystem Scan:       ${model.analysisStats.timings.scanningMs} ms`,
+  );
+  console.log(
+    `   • AST Parsing:           ${model.analysisStats.timings.astParsingMs} ms`,
+  );
+  console.log(
+    `   • Graph Construction:    ${model.analysisStats.timings.graphBuildingMs} ms`,
+  );
+  console.log(
+    `   • Total Execution Time:  ${model.analysisStats.totalDurationMs} ms`,
+  );
   console.log("========================================================\n");
 }
 

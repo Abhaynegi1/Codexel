@@ -23,7 +23,9 @@ const FONT_WEIGHT_LABELS: Record<string, string> = {
   "900": "Black",
 };
 
-export function TypographyLadderView({ typography }: TypographyLadderViewProps) {
+export function TypographyLadderView({
+  typography,
+}: TypographyLadderViewProps) {
   const [sampleText, setSampleText] = useState(
     "The quick brown fox jumps over the lazy dog.",
   );
@@ -45,7 +47,9 @@ export function TypographyLadderView({ typography }: TypographyLadderViewProps) 
 
           {/* Font Family Selector */}
           <div className="flex items-center gap-2">
-            <span className="text-foreground-muted text-[11px]">Font Family:</span>
+            <span className="text-foreground-muted text-[11px]">
+              Font Family:
+            </span>
             <select
               value={selectedFont}
               onChange={(e) => setSelectedFont(e.target.value)}

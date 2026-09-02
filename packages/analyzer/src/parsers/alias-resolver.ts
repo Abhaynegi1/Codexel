@@ -74,7 +74,9 @@ export async function createAliasResolver(
     });
   }
 
-  function tryResolveWithExtensions(candidateRelPath: string): string | undefined {
+  function tryResolveWithExtensions(
+    candidateRelPath: string,
+  ): string | undefined {
     const normalized = normalizeRelativePath(candidateRelPath);
 
     // 1. Exact match
@@ -138,9 +140,10 @@ export async function createAliasResolver(
       // 3. External package imports (e.g., `react`, `@radix-ui/react-dialog`)
       // Extracts base package name (including scope if any)
       const parts = specifier.split("/");
-      const packageName = specifier.startsWith("@") && parts.length >= 2
-        ? `${parts[0]}/${parts[1]}`
-        : parts[0];
+      const packageName =
+        specifier.startsWith("@") && parts.length >= 2
+          ? `${parts[0]}/${parts[1]}`
+          : parts[0];
 
       return {
         isExternal: true,

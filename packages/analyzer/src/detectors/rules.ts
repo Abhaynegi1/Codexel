@@ -32,7 +32,12 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     category: "framework",
     targetField: "frameworks",
     packages: [{ name: "next", description: "Next.js full-stack framework" }],
-    fileMatches: [{ regex: /next\.config\.(js|mjs|ts)$/i, description: "Next.js configuration file" }],
+    fileMatches: [
+      {
+        regex: /next\.config\.(js|mjs|ts)$/i,
+        description: "Next.js configuration file",
+      },
+    ],
   },
   {
     name: "React",
@@ -44,15 +49,25 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     name: "Vite",
     category: "framework",
     targetField: "frameworks",
-    packages: [{ name: "vite", description: "Vite frontend tooling and dev server" }],
-    fileMatches: [{ regex: /vite\.config\.(js|mjs|ts)$/i, description: "Vite configuration file" }],
+    packages: [
+      { name: "vite", description: "Vite frontend tooling and dev server" },
+    ],
+    fileMatches: [
+      {
+        regex: /vite\.config\.(js|mjs|ts)$/i,
+        description: "Vite configuration file",
+      },
+    ],
   },
   {
     name: "Remix",
     category: "framework",
     targetField: "frameworks",
     packages: [
-      { name: "@remix-run/react", description: "Remix full-stack web framework" },
+      {
+        name: "@remix-run/react",
+        description: "Remix full-stack web framework",
+      },
       { name: "@remix-run/node", description: "Remix server adapter" },
     ],
   },
@@ -60,14 +75,23 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     name: "Astro",
     category: "framework",
     targetField: "frameworks",
-    packages: [{ name: "astro", description: "Astro content-driven web framework" }],
-    fileMatches: [{ regex: /astro\.config\.(mjs|ts|js)$/i, description: "Astro configuration file" }],
+    packages: [
+      { name: "astro", description: "Astro content-driven web framework" },
+    ],
+    fileMatches: [
+      {
+        regex: /astro\.config\.(mjs|ts|js)$/i,
+        description: "Astro configuration file",
+      },
+    ],
   },
   {
     name: "Vue",
     category: "framework",
     targetField: "frameworks",
-    packages: [{ name: "vue", description: "Vue progressive JavaScript framework" }],
+    packages: [
+      { name: "vue", description: "Vue progressive JavaScript framework" },
+    ],
   },
   {
     name: "Svelte",
@@ -75,27 +99,44 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     targetField: "frameworks",
     packages: [
       { name: "svelte", description: "Svelte reactive UI compiler" },
-      { name: "@sveltejs/kit", description: "SvelteKit web application framework" },
+      {
+        name: "@sveltejs/kit",
+        description: "SvelteKit web application framework",
+      },
     ],
-    fileMatches: [{ regex: /svelte\.config\.(js|ts)$/i, description: "Svelte configuration file" }],
+    fileMatches: [
+      {
+        regex: /svelte\.config\.(js|ts)$/i,
+        description: "Svelte configuration file",
+      },
+    ],
   },
   {
     name: "Express",
     category: "framework",
     targetField: "frameworks",
-    packages: [{ name: "express", description: "Express HTTP server framework" }],
+    packages: [
+      { name: "express", description: "Express HTTP server framework" },
+    ],
   },
   {
     name: "Fastify",
     category: "framework",
     targetField: "frameworks",
-    packages: [{ name: "fastify", description: "Fastify high-performance HTTP server" }],
+    packages: [
+      { name: "fastify", description: "Fastify high-performance HTTP server" },
+    ],
   },
   {
     name: "NestJS",
     category: "framework",
     targetField: "frameworks",
-    packages: [{ name: "@nestjs/core", description: "NestJS enterprise Node.js framework" }],
+    packages: [
+      {
+        name: "@nestjs/core",
+        description: "NestJS enterprise Node.js framework",
+      },
+    ],
   },
 
   // ── Styling ───────────────────────────────────────────────────────────
@@ -103,27 +144,54 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     name: "Tailwind CSS",
     category: "styling",
     targetField: "styling",
-    packages: [{ name: "tailwindcss", description: "Utility-first CSS framework" }],
-    fileMatches: [{ regex: /tailwind\.config\.(js|cjs|mjs|ts)$/i, description: "Tailwind CSS configuration file" }],
+    packages: [
+      { name: "tailwindcss", description: "Utility-first CSS framework" },
+    ],
+    fileMatches: [
+      {
+        regex: /tailwind\.config\.(js|cjs|mjs|ts)$/i,
+        description: "Tailwind CSS configuration file",
+      },
+    ],
   },
   {
     name: "PostCSS",
     category: "styling",
     targetField: "styling",
-    packages: [{ name: "postcss", description: "Tool for transforming CSS with plugins" }],
-    fileMatches: [{ regex: /postcss\.config\.(js|cjs|mjs|ts|json)$/i, description: "PostCSS configuration file" }],
+    packages: [
+      {
+        name: "postcss",
+        description: "Tool for transforming CSS with plugins",
+      },
+    ],
+    fileMatches: [
+      {
+        regex: /postcss\.config\.(js|cjs|mjs|ts|json)$/i,
+        description: "PostCSS configuration file",
+      },
+    ],
   },
   {
     name: "CSS Modules",
     category: "styling",
     targetField: "styling",
-    fileMatches: [{ regex: /\.module\.(css|scss|sass|less)$/i, description: "Scoped CSS Module stylesheet" }],
+    fileMatches: [
+      {
+        regex: /\.module\.(css|scss|sass|less)$/i,
+        description: "Scoped CSS Module stylesheet",
+      },
+    ],
   },
   {
     name: "Styled Components",
     category: "styling",
     targetField: "styling",
-    packages: [{ name: "styled-components", description: "Visual primitives for styling React components" }],
+    packages: [
+      {
+        name: "styled-components",
+        description: "Visual primitives for styling React components",
+      },
+    ],
   },
   {
     name: "Emotion",
@@ -148,8 +216,15 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     name: "Vanilla Extract",
     category: "styling",
     targetField: "styling",
-    packages: [{ name: "@vanilla-extract/css", description: "Zero-runtime stylesheets-in-TypeScript" }],
-    fileMatches: [{ regex: /\.css\.ts$/i, description: "Vanilla Extract stylesheet file" }],
+    packages: [
+      {
+        name: "@vanilla-extract/css",
+        description: "Zero-runtime stylesheets-in-TypeScript",
+      },
+    ],
+    fileMatches: [
+      { regex: /\.css\.ts$/i, description: "Vanilla Extract stylesheet file" },
+    ],
   },
 
   // ── Databases & ORMs ──────────────────────────────────────────────────
@@ -159,31 +234,48 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     targetField: "database",
     packages: [
       { name: "drizzle-orm", description: "TypeScript ORM for SQL databases" },
-      { name: "drizzle-kit", description: "Migration and schema management tool for Drizzle" },
+      {
+        name: "drizzle-kit",
+        description: "Migration and schema management tool for Drizzle",
+      },
     ],
-    fileMatches: [{ regex: /drizzle\.config\.(js|ts)$/i, description: "Drizzle ORM configuration file" }],
+    fileMatches: [
+      {
+        regex: /drizzle\.config\.(js|ts)$/i,
+        description: "Drizzle ORM configuration file",
+      },
+    ],
   },
   {
     name: "Prisma",
     category: "database",
     targetField: "database",
     packages: [
-      { name: "@prisma/client", description: "Next-generation ORM query client" },
+      {
+        name: "@prisma/client",
+        description: "Next-generation ORM query client",
+      },
       { name: "prisma", description: "Prisma CLI and schema compiler" },
     ],
-    fileMatches: [{ regex: /schema\.prisma$/i, description: "Prisma data model schema" }],
+    fileMatches: [
+      { regex: /schema\.prisma$/i, description: "Prisma data model schema" },
+    ],
   },
   {
     name: "Supabase",
     category: "database",
     targetField: "database",
-    packages: [{ name: "@supabase/supabase-js", description: "Supabase client library" }],
+    packages: [
+      { name: "@supabase/supabase-js", description: "Supabase client library" },
+    ],
   },
   {
     name: "Mongoose",
     category: "database",
     targetField: "database",
-    packages: [{ name: "mongoose", description: "MongoDB object modeling tool" }],
+    packages: [
+      { name: "mongoose", description: "MongoDB object modeling tool" },
+    ],
   },
   {
     name: "TypeORM",
@@ -195,7 +287,12 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     name: "Kysely",
     category: "database",
     targetField: "database",
-    packages: [{ name: "kysely", description: "Type-safe SQL query builder for TypeScript" }],
+    packages: [
+      {
+        name: "kysely",
+        description: "Type-safe SQL query builder for TypeScript",
+      },
+    ],
   },
 
   // ── State Management ──────────────────────────────────────────────────
@@ -204,7 +301,10 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     category: "state",
     targetField: "stateManagement",
     packages: [
-      { name: "@reduxjs/toolkit", description: "Official toolset for efficient Redux development" },
+      {
+        name: "@reduxjs/toolkit",
+        description: "Official toolset for efficient Redux development",
+      },
       { name: "react-redux", description: "Official React bindings for Redux" },
     ],
   },
@@ -212,27 +312,42 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     name: "Zustand",
     category: "state",
     targetField: "stateManagement",
-    packages: [{ name: "zustand", description: "Bearbones state management library" }],
+    packages: [
+      { name: "zustand", description: "Bearbones state management library" },
+    ],
   },
   {
     name: "Jotai",
     category: "state",
     targetField: "stateManagement",
-    packages: [{ name: "jotai", description: "Primitive and flexible state management for React" }],
+    packages: [
+      {
+        name: "jotai",
+        description: "Primitive and flexible state management for React",
+      },
+    ],
   },
   {
     name: "Recoil",
     category: "state",
     targetField: "stateManagement",
-    packages: [{ name: "recoil", description: "State management library for React" }],
+    packages: [
+      { name: "recoil", description: "State management library for React" },
+    ],
   },
   {
     name: "TanStack Query",
     category: "state",
     targetField: "stateManagement",
     packages: [
-      { name: "@tanstack/react-query", description: "Powerful asynchronous state management" },
-      { name: "react-query", description: "React Query data-fetching and caching library" },
+      {
+        name: "@tanstack/react-query",
+        description: "Powerful asynchronous state management",
+      },
+      {
+        name: "react-query",
+        description: "React Query data-fetching and caching library",
+      },
     ],
   },
   {
@@ -251,14 +366,23 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     category: "ui-library",
     targetField: "uiLibraries",
     packages: [
-      { name: "@radix-ui/", isPrefix: true, description: "Unstyled, accessible UI primitives" },
+      {
+        name: "@radix-ui/",
+        isPrefix: true,
+        description: "Unstyled, accessible UI primitives",
+      },
     ],
   },
   {
     name: "shadcn/ui",
     category: "ui-library",
     targetField: "uiLibraries",
-    fileMatches: [{ regex: /components\.json$/i, description: "shadcn/ui configuration file" }],
+    fileMatches: [
+      {
+        regex: /components\.json$/i,
+        description: "shadcn/ui configuration file",
+      },
+    ],
   },
   {
     name: "Material UI",
@@ -266,7 +390,10 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     targetField: "uiLibraries",
     packages: [
       { name: "@mui/material", description: "MUI React component library" },
-      { name: "@material-ui/core", description: "Legacy Material-UI components" },
+      {
+        name: "@material-ui/core",
+        description: "Legacy Material-UI components",
+      },
     ],
   },
   {
@@ -283,19 +410,34 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     name: "Mantine",
     category: "ui-library",
     targetField: "uiLibraries",
-    packages: [{ name: "@mantine/core", description: "Mantine React components library" }],
+    packages: [
+      {
+        name: "@mantine/core",
+        description: "Mantine React components library",
+      },
+    ],
   },
   {
     name: "Chakra UI",
     category: "ui-library",
     targetField: "uiLibraries",
-    packages: [{ name: "@chakra-ui/react", description: "Simple, modular and accessible component library" }],
+    packages: [
+      {
+        name: "@chakra-ui/react",
+        description: "Simple, modular and accessible component library",
+      },
+    ],
   },
   {
     name: "Ant Design",
     category: "ui-library",
     targetField: "uiLibraries",
-    packages: [{ name: "antd", description: "Enterprise-class UI design language and React library" }],
+    packages: [
+      {
+        name: "antd",
+        description: "Enterprise-class UI design language and React library",
+      },
+    ],
   },
 
   // ── Build Tools & Tooling ─────────────────────────────────────────────
@@ -303,44 +445,94 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     name: "Turborepo",
     category: "tooling",
     targetField: "buildTools",
-    packages: [{ name: "turbo", description: "High-performance build system for TypeScript monorepos" }],
-    fileMatches: [{ regex: /turbo\.json$/i, description: "Turborepo pipeline configuration file" }],
+    packages: [
+      {
+        name: "turbo",
+        description: "High-performance build system for TypeScript monorepos",
+      },
+    ],
+    fileMatches: [
+      {
+        regex: /turbo\.json$/i,
+        description: "Turborepo pipeline configuration file",
+      },
+    ],
   },
   {
     name: "TypeScript",
     category: "tooling",
     targetField: "buildTools",
-    packages: [{ name: "typescript", description: "TypeScript language compiler and typechecker" }],
-    fileMatches: [{ regex: /tsconfig.*\.json$/i, description: "TypeScript compiler configuration file" }],
+    packages: [
+      {
+        name: "typescript",
+        description: "TypeScript language compiler and typechecker",
+      },
+    ],
+    fileMatches: [
+      {
+        regex: /tsconfig.*\.json$/i,
+        description: "TypeScript compiler configuration file",
+      },
+    ],
   },
   {
     name: "Webpack",
     category: "tooling",
     targetField: "buildTools",
-    packages: [{ name: "webpack", description: "Module bundler for JavaScript" }],
-    fileMatches: [{ regex: /webpack\.config\.(js|ts|cjs)$/i, description: "Webpack configuration file" }],
+    packages: [
+      { name: "webpack", description: "Module bundler for JavaScript" },
+    ],
+    fileMatches: [
+      {
+        regex: /webpack\.config\.(js|ts|cjs)$/i,
+        description: "Webpack configuration file",
+      },
+    ],
   },
   {
     name: "Rollup",
     category: "tooling",
     targetField: "buildTools",
-    packages: [{ name: "rollup", description: "Module bundler for JavaScript libraries" }],
-    fileMatches: [{ regex: /rollup\.config\.(js|mjs|ts)$/i, description: "Rollup configuration file" }],
+    packages: [
+      {
+        name: "rollup",
+        description: "Module bundler for JavaScript libraries",
+      },
+    ],
+    fileMatches: [
+      {
+        regex: /rollup\.config\.(js|mjs|ts)$/i,
+        description: "Rollup configuration file",
+      },
+    ],
   },
   {
     name: "esbuild",
     category: "tooling",
     targetField: "buildTools",
-    packages: [{ name: "esbuild", description: "Extremely fast JavaScript bundler" }],
+    packages: [
+      { name: "esbuild", description: "Extremely fast JavaScript bundler" },
+    ],
   },
   {
     name: "ESLint",
     category: "tooling",
     targetField: "buildTools",
-    packages: [{ name: "eslint", description: "JavaScript and TypeScript linting utility" }],
+    packages: [
+      {
+        name: "eslint",
+        description: "JavaScript and TypeScript linting utility",
+      },
+    ],
     fileMatches: [
-      { regex: /eslint\.config\.(js|mjs|cjs|ts)$/i, description: "ESLint flat configuration file" },
-      { regex: /\.eslintrc(\.(js|json|yml|yaml))?$/i, description: "ESLint configuration file" },
+      {
+        regex: /eslint\.config\.(js|mjs|cjs|ts)$/i,
+        description: "ESLint flat configuration file",
+      },
+      {
+        regex: /\.eslintrc(\.(js|json|yml|yaml))?$/i,
+        description: "ESLint configuration file",
+      },
     ],
   },
   {
@@ -348,14 +540,26 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     category: "tooling",
     targetField: "buildTools",
     packages: [{ name: "prettier", description: "Opinionated code formatter" }],
-    fileMatches: [{ regex: /\.prettierrc(\.(js|json|yml|yaml))?$/i, description: "Prettier configuration file" }],
+    fileMatches: [
+      {
+        regex: /\.prettierrc(\.(js|json|yml|yaml))?$/i,
+        description: "Prettier configuration file",
+      },
+    ],
   },
   {
     name: "Biome",
     category: "tooling",
     targetField: "buildTools",
-    packages: [{ name: "@biomejs/biome", description: "Fast formatter and linter for web development" }],
-    fileMatches: [{ regex: /biome\.json$/i, description: "Biome configuration file" }],
+    packages: [
+      {
+        name: "@biomejs/biome",
+        description: "Fast formatter and linter for web development",
+      },
+    ],
+    fileMatches: [
+      { regex: /biome\.json$/i, description: "Biome configuration file" },
+    ],
   },
 
   // ── Testing (placed in buildTools) ────────────────────────────────────
@@ -363,8 +567,18 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
     name: "Vitest",
     category: "testing",
     targetField: "buildTools",
-    packages: [{ name: "vitest", description: "Next generation testing framework powered by Vite" }],
-    fileMatches: [{ regex: /vitest\.config\.(js|mjs|ts)$/i, description: "Vitest configuration file" }],
+    packages: [
+      {
+        name: "vitest",
+        description: "Next generation testing framework powered by Vite",
+      },
+    ],
+    fileMatches: [
+      {
+        regex: /vitest\.config\.(js|mjs|ts)$/i,
+        description: "Vitest configuration file",
+      },
+    ],
   },
   {
     name: "Jest",
@@ -374,21 +588,43 @@ export const TECHNOLOGY_RULES: TechnologyRule[] = [
       { name: "jest", description: "Delightful JavaScript testing framework" },
       { name: "@types/jest", description: "Jest type definitions" },
     ],
-    fileMatches: [{ regex: /jest\.config\.(js|ts|json)$/i, description: "Jest configuration file" }],
+    fileMatches: [
+      {
+        regex: /jest\.config\.(js|ts|json)$/i,
+        description: "Jest configuration file",
+      },
+    ],
   },
   {
     name: "Playwright",
     category: "testing",
     targetField: "buildTools",
-    packages: [{ name: "@playwright/test", description: "End-to-end testing for modern web apps" }],
-    fileMatches: [{ regex: /playwright\.config\.(js|ts)$/i, description: "Playwright configuration file" }],
+    packages: [
+      {
+        name: "@playwright/test",
+        description: "End-to-end testing for modern web apps",
+      },
+    ],
+    fileMatches: [
+      {
+        regex: /playwright\.config\.(js|ts)$/i,
+        description: "Playwright configuration file",
+      },
+    ],
   },
   {
     name: "Cypress",
     category: "testing",
     targetField: "buildTools",
-    packages: [{ name: "cypress", description: "Next-gen front end testing tool" }],
-    fileMatches: [{ regex: /cypress\.config\.(js|ts)$/i, description: "Cypress configuration file" }],
+    packages: [
+      { name: "cypress", description: "Next-gen front end testing tool" },
+    ],
+    fileMatches: [
+      {
+        regex: /cypress\.config\.(js|ts)$/i,
+        description: "Cypress configuration file",
+      },
+    ],
   },
 ];
 
@@ -428,7 +664,9 @@ export function evaluateTechnologyRules(
       if (rule.packages) {
         for (const pkgRule of rule.packages) {
           if (pkgRule.isPrefix) {
-            const matchedDep = Object.keys(allDeps).find((d) => d.startsWith(pkgRule.name));
+            const matchedDep = Object.keys(allDeps).find((d) =>
+              d.startsWith(pkgRule.name),
+            );
             if (matchedDep) {
               const version = allDeps[matchedDep];
               matchedTag = {
@@ -438,7 +676,8 @@ export function evaluateTechnologyRules(
                 evidence: {
                   filePath: manifest.filePath,
                   matchedPackage: matchedDep,
-                  description: pkgRule.description || `Detected package ${matchedDep}`,
+                  description:
+                    pkgRule.description || `Detected package ${matchedDep}`,
                 },
               };
               break;
@@ -452,7 +691,8 @@ export function evaluateTechnologyRules(
               evidence: {
                 filePath: manifest.filePath,
                 matchedPackage: pkgRule.name,
-                description: pkgRule.description || `Detected package ${pkgRule.name}`,
+                description:
+                  pkgRule.description || `Detected package ${pkgRule.name}`,
               },
             };
             break;

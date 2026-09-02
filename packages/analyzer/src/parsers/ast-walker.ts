@@ -77,7 +77,9 @@ export function parseSourceFileAst(
           // Named imports or namespace
           if (node.importClause.namedBindings) {
             if (ts.isNamespaceImport(node.importClause.namedBindings)) {
-              importedNames.push(`* as ${node.importClause.namedBindings.name.text}`);
+              importedNames.push(
+                `* as ${node.importClause.namedBindings.name.text}`,
+              );
             } else if (ts.isNamedImports(node.importClause.namedBindings)) {
               for (const element of node.importClause.namedBindings.elements) {
                 importedNames.push(element.name.text);

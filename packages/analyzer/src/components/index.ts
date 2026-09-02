@@ -1,9 +1,18 @@
 import type { ComponentInventory, FileMetadata } from "@codexel/shared";
 import { ComponentInventorySchema } from "@codexel/shared";
 import { scanFileSystem } from "../scanner/index";
-import { parseAllSourceFiles, type FileAstSummary } from "../parsers/ast-walker";
-import { createAliasResolver, type AliasResolver } from "../parsers/alias-resolver";
-import { detectComponentsInFile, type RawDetectedComponent } from "./component-detector";
+import {
+  parseAllSourceFiles,
+  type FileAstSummary,
+} from "../parsers/ast-walker";
+import {
+  createAliasResolver,
+  type AliasResolver,
+} from "../parsers/alias-resolver";
+import {
+  detectComponentsInFile,
+  type RawDetectedComponent,
+} from "./component-detector";
 import { buildComponentInventory } from "./usage-tracker";
 
 export * from "./props-extractor";
@@ -20,8 +29,7 @@ export async function extractComponentInventory(
   preParsedSummaries?: Map<string, FileAstSummary>,
   preCreatedResolver?: AliasResolver,
 ): Promise<ComponentInventory> {
-  const files =
-    scannedFiles ?? (await scanFileSystem({ workspacePath })).files;
+  const files = scannedFiles ?? (await scanFileSystem({ workspacePath })).files;
 
   const resolver =
     preCreatedResolver ?? (await createAliasResolver(workspacePath, files));

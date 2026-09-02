@@ -72,15 +72,32 @@ describe("Filesystem Scanner & Ignore Engine", () => {
   it("recursively scans directory and early-prunes default ignored directories", async () => {
     // Create directory tree
     await fs.mkdir(path.join(tempDir, "src"), { recursive: true });
-    await fs.mkdir(path.join(tempDir, "node_modules", "some-pkg"), { recursive: true });
+    await fs.mkdir(path.join(tempDir, "node_modules", "some-pkg"), {
+      recursive: true,
+    });
     await fs.mkdir(path.join(tempDir, "dist"), { recursive: true });
     await fs.mkdir(path.join(tempDir, ".git"), { recursive: true });
 
-    await fs.writeFile(path.join(tempDir, "src", "index.ts"), "export const a = 1;\n");
-    await fs.writeFile(path.join(tempDir, "src", "App.tsx"), "export default function App() {}\n");
-    await fs.writeFile(path.join(tempDir, "package.json"), '{"name": "test-pkg"}\n');
-    await fs.writeFile(path.join(tempDir, "node_modules", "some-pkg", "index.js"), "module.exports = {};\n");
-    await fs.writeFile(path.join(tempDir, "dist", "bundle.js"), "console.log(1);\n");
+    await fs.writeFile(
+      path.join(tempDir, "src", "index.ts"),
+      "export const a = 1;\n",
+    );
+    await fs.writeFile(
+      path.join(tempDir, "src", "App.tsx"),
+      "export default function App() {}\n",
+    );
+    await fs.writeFile(
+      path.join(tempDir, "package.json"),
+      '{"name": "test-pkg"}\n',
+    );
+    await fs.writeFile(
+      path.join(tempDir, "node_modules", "some-pkg", "index.js"),
+      "module.exports = {};\n",
+    );
+    await fs.writeFile(
+      path.join(tempDir, "dist", "bundle.js"),
+      "console.log(1);\n",
+    );
 
     const summary = await scanFileSystem({ workspacePath: tempDir });
 

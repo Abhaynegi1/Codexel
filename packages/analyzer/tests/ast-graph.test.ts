@@ -45,10 +45,14 @@ describe("AST Parser & Module Dependency Graph", () => {
     expect(reactImp?.importedNames).toContain("React");
     expect(reactImp?.importedNames).toContain("useState");
 
-    const btnImp = summary.imports.find((i) => i.specifier === "@/components/Button");
+    const btnImp = summary.imports.find(
+      (i) => i.specifier === "@/components/Button",
+    );
     expect(btnImp?.importedNames).toContain("Button");
 
-    const dynImp = summary.imports.find((i) => i.specifier === "./lazy-component");
+    const dynImp = summary.imports.find(
+      (i) => i.specifier === "./lazy-component",
+    );
     expect(dynImp?.isDynamic).toBe(true);
 
     const cjsImp = summary.imports.find((i) => i.specifier === "node:path");
@@ -72,7 +76,9 @@ describe("AST Parser & Module Dependency Graph", () => {
       }),
     );
 
-    await fs.mkdir(path.join(tempDir, "src", "components"), { recursive: true });
+    await fs.mkdir(path.join(tempDir, "src", "components"), {
+      recursive: true,
+    });
     await fs.mkdir(path.join(tempDir, "src", "utils"), { recursive: true });
 
     await fs.writeFile(
@@ -109,7 +115,9 @@ describe("AST Parser & Module Dependency Graph", () => {
     const edges = graph.edges;
     expect(
       edges.some(
-        (e) => e.source === "src/index.ts" && e.target === "src/components/Button.tsx",
+        (e) =>
+          e.source === "src/index.ts" &&
+          e.target === "src/components/Button.tsx",
       ),
     ).toBe(true);
 

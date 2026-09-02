@@ -47,7 +47,8 @@ const LAYER_RULES: LayerRule[] = [
       /(?:^|[\\/])(?:database|db|prisma|drizzle|models|entities|migrations)(?:[\\/]|$)/i,
       /(?:^|[\\/])schema\.(?:ts|js|prisma)/i,
     ],
-    evidence: "Contains database schemas, ORM models, or infrastructure clients",
+    evidence:
+      "Contains database schemas, ORM models, or infrastructure clients",
     defaultConfidence: 0.95,
   },
   {
@@ -58,7 +59,8 @@ const LAYER_RULES: LayerRule[] = [
       /(?:^|[\\/])components[\\/](?:ui|primitives|common|atoms|elements)(?:[\\/]|$)/i,
       /(?:^|[\\/])(?:design-system|theme|styles)(?:[\\/]|$)/i,
     ],
-    evidence: "Contains reusable UI primitives, design tokens, and base components",
+    evidence:
+      "Contains reusable UI primitives, design tokens, and base components",
     defaultConfidence: 0.9,
   },
   {
@@ -69,7 +71,8 @@ const LAYER_RULES: LayerRule[] = [
       /(?:^|[\\/])(?:features|modules|views|screens|pages|app\/(?!\(?api\)?))(?:[\\/]|$)/i,
       /(?:^|[\\/])components[\\/](?!ui|primitives)(?:[\\/]|$)/i,
     ],
-    evidence: "Contains domain-specific user features, screens, and application workflows",
+    evidence:
+      "Contains domain-specific user features, screens, and application workflows",
     defaultConfidence: 0.85,
   },
   {
@@ -79,7 +82,8 @@ const LAYER_RULES: LayerRule[] = [
     matchPatterns: [
       /(?:^|[\\/])(?:lib|utils|helpers|hooks|types|services|config)(?:[\\/]|$)/i,
     ],
-    evidence: "Contains cross-cutting helper utilities, shared hooks, and shared type definitions",
+    evidence:
+      "Contains cross-cutting helper utilities, shared hooks, and shared type definitions",
     defaultConfidence: 0.85,
   },
 ];
@@ -90,15 +94,24 @@ function isBoundaryAllowed(
 ): boolean {
   if (sourceRole === targetRole) return true;
 
-  if (sourceRole === "infrastructure" && (targetRole === "ui" || targetRole === "features")) {
+  if (
+    sourceRole === "infrastructure" &&
+    (targetRole === "ui" || targetRole === "features")
+  ) {
     return false;
   }
 
-  if (sourceRole === "ui" && (targetRole === "infrastructure" || targetRole === "server")) {
+  if (
+    sourceRole === "ui" &&
+    (targetRole === "infrastructure" || targetRole === "server")
+  ) {
     return false;
   }
 
-  if (sourceRole === "shared-utils" && (targetRole === "features" || targetRole === "server")) {
+  if (
+    sourceRole === "shared-utils" &&
+    (targetRole === "features" || targetRole === "server")
+  ) {
     return false;
   }
 
@@ -185,7 +198,8 @@ export async function classifyArchitecture(
 
   for (const [layerId, bucket] of layerBuckets.entries()) {
     if (bucket.matchedFiles.length > 0) {
-      const isConfirmed = bucket.matchedFiles.length >= 2 || bucket.directories.size > 0;
+      const isConfirmed =
+        bucket.matchedFiles.length >= 2 || bucket.directories.size > 0;
       activeLayers.push({
         id: layerId,
         name: bucket.rule.name,

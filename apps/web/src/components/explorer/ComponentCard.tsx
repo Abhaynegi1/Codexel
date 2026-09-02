@@ -17,7 +17,10 @@ interface ComponentCardProps {
   onSelect: (component: DiscoveredComponent) => void;
 }
 
-const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
+const CATEGORY_COLORS: Record<
+  string,
+  { bg: string; text: string; border: string }
+> = {
   "ui-primitive": {
     bg: "bg-emerald-500/10",
     text: "text-emerald-500 dark:text-emerald-400",
@@ -147,11 +150,17 @@ export function ComponentCard({
       <div className="flex items-center justify-between pt-2 border-t border-border/60 text-[10px] font-mono text-foreground-secondary">
         <div className="flex items-center gap-2.5">
           <span title={`${propCount} Props defined`}>
-            <strong className="text-foreground font-semibold">{propCount}</strong> props
+            <strong className="text-foreground font-semibold">
+              {propCount}
+            </strong>{" "}
+            props
           </span>
           <span>&bull;</span>
           <span title={`${childCount} JSX child components rendered`}>
-            <strong className="text-foreground font-semibold">{childCount}</strong> children
+            <strong className="text-foreground font-semibold">
+              {childCount}
+            </strong>{" "}
+            children
           </span>
         </div>
 
@@ -164,7 +173,9 @@ export function ComponentCard({
               {usageCount} uses
             </span>
           ) : (
-            <span className="text-foreground-muted text-[10px]">Leaf / Route</span>
+            <span className="text-foreground-muted text-[10px]">
+              Leaf / Route
+            </span>
           )}
           <ArrowUpRight className="w-3 h-3 text-foreground-muted opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>

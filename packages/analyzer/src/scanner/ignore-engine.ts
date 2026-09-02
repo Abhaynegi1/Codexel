@@ -111,7 +111,10 @@ export async function createIgnoreEngine(
         return true;
       }
 
-      const testPath = isDirectory && !normalized.endsWith("/") ? `${normalized}/` : normalized;
+      const testPath =
+        isDirectory && !normalized.endsWith("/")
+          ? `${normalized}/`
+          : normalized;
       try {
         return ig.ignores(testPath);
       } catch {

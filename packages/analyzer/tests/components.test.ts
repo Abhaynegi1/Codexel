@@ -90,6 +90,8 @@ describe("React Component Discovery & Metadata Extraction", () => {
     expect(login?.isDefaultExport).toBe(true);
 
     // Test usedBy tracking on Button
-    expect(btn?.usedBy.some((u) => u.filePath.includes("LoginForm.tsx"))).toBe(true);
+    expect(btn?.usedBy.some((u) => u.filePath.includes("LoginForm.tsx"))).toBe(
+      true,
+    );
   });
 });

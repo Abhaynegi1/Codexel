@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { RepositoryModel } from "@codexel/shared";
 import { RepositoryModelSchema } from "@codexel/shared";
-import { withSandbox, analyzeRepository, type Sandbox } from "@codexel/analyzer";
+import {
+  withSandbox,
+  analyzeRepository,
+  type Sandbox,
+} from "@codexel/analyzer";
 
 const SAMPLE_SHADCN_MODEL: RepositoryModel = {
   schemaVersion: "1.0.0",
@@ -195,7 +199,8 @@ const SAMPLE_SHADCN_MODEL: RepositoryModel = {
         fileCount: 5,
         isConfirmedFact: true,
         confidenceScore: 0.95,
-        evidence: "Contains reusable UI primitives (Button, Dialog, Card, Input) with Tailwind variants",
+        evidence:
+          "Contains reusable UI primitives (Button, Dialog, Card, Input) with Tailwind variants",
       },
       {
         id: "layer:features",
@@ -215,7 +220,8 @@ const SAMPLE_SHADCN_MODEL: RepositoryModel = {
         fileCount: 2,
         isConfirmedFact: true,
         confidenceScore: 0.95,
-        evidence: "Contains Next.js App Router API route handlers (/api/auth, /api/metrics)",
+        evidence:
+          "Contains Next.js App Router API route handlers (/api/auth, /api/metrics)",
       },
       {
         id: "layer:infrastructure",
@@ -284,19 +290,48 @@ const SAMPLE_SHADCN_MODEL: RepositoryModel = {
         exportName: "Button",
         category: "ui-primitive",
         props: [
-          { name: "variant", type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", isRequired: false, defaultValue: "'default'" },
-          { name: "size", type: "'default' | 'sm' | 'lg' | 'icon'", isRequired: false, defaultValue: "'default'" },
-          { name: "asChild", type: "boolean", isRequired: false, defaultValue: "false" },
+          {
+            name: "variant",
+            type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'",
+            isRequired: false,
+            defaultValue: "'default'",
+          },
+          {
+            name: "size",
+            type: "'default' | 'sm' | 'lg' | 'icon'",
+            isRequired: false,
+            defaultValue: "'default'",
+          },
+          {
+            name: "asChild",
+            type: "boolean",
+            isRequired: false,
+            defaultValue: "false",
+          },
           { name: "className", type: "string", isRequired: false },
         ],
         childComponents: ["Slot"],
         usedBy: [
-          { filePath: "src/features/auth/login-card.tsx", componentName: "LoginCard" },
-          { filePath: "src/features/dashboard/overview.tsx", componentName: "Overview" },
-          { filePath: "src/components/layout/Header.tsx", componentName: "Header" },
+          {
+            filePath: "src/features/auth/login-card.tsx",
+            componentName: "LoginCard",
+          },
+          {
+            filePath: "src/features/dashboard/overview.tsx",
+            componentName: "Overview",
+          },
+          {
+            filePath: "src/components/layout/Header.tsx",
+            componentName: "Header",
+          },
         ],
         localDependencies: ["src/lib/utils.ts"],
-        externalPackageDependencies: ["@radix-ui/react-slot", "class-variance-authority", "clsx", "tailwind-merge"],
+        externalPackageDependencies: [
+          "@radix-ui/react-slot",
+          "class-variance-authority",
+          "clsx",
+          "tailwind-merge",
+        ],
         sourceCode: `export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
@@ -328,11 +363,26 @@ Button.displayName = "Button";`,
         category: "modal",
         props: [
           { name: "open", type: "boolean", isRequired: false },
-          { name: "onOpenChange", type: "(open: boolean) => void", isRequired: false },
+          {
+            name: "onOpenChange",
+            type: "(open: boolean) => void",
+            isRequired: false,
+          },
           { name: "children", type: "React.ReactNode", isRequired: true },
         ],
-        childComponents: ["DialogPortal", "DialogOverlay", "DialogContent", "DialogHeader", "DialogTitle"],
-        usedBy: [{ filePath: "src/features/dashboard/overview.tsx", componentName: "Overview" }],
+        childComponents: [
+          "DialogPortal",
+          "DialogOverlay",
+          "DialogContent",
+          "DialogHeader",
+          "DialogTitle",
+        ],
+        usedBy: [
+          {
+            filePath: "src/features/dashboard/overview.tsx",
+            componentName: "Overview",
+          },
+        ],
         localDependencies: ["src/lib/utils.ts"],
         externalPackageDependencies: ["@radix-ui/react-dialog", "lucide-react"],
         sourceCode: `export const Dialog = DialogPrimitive.Root;
@@ -378,8 +428,14 @@ DialogContent.displayName = DialogPrimitive.Content.displayName;`,
         ],
         childComponents: [],
         usedBy: [
-          { filePath: "src/features/auth/login-card.tsx", componentName: "LoginCard" },
-          { filePath: "src/features/dashboard/overview.tsx", componentName: "Overview" },
+          {
+            filePath: "src/features/auth/login-card.tsx",
+            componentName: "LoginCard",
+          },
+          {
+            filePath: "src/features/dashboard/overview.tsx",
+            componentName: "Overview",
+          },
         ],
         localDependencies: ["src/lib/utils.ts"],
         externalPackageDependencies: ["clsx", "tailwind-merge"],
@@ -420,13 +476,23 @@ CardHeader.displayName = "CardHeader";`,
         exportName: "Input",
         category: "ui-primitive",
         props: [
-          { name: "type", type: "string", isRequired: false, defaultValue: "'text'" },
+          {
+            name: "type",
+            type: "string",
+            isRequired: false,
+            defaultValue: "'text'",
+          },
           { name: "placeholder", type: "string", isRequired: false },
           { name: "disabled", type: "boolean", isRequired: false },
           { name: "className", type: "string", isRequired: false },
         ],
         childComponents: [],
-        usedBy: [{ filePath: "src/features/auth/login-card.tsx", componentName: "LoginCard" }],
+        usedBy: [
+          {
+            filePath: "src/features/auth/login-card.tsx",
+            componentName: "LoginCard",
+          },
+        ],
         localDependencies: ["src/lib/utils.ts"],
         externalPackageDependencies: ["clsx", "tailwind-merge"],
         sourceCode: `export interface InputProps
@@ -462,9 +528,23 @@ Input.displayName = "Input";`,
           { name: "onSuccess", type: "() => void", isRequired: false },
           { name: "defaultEmail", type: "string", isRequired: false },
         ],
-        childComponents: ["Card", "CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter", "Input", "Button"],
+        childComponents: [
+          "Card",
+          "CardHeader",
+          "CardTitle",
+          "CardDescription",
+          "CardContent",
+          "CardFooter",
+          "Input",
+          "Button",
+        ],
         usedBy: [],
-        localDependencies: ["src/components/ui/card.tsx", "src/components/ui/input.tsx", "src/components/ui/button.tsx", "src/lib/utils.ts"],
+        localDependencies: [
+          "src/components/ui/card.tsx",
+          "src/components/ui/input.tsx",
+          "src/components/ui/button.tsx",
+          "src/lib/utils.ts",
+        ],
         externalPackageDependencies: ["lucide-react"],
         sourceCode: `export default function LoginCard({ onSuccess, defaultEmail }: LoginCardProps) {
   const [email, setEmail] = React.useState(defaultEmail || "");
@@ -514,11 +594,29 @@ Input.displayName = "Input";`,
         category: "feature-component",
         props: [
           { name: "repoName", type: "string", isRequired: true },
-          { name: "refreshInterval", type: "number", isRequired: false, defaultValue: "30000" },
+          {
+            name: "refreshInterval",
+            type: "number",
+            isRequired: false,
+            defaultValue: "30000",
+          },
         ],
-        childComponents: ["Card", "CardHeader", "CardTitle", "CardContent", "Button", "Dialog", "DialogContent"],
+        childComponents: [
+          "Card",
+          "CardHeader",
+          "CardTitle",
+          "CardContent",
+          "Button",
+          "Dialog",
+          "DialogContent",
+        ],
         usedBy: [],
-        localDependencies: ["src/components/ui/card.tsx", "src/components/ui/button.tsx", "src/components/ui/dialog.tsx", "src/lib/utils.ts"],
+        localDependencies: [
+          "src/components/ui/card.tsx",
+          "src/components/ui/button.tsx",
+          "src/components/ui/dialog.tsx",
+          "src/lib/utils.ts",
+        ],
         externalPackageDependencies: ["lucide-react"],
         sourceCode: `export function Overview({ repoName, refreshInterval = 30000 }: OverviewProps) {
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -561,7 +659,11 @@ Input.displayName = "Input";`,
         category: "navigation",
         props: [
           { name: "title", type: "string", isRequired: true },
-          { name: "onSearch", type: "(query: string) => void", isRequired: false },
+          {
+            name: "onSearch",
+            type: "(query: string) => void",
+            isRequired: false,
+          },
         ],
         childComponents: ["Button"],
         usedBy: [],
@@ -808,37 +910,121 @@ Input.displayName = "Input";`,
   routes: {
     routerType: "next-app-router",
     routes: [
-      { routePath: "/api/auth", filePath: "src/app/api/auth/route.ts", kind: "api", httpMethods: ["GET", "POST"] },
-      { routePath: "/api/metrics", filePath: "src/app/api/metrics/route.ts", kind: "api", httpMethods: ["GET"] },
+      {
+        routePath: "/api/auth",
+        filePath: "src/app/api/auth/route.ts",
+        kind: "api",
+        httpMethods: ["GET", "POST"],
+      },
+      {
+        routePath: "/api/metrics",
+        filePath: "src/app/api/metrics/route.ts",
+        kind: "api",
+        httpMethods: ["GET"],
+      },
     ],
   },
   designSystem: {
     colorPalette: [
       { name: "background", value: "hsl(0, 0%, 100%)", source: "css-variable" },
-      { name: "foreground", value: "hsl(222.2, 84%, 4.9%)", source: "css-variable" },
-      { name: "primary", value: "hsl(222.2, 47.4%, 11.2%)", source: "css-variable" },
-      { name: "primary-foreground", value: "hsl(210, 40%, 98%)", source: "css-variable" },
-      { name: "secondary", value: "hsl(210, 40%, 96.1%)", source: "css-variable" },
-      { name: "secondary-foreground", value: "hsl(222.2, 47.4%, 11.2%)", source: "css-variable" },
+      {
+        name: "foreground",
+        value: "hsl(222.2, 84%, 4.9%)",
+        source: "css-variable",
+      },
+      {
+        name: "primary",
+        value: "hsl(222.2, 47.4%, 11.2%)",
+        source: "css-variable",
+      },
+      {
+        name: "primary-foreground",
+        value: "hsl(210, 40%, 98%)",
+        source: "css-variable",
+      },
+      {
+        name: "secondary",
+        value: "hsl(210, 40%, 96.1%)",
+        source: "css-variable",
+      },
+      {
+        name: "secondary-foreground",
+        value: "hsl(222.2, 47.4%, 11.2%)",
+        source: "css-variable",
+      },
       { name: "muted", value: "hsl(210, 40%, 96.1%)", source: "css-variable" },
-      { name: "muted-foreground", value: "hsl(215.4, 16.3%, 46.9%)", source: "css-variable" },
+      {
+        name: "muted-foreground",
+        value: "hsl(215.4, 16.3%, 46.9%)",
+        source: "css-variable",
+      },
       { name: "accent", value: "hsl(210, 40%, 96.1%)", source: "css-variable" },
-      { name: "accent-foreground", value: "hsl(222.2, 47.4%, 11.2%)", source: "css-variable" },
-      { name: "destructive", value: "hsl(0, 84.2%, 60.2%)", source: "css-variable" },
-      { name: "destructive-foreground", value: "hsl(210, 40%, 98%)", source: "css-variable" },
-      { name: "border", value: "hsl(214.3, 31.8%, 91.4%)", source: "css-variable" },
-      { name: "input", value: "hsl(214.3, 31.8%, 91.4%)", source: "css-variable" },
+      {
+        name: "accent-foreground",
+        value: "hsl(222.2, 47.4%, 11.2%)",
+        source: "css-variable",
+      },
+      {
+        name: "destructive",
+        value: "hsl(0, 84.2%, 60.2%)",
+        source: "css-variable",
+      },
+      {
+        name: "destructive-foreground",
+        value: "hsl(210, 40%, 98%)",
+        source: "css-variable",
+      },
+      {
+        name: "border",
+        value: "hsl(214.3, 31.8%, 91.4%)",
+        source: "css-variable",
+      },
+      {
+        name: "input",
+        value: "hsl(214.3, 31.8%, 91.4%)",
+        source: "css-variable",
+      },
       { name: "ring", value: "hsl(222.2, 84%, 4.9%)", source: "css-variable" },
       { name: "card", value: "hsl(0, 0%, 100%)", source: "css-variable" },
-      { name: "card-foreground", value: "hsl(222.2, 84%, 4.9%)", source: "css-variable" },
+      {
+        name: "card-foreground",
+        value: "hsl(222.2, 84%, 4.9%)",
+        source: "css-variable",
+      },
     ],
     typography: {
       fontFamilies: ["Inter", "Geist Sans", "system-ui", "sans-serif"],
-      fontSizes: ["12px", "14px", "16px", "18px", "20px", "24px", "30px", "36px", "48px"],
+      fontSizes: [
+        "12px",
+        "14px",
+        "16px",
+        "18px",
+        "20px",
+        "24px",
+        "30px",
+        "36px",
+        "48px",
+      ],
       fontWeights: ["400", "500", "600", "700"],
     },
-    spacing: ["4px", "8px", "12px", "16px", "20px", "24px", "32px", "48px", "64px"],
-    borderRadii: ["calc(var(--radius) - 4px)", "calc(var(--radius) - 2px)", "var(--radius)", "0.75rem", "9999px"],
+    spacing: [
+      "4px",
+      "8px",
+      "12px",
+      "16px",
+      "20px",
+      "24px",
+      "32px",
+      "48px",
+      "64px",
+    ],
+    borderRadii: [
+      "calc(var(--radius) - 4px)",
+      "calc(var(--radius) - 2px)",
+      "var(--radius)",
+      "0.75rem",
+      "9999px",
+    ],
     detectedCssVariables: {
       "--background": "0 0% 100%",
       "--foreground": "222.2 84% 4.9%",
@@ -930,7 +1116,10 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json(liveModel);
     } catch (err) {
-      console.warn("Live analysis encountered sandbox limitation, falling back to verified model:", err);
+      console.warn(
+        "Live analysis encountered sandbox limitation, falling back to verified model:",
+        err,
+      );
       // Fall through to sample model
     }
   }

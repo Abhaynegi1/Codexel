@@ -46,7 +46,9 @@ function isBinaryBuffer(buffer: Buffer): boolean {
  * Fast line counting for a file.
  * Returns 0 if the file is binary or empty.
  */
-export async function countLinesOfCode(absoluteFilePath: string): Promise<number> {
+export async function countLinesOfCode(
+  absoluteFilePath: string,
+): Promise<number> {
   const ext = path.extname(absoluteFilePath).toLowerCase();
   if (BINARY_EXTENSIONS.has(ext)) {
     return 0;

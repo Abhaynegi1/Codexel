@@ -12,10 +12,14 @@ interface TailwindClassHistogramProps {
   topClasses: UtilityClassCount[];
 }
 
-type ClassCategory = "all" | "layout" | "spacing" | "typography" | "color" | "borders";
+type ClassCategory =
+  "all" | "layout" | "spacing" | "typography" | "color" | "borders";
 
-export function TailwindClassHistogram({ topClasses }: TailwindClassHistogramProps) {
-  const [selectedCategory, setSelectedCategory] = useState<ClassCategory>("all");
+export function TailwindClassHistogram({
+  topClasses,
+}: TailwindClassHistogramProps) {
+  const [selectedCategory, setSelectedCategory] =
+    useState<ClassCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedClass, setCopiedClass] = useState<string | null>(null);
 
@@ -58,13 +62,13 @@ export function TailwindClassHistogram({ topClasses }: TailwindClassHistogramPro
     }
 
     if (
-      cls.startsWith("text-") &&
-      (cls.includes("xs") ||
-        cls.includes("sm") ||
-        cls.includes("base") ||
-        cls.includes("lg") ||
-        cls.includes("xl") ||
-        cls.includes("2xl")) ||
+      (cls.startsWith("text-") &&
+        (cls.includes("xs") ||
+          cls.includes("sm") ||
+          cls.includes("base") ||
+          cls.includes("lg") ||
+          cls.includes("xl") ||
+          cls.includes("2xl"))) ||
       cls.startsWith("font-") ||
       cls.startsWith("leading-") ||
       cls.startsWith("tracking-")
@@ -74,8 +78,14 @@ export function TailwindClassHistogram({ topClasses }: TailwindClassHistogramPro
 
     if (
       cls.startsWith("bg-") ||
-      (cls.startsWith("text-") && !cls.includes("sm") && !cls.includes("xs") && !cls.includes("base")) ||
-      cls.startsWith("border-") && (cls.includes("slate") || cls.includes("border") || cls.includes("primary"))
+      (cls.startsWith("text-") &&
+        !cls.includes("sm") &&
+        !cls.includes("xs") &&
+        !cls.includes("base")) ||
+      (cls.startsWith("border-") &&
+        (cls.includes("slate") ||
+          cls.includes("border") ||
+          cls.includes("primary")))
     ) {
       return "color";
     }
@@ -94,11 +104,16 @@ export function TailwindClassHistogram({ topClasses }: TailwindClassHistogramPro
 
   const filteredClasses = useMemo(() => {
     return topClasses.filter((c) => {
-      if (selectedCategory !== "all" && categorizeClass(c.className) !== selectedCategory) {
+      if (
+        selectedCategory !== "all" &&
+        categorizeClass(c.className) !== selectedCategory
+      ) {
         return false;
       }
       if (searchQuery.trim()) {
-        return c.className.toLowerCase().includes(searchQuery.toLowerCase().trim());
+        return c.className
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase().trim());
       }
       return true;
     });
@@ -160,7 +175,9 @@ export function TailwindClassHistogram({ topClasses }: TailwindClassHistogramPro
           <span className="text-foreground-muted text-[10px] uppercase block">
             Sampled Usages
           </span>
-          <span className="text-lg font-bold text-foreground">{totalUsages}</span>
+          <span className="text-lg font-bold text-foreground">
+            {totalUsages}
+          </span>
         </div>
         <div className="p-3 bg-surface rounded-lg border border-border">
           <span className="text-foreground-muted text-[10px] uppercase block">
@@ -194,7 +211,10 @@ export function TailwindClassHistogram({ topClasses }: TailwindClassHistogramPro
         ) : (
           <div className="space-y-2 max-h-[520px] overflow-y-auto pr-1">
             {filteredClasses.map((item, idx) => {
-              const pct = Math.max(8, Math.round((item.count / maxCount) * 100));
+              const pct = Math.max(
+                8,
+                Math.round((item.count / maxCount) * 100),
+              );
               const isCopied = copiedClass === item.className;
 
               return (

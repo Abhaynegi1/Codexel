@@ -1,5 +1,10 @@
 import path from "node:path";
-import type { DependencyGraph, GraphNode, GraphEdge, FileMetadata } from "@codexel/shared";
+import type {
+  DependencyGraph,
+  GraphNode,
+  GraphEdge,
+  FileMetadata,
+} from "@codexel/shared";
 import { DependencyGraphSchema } from "@codexel/shared";
 import type { FileAstSummary } from "./ast-walker";
 import type { AliasResolver } from "./alias-resolver";
@@ -96,7 +101,8 @@ export function buildDependencyGraph(
             source: sourcePath,
             target: targetId,
             type: "imports",
-            specifiers: imp.importedNames.length > 0 ? imp.importedNames : undefined,
+            specifiers:
+              imp.importedNames.length > 0 ? imp.importedNames : undefined,
           });
 
           // Track degrees
@@ -113,8 +119,12 @@ export function buildDependencyGraph(
     node.data.outDegree = outDegreeMap.get(node.id) || 0;
   }
 
-  const nodes = Array.from(nodeMap.values()).sort((a, b) => a.id.localeCompare(b.id));
-  const edges = Array.from(edgeMap.values()).sort((a, b) => a.id.localeCompare(b.id));
+  const nodes = Array.from(nodeMap.values()).sort((a, b) =>
+    a.id.localeCompare(b.id),
+  );
+  const edges = Array.from(edgeMap.values()).sort((a, b) =>
+    a.id.localeCompare(b.id),
+  );
 
   const graph: DependencyGraph = { nodes, edges };
   return DependencyGraphSchema.parse(graph);

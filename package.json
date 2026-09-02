@@ -10,10 +10,14 @@
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
+    "check:duplication": "jscpd packages apps",
+    "check:docs": "node scripts/check-docs.mjs",
+    "check:hygiene": "pnpm format:check && pnpm check:duplication && pnpm check:docs",
     "db:generate": "pnpm --filter @codexel/database run db:generate",
     "db:migrate": "pnpm --filter @codexel/database run db:migrate"
   },
   "devDependencies": {
+    "jscpd": "^5.1.1",
     "prettier": "^3.4.2",
     "turbo": "^2.4.4",
     "typescript": "^5.7.3"

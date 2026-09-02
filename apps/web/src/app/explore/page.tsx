@@ -33,8 +33,8 @@ function ExplorerContent() {
     tabParam === "design-system"
       ? "design-system"
       : tabParam === "components"
-      ? "components"
-      : "architecture",
+        ? "components"
+        : "architecture",
   );
   const [selectedComponentId, setSelectedComponentId] = useState<string | null>(
     compParam || null,
@@ -51,7 +51,8 @@ function ExplorerContent() {
 
     fetch(`/api/analyze?repo=${encodeURIComponent(repoParam)}`)
       .then((res) => {
-        if (!res.ok) throw new Error(`Analysis failed with status ${res.status}`);
+        if (!res.ok)
+          throw new Error(`Analysis failed with status ${res.status}`);
         return res.json();
       })
       .then((data: RepositoryModel) => {
@@ -95,7 +96,9 @@ function ExplorerContent() {
       <div className="flex-1 flex flex-col items-center justify-center space-y-4 p-8 text-center bg-background">
         <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 max-w-md space-y-2">
           <h3 className="font-bold text-sm">Failed to Load Model</h3>
-          <p className="text-xs font-mono">{error || "Unknown error occurred"}</p>
+          <p className="text-xs font-mono">
+            {error || "Unknown error occurred"}
+          </p>
         </div>
         <Link
           href="/"
@@ -108,7 +111,8 @@ function ExplorerContent() {
     );
   }
 
-  const { metadata, technologyStack, fileSystem, architecture, components } = model;
+  const { metadata, technologyStack, fileSystem, architecture, components } =
+    model;
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden bg-background">
@@ -127,7 +131,9 @@ function ExplorerContent() {
           <div className="h-4 w-px bg-border" />
 
           <div className="flex items-center gap-2">
-            <span className="text-primary font-bold text-lg leading-none">◇</span>
+            <span className="text-primary font-bold text-lg leading-none">
+              ◇
+            </span>
             <span className="font-bold text-sm text-foreground tracking-tight font-sans">
               {metadata.owner}/{metadata.name}
             </span>
@@ -202,7 +208,9 @@ function ExplorerContent() {
           <div className="hidden xl:flex items-center gap-3 text-foreground-muted">
             <div className="flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5 text-primary" />
-              <span className="text-foreground font-semibold">{architecture.layers.length}</span>
+              <span className="text-foreground font-semibold">
+                {architecture.layers.length}
+              </span>
               <span>layers</span>
             </div>
 
@@ -210,7 +218,9 @@ function ExplorerContent() {
 
             <div className="flex items-center gap-1.5">
               <Cpu className="w-3.5 h-3.5 text-foreground-secondary" />
-              <span className="text-foreground font-semibold">{fileSystem.totalFiles}</span>
+              <span className="text-foreground font-semibold">
+                {fileSystem.totalFiles}
+              </span>
               <span>files ({fileSystem.totalLinesOfCode} loc)</span>
             </div>
 
@@ -233,7 +243,11 @@ function ExplorerContent() {
           </Link>
 
           <a
-            href={metadata.url.startsWith("http") ? metadata.url : `https://${metadata.url}`}
+            href={
+              metadata.url.startsWith("http")
+                ? metadata.url
+                : `https://${metadata.url}`
+            }
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-border bg-surface hover:bg-surface-secondary text-foreground-secondary hover:text-foreground transition-colors"

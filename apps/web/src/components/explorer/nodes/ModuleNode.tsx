@@ -15,7 +15,14 @@ import {
 export interface ModuleNodeData extends Record<string, unknown> {
   label: string;
   filePath: string;
-  role?: "ui" | "server" | "infrastructure" | "features" | "shared-utils" | "unknown" | "package";
+  role?:
+    | "ui"
+    | "server"
+    | "infrastructure"
+    | "features"
+    | "shared-utils"
+    | "unknown"
+    | "package";
   linesOfCode?: number;
   componentCount?: number;
   inDegree?: number;
@@ -74,74 +81,79 @@ function getRoleConfig(role?: string, isExternal?: boolean) {
   }
 }
 
-export const ModuleNode = memo(({ data, selected, targetPosition, sourcePosition }: NodeProps) => {
-  const nodeData = data as ModuleNodeData;
-  const config = getRoleConfig(nodeData.role, nodeData.isExternal);
-  const Icon = config.icon;
+export const ModuleNode = memo(
+  ({ data, selected, targetPosition, sourcePosition }: NodeProps) => {
+    const nodeData = data as ModuleNodeData;
+    const config = getRoleConfig(nodeData.role, nodeData.isExternal);
+    const Icon = config.icon;
 
-  const isHighlighted = nodeData.isHighlighted;
+    const isHighlighted = nodeData.isHighlighted;
 
-  return (
-    <div
-      className={`relative w-[240px] rounded-lg bg-surface border transition-all duration-200 shadow-subtle text-left select-none ${
-        selected
-          ? "border-primary ring-2 ring-primary/20 shadow-md"
-          : isHighlighted
-          ? "border-primary-accent ring-1 ring-primary-accent"
-          : "border-border hover:border-border-strong hover:shadow-md"
-      }`}
-    >
-      <Handle
-        type="target"
-        position={targetPosition || Position.Top}
-        className="!w-2 !h-2 !bg-foreground-secondary !border-white"
-      />
+    return (
+      <div
+        className={`relative w-[240px] rounded-lg bg-surface border transition-all duration-200 shadow-subtle text-left select-none ${
+          selected
+            ? "border-primary ring-2 ring-primary/20 shadow-md"
+            : isHighlighted
+              ? "border-primary-accent ring-1 ring-primary-accent"
+              : "border-border hover:border-border-strong hover:shadow-md"
+        }`}
+      >
+        <Handle
+          type="target"
+          position={targetPosition || Position.Top}
+          className="!w-2 !h-2 !bg-foreground-secondary !border-white"
+        />
 
-      <div className="p-2.5 space-y-1.5">
-        <div className="flex items-center justify-between gap-1.5">
-          <div className="flex items-center gap-1.5 min-w-0">
-            <Icon className="w-3.5 h-3.5 text-foreground-secondary shrink-0" />
-            <span className="text-xs font-mono font-semibold text-foreground truncate">
-              {nodeData.label}
-            </span>
-          </div>
-
-          <span
-            className={`text-[10px] font-mono px-1.5 py-0.5 rounded border uppercase shrink-0 font-medium ${config.badgeColor}`}
-          >
-            {config.roleLabel}
-          </span>
-        </div>
-
-        <div className="text-[11px] font-mono text-foreground-muted truncate">
-          {nodeData.filePath}
-        </div>
-
-        <div className="flex items-center justify-between pt-1 border-t border-border/60 text-[10px] font-mono text-foreground-muted">
-          <span>
-            {nodeData.linesOfCode !== undefined ? `${nodeData.linesOfCode} loc` : "ext"}
-          </span>
-
-          <div className="flex items-center gap-2">
-            {nodeData.componentCount !== undefined && nodeData.componentCount > 0 && (
-              <span className="text-primary font-medium">
-                {nodeData.componentCount} comp
+        <div className="p-2.5 space-y-1.5">
+          <div className="flex items-center justify-between gap-1.5">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <Icon className="w-3.5 h-3.5 text-foreground-secondary shrink-0" />
+              <span className="text-xs font-mono font-semibold text-foreground truncate">
+                {nodeData.label}
               </span>
-            )}
-            <span>
-              &darr;{nodeData.inDegree || 0} &uarr;{nodeData.outDegree || 0}
+            </div>
+
+            <span
+              className={`text-[10px] font-mono px-1.5 py-0.5 rounded border uppercase shrink-0 font-medium ${config.badgeColor}`}
+            >
+              {config.roleLabel}
             </span>
           </div>
-        </div>
-      </div>
 
-      <Handle
-        type="source"
-        position={sourcePosition || Position.Bottom}
-        className="!w-2 !h-2 !bg-primary !border-white"
-      />
-    </div>
-  );
-});
+          <div className="text-[11px] font-mono text-foreground-muted truncate">
+            {nodeData.filePath}
+          </div>
+
+          <div className="flex items-center justify-between pt-1 border-t border-border/60 text-[10px] font-mono text-foreground-muted">
+            <span>
+              {nodeData.linesOfCode !== undefined
+                ? `${nodeData.linesOfCode} loc`
+                : "ext"}
+            </span>
+
+            <div className="flex items-center gap-2">
+              {nodeData.componentCount !== undefined &&
+                nodeData.componentCount > 0 && (
+                  <span className="text-primary font-medium">
+                    {nodeData.componentCount} comp
+                  </span>
+                )}
+              <span>
+                &darr;{nodeData.inDegree || 0} &uarr;{nodeData.outDegree || 0}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <Handle
+          type="source"
+          position={sourcePosition || Position.Bottom}
+          className="!w-2 !h-2 !bg-primary !border-white"
+        />
+      </div>
+    );
+  },
+);
 
 ModuleNode.displayName = "ModuleNode";

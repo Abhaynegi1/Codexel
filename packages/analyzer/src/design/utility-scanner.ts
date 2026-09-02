@@ -29,7 +29,8 @@ function extractClassTokens(raw: string): string[] {
       // Skip arbitrary code or quotes
       if (s.startsWith("{") || s.endsWith("}")) return false;
       if (s.startsWith("[") && !s.includes("]:")) return false;
-      if (s === "true" || s === "false" || s === "null" || s === "undefined") return false;
+      if (s === "true" || s === "false" || s === "null" || s === "undefined")
+        return false;
       return true;
     });
 }

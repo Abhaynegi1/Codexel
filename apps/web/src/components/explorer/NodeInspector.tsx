@@ -38,7 +38,9 @@ export function NodeInspector({
   onNavigateToComponents,
 }: NodeInspectorProps) {
   const [copied, setCopied] = useState(false);
-  const [activeTab, setActiveTab] = useState<"imports" | "dependents" | "details">("imports");
+  const [activeTab, setActiveTab] = useState<
+    "imports" | "dependents" | "details"
+  >("imports");
 
   if (!selectedNode) return null;
 
@@ -86,7 +88,10 @@ export function NodeInspector({
               {layerData.name}
             </h2>
             <div className="text-foreground-secondary text-xs mt-1">
-              Role: <span className="uppercase text-primary font-bold">{layerData.role}</span>
+              Role:{" "}
+              <span className="uppercase text-primary font-bold">
+                {layerData.role}
+              </span>
             </div>
           </div>
 
@@ -97,7 +102,9 @@ export function NodeInspector({
             </div>
             <div className="flex items-center justify-between text-foreground">
               <span>Confidence Score:</span>
-              <span className="font-bold">{Math.round(layerData.confidenceScore * 100)}%</span>
+              <span className="font-bold">
+                {Math.round(layerData.confidenceScore * 100)}%
+              </span>
             </div>
             <div className="flex items-center gap-1 text-semantic-green pt-1 border-t border-border">
               <ShieldCheck className="w-3.5 h-3.5" />
@@ -143,10 +150,14 @@ export function NodeInspector({
                 >
                   <div className="flex items-center gap-1 truncate">
                     <span>To:</span>
-                    <span className="text-primary truncate">{b.targetLayerId.replace("layer:", "")}</span>
+                    <span className="text-primary truncate">
+                      {b.targetLayerId.replace("layer:", "")}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
-                    <span className="text-foreground-muted">{b.importCount} calls</span>
+                    <span className="text-foreground-muted">
+                      {b.importCount} calls
+                    </span>
                     <span
                       className={`text-[9px] px-1 py-0.5 rounded ${
                         b.isAllowedByConvention
@@ -218,7 +229,11 @@ export function NodeInspector({
             title="Copy file path"
             className="p-1.5 rounded border border-border bg-surface hover:bg-surface-secondary text-foreground-secondary transition-colors shrink-0"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-semantic-green" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? (
+              <Check className="w-3.5 h-3.5 text-semantic-green" />
+            ) : (
+              <Copy className="w-3.5 h-3.5" />
+            )}
           </button>
         </div>
 
@@ -234,25 +249,28 @@ export function NodeInspector({
               {nodeData.linesOfCode} LOC
             </span>
           )}
-          {nodeData.componentCount !== undefined && nodeData.componentCount > 0 && (
-            <span className="px-2 py-0.5 rounded bg-surface border border-border text-foreground-secondary flex items-center gap-1">
-              <ComponentIcon className="w-3 h-3 text-primary" />
-              {nodeData.componentCount} components
-            </span>
-          )}
+          {nodeData.componentCount !== undefined &&
+            nodeData.componentCount > 0 && (
+              <span className="px-2 py-0.5 rounded bg-surface border border-border text-foreground-secondary flex items-center gap-1">
+                <ComponentIcon className="w-3 h-3 text-primary" />
+                {nodeData.componentCount} components
+              </span>
+            )}
         </div>
 
-        {nodeData.componentCount !== undefined && nodeData.componentCount > 0 && onNavigateToComponents && (
-          <button
-            type="button"
-            onClick={() => onNavigateToComponents(nodeData.filePath)}
-            className="w-full mt-2 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md bg-primary text-white text-xs font-mono font-medium hover:bg-primary/90 transition-colors shadow-subtle"
-          >
-            <ComponentIcon className="w-3.5 h-3.5" />
-            <span>Open in Component Explorer</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        )}
+        {nodeData.componentCount !== undefined &&
+          nodeData.componentCount > 0 &&
+          onNavigateToComponents && (
+            <button
+              type="button"
+              onClick={() => onNavigateToComponents(nodeData.filePath)}
+              className="w-full mt-2 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md bg-primary text-white text-xs font-mono font-medium hover:bg-primary/90 transition-colors shadow-subtle"
+            >
+              <ComponentIcon className="w-3.5 h-3.5" />
+              <span>Open in Component Explorer</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          )}
       </div>
 
       {/* Tabs */}
@@ -335,7 +353,9 @@ export function NodeInspector({
                     {edge.specifiers && edge.specifiers.length > 0 && (
                       <div className="text-[10px] text-foreground-secondary truncate pt-0.5">
                         Imports: {edge.specifiers.slice(0, 3).join(", ")}
-                        {edge.specifiers.length > 3 ? ` +${edge.specifiers.length - 3}` : ""}
+                        {edge.specifiers.length > 3
+                          ? ` +${edge.specifiers.length - 3}`
+                          : ""}
                       </div>
                     )}
                   </div>

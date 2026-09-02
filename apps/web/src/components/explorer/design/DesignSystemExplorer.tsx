@@ -23,9 +23,12 @@ interface DesignSystemExplorerProps {
   designSystem: DesignSystemSummary;
 }
 
-type SubTab = "colors" | "typography" | "spacing-radii" | "utilities" | "libraries";
+type SubTab =
+  "colors" | "typography" | "spacing-radii" | "utilities" | "libraries";
 
-export function DesignSystemExplorer({ designSystem }: DesignSystemExplorerProps) {
+export function DesignSystemExplorer({
+  designSystem,
+}: DesignSystemExplorerProps) {
   const [activeSubTab, setActiveSubTab] = useState<SubTab>("colors");
 
   const {
@@ -232,7 +235,8 @@ export function DesignSystemExplorer({ designSystem }: DesignSystemExplorerProps
                     </h3>
                   </div>
                   <p className="text-[11px] text-foreground-muted">
-                    Underlying headless primitives or UI kit used for accessible components.
+                    Underlying headless primitives or UI kit used for accessible
+                    components.
                   </p>
                   <div className="p-3 rounded bg-surface-secondary border border-border text-foreground font-bold text-sm">
                     {libraries.uiPrimitiveLibrary || "Custom / HTML Primitives"}
@@ -248,7 +252,8 @@ export function DesignSystemExplorer({ designSystem }: DesignSystemExplorerProps
                     </h3>
                   </div>
                   <p className="text-[11px] text-foreground-muted">
-                    Icon system imported across features, buttons, and navigation.
+                    Icon system imported across features, buttons, and
+                    navigation.
                   </p>
                   <div className="p-3 rounded bg-surface-secondary border border-border text-foreground font-bold text-sm">
                     {libraries.iconLibrary || "Inline SVG / Custom"}
@@ -264,10 +269,12 @@ export function DesignSystemExplorer({ designSystem }: DesignSystemExplorerProps
                     </h3>
                   </div>
                   <p className="text-[11px] text-foreground-muted">
-                    Motion library driving transitions, dialog popups, and enter states.
+                    Motion library driving transitions, dialog popups, and enter
+                    states.
                   </p>
                   <div className="p-3 rounded bg-surface-secondary border border-border text-foreground font-bold text-sm">
-                    {libraries.animationLibrary || "CSS Keyframes / Transitions"}
+                    {libraries.animationLibrary ||
+                      "CSS Keyframes / Transitions"}
                   </div>
                 </div>
               </div>
@@ -278,7 +285,8 @@ export function DesignSystemExplorer({ designSystem }: DesignSystemExplorerProps
                   <div className="flex items-center gap-2">
                     <FileCode className="w-4 h-4 text-primary" />
                     <h3 className="font-bold text-foreground text-xs uppercase tracking-wider">
-                      Detected CSS Custom Properties ({Object.keys(detectedCssVariables).length})
+                      Detected CSS Custom Properties (
+                      {Object.keys(detectedCssVariables).length})
                     </h3>
                   </div>
                   <span className="text-foreground-muted text-[10px]">
@@ -287,17 +295,21 @@ export function DesignSystemExplorer({ designSystem }: DesignSystemExplorerProps
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-72 overflow-y-auto pr-1">
-                  {Object.entries(detectedCssVariables).map(([name, val], idx) => (
-                    <div
-                      key={idx}
-                      className="p-2 rounded bg-surface-secondary/40 border border-border flex items-center justify-between text-[11px] gap-2"
-                    >
-                      <span className="font-bold text-foreground truncate">{name}</span>
-                      <span className="text-foreground-secondary truncate max-w-[120px]">
-                        {val}
-                      </span>
-                    </div>
-                  ))}
+                  {Object.entries(detectedCssVariables).map(
+                    ([name, val], idx) => (
+                      <div
+                        key={idx}
+                        className="p-2 rounded bg-surface-secondary/40 border border-border flex items-center justify-between text-[11px] gap-2"
+                      >
+                        <span className="font-bold text-foreground truncate">
+                          {name}
+                        </span>
+                        <span className="text-foreground-secondary truncate max-w-[120px]">
+                          {val}
+                        </span>
+                      </div>
+                    ),
+                  )}
                 </div>
               </div>
             </div>

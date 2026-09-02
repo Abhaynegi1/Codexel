@@ -8,7 +8,6 @@ export * from "./ast-walker";
 export * from "./alias-resolver";
 export * from "./graph-builder";
 
-
 /**
  * Deterministically parses JavaScript/TypeScript files, resolves module path aliases,
  * and constructs the repository-wide module Dependency Graph.
@@ -17,8 +16,7 @@ export async function parseAstAndDependencies(
   workspacePath: string,
   scannedFiles?: FileMetadata[],
 ): Promise<DependencyGraph> {
-  const files =
-    scannedFiles ?? (await scanFileSystem({ workspacePath })).files;
+  const files = scannedFiles ?? (await scanFileSystem({ workspacePath })).files;
 
   const resolver = await createAliasResolver(workspacePath, files);
   const astSummaries = await parseAllSourceFiles(workspacePath, files);

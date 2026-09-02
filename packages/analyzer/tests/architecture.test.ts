@@ -153,7 +153,8 @@ describe("Architecture & Layer Classifier", () => {
 
     // Check Features -> UI boundary
     const featuresToUi = summary.boundaries.find(
-      (b) => b.sourceLayerId === "layer:features" && b.targetLayerId === "layer:ui",
+      (b) =>
+        b.sourceLayerId === "layer:features" && b.targetLayerId === "layer:ui",
     );
     expect(featuresToUi).toBeDefined();
     expect(featuresToUi?.isAllowedByConvention).toBe(true);
@@ -161,7 +162,9 @@ describe("Architecture & Layer Classifier", () => {
 
     // Check UI -> Infrastructure boundary (convention violation)
     const uiToInfra = summary.boundaries.find(
-      (b) => b.sourceLayerId === "layer:ui" && b.targetLayerId === "layer:infrastructure",
+      (b) =>
+        b.sourceLayerId === "layer:ui" &&
+        b.targetLayerId === "layer:infrastructure",
     );
     expect(uiToInfra).toBeDefined();
     expect(uiToInfra?.isAllowedByConvention).toBe(false);

@@ -122,7 +122,7 @@ export function CodeViewer({
           <div className="select-none pr-4 text-right text-slate-600 font-mono text-[11px] select-none border-r border-[#30363d]/50 shrink-0">
             {lines.map((_, i) => (
               <div key={i} className="leading-relaxed">
-                {(lineStart ? lineStart + i : i + 1)}
+                {lineStart ? lineStart + i : i + 1}
               </div>
             ))}
           </div>
