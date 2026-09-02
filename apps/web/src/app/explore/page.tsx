@@ -14,12 +14,14 @@ import {
   Loader2,
   Component as ComponentIcon,
   Network,
+  Palette,
 } from "lucide-react";
 import type { RepositoryModel } from "@codexel/shared";
 import { ArchitectureCanvas } from "@/components/explorer/ArchitectureCanvas";
 import { ComponentExplorer } from "@/components/explorer/ComponentExplorer";
+import { DesignSystemExplorer } from "@/components/explorer/design/DesignSystemExplorer";
 
-export type ActiveExplorerTab = "architecture" | "components";
+export type ActiveExplorerTab = "architecture" | "components" | "design-system";
 
 function ExplorerContent() {
   const searchParams = useSearchParams();
@@ -28,7 +30,11 @@ function ExplorerContent() {
   const compParam = searchParams.get("component");
 
   const [activeTab, setActiveTab] = useState<ActiveExplorerTab>(
-    tabParam === "components" ? "components" : "architecture",
+    tabParam === "design-system"
+      ? "design-system"
+      : tabParam === "components"
+      ? "components"
+      : "architecture",
   );
   const [selectedComponentId, setSelectedComponentId] = useState<string | null>(
     compParam || null,
@@ -167,6 +173,28 @@ function ExplorerContent() {
               {components.totalComponents}
             </span>
           </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab("design-system")}
+            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md transition-all ${
+              activeTab === "design-system"
+                ? "bg-surface text-foreground font-semibold shadow-subtle"
+                : "text-foreground-secondary hover:text-foreground"
+            }`}
+          >
+            <Palette className="w-3.5 h-3.5 text-primary" />
+            <span>Design System</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                activeTab === "design-system"
+                  ? "bg-primary/10 text-primary"
+                  : "bg-surface text-foreground-muted"
+              }`}
+            >
+              {model.designSystem.colorPalette.length}
+            </span>
+          </button>
         </div>
 
         {/* Right: High-Level Architecture Stats & Quick Links */}
@@ -216,7 +244,7 @@ function ExplorerContent() {
         </div>
       </header>
 
-      {/* Main Interactive Canvas or Component Explorer */}
+      {/* Main Interactive Canvas, Component Explorer, or Design System Explorer */}
       <main className="flex-1 w-full h-full relative overflow-hidden">
         {activeTab === "architecture" ? (
           <ArchitectureCanvas
@@ -233,11 +261,13 @@ function ExplorerContent() {
               setActiveTab("components");
             }}
           />
-        ) : (
+        ) : activeTab === "components" ? (
           <ComponentExplorer
             inventory={components}
             initialComponentId={selectedComponentId}
           />
+        ) : (
+          <DesignSystemExplorer designSystem={model.designSystem} />
         )}
       </main>
     </div>

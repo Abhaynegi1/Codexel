@@ -141,16 +141,16 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 6 — Design System Intelligence
+### Phase 6 — Design System Intelligence (Completed)
 
 - **Objective**: Extract and display the design tokens and visual DNA of the application.
 - **Key Tasks**:
-  - [ ] Parse CSS variables (`:root`, `[data-theme='dark']`) for colors, radii, and fonts.
-  - [ ] Inspect `tailwind.config.*` for custom color palettes, spacing rules, and typography.
-  - [ ] Scan JSX/TSX files for top 50 recurring Tailwind utility classes.
-  - [ ] Display visual color palette cards with copyable HEX/HSL values.
-  - [ ] Display typography ladder (font families, weights, sizes).
-  - [ ] Catalog detected UI libraries, icon packs, and animation libraries.
+  - [x] Parse CSS variables (`:root`, `[data-theme='dark']`) for colors, radii, and fonts.
+  - [x] Inspect `tailwind.config.*` for custom color palettes, spacing rules, and typography.
+  - [x] Scan JSX/TSX files for top 50 recurring Tailwind utility classes.
+  - [x] Display visual color palette cards with copyable HEX/HSL values.
+  - [x] Display typography ladder (font families, weights, sizes).
+  - [x] Catalog detected UI libraries, icon packs, and animation libraries.
 - **Deliverable**: Clean "Design System" view showcasing all detected tokens, colors, typography, and UI packages.
 
 ---
@@ -230,8 +230,8 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 | **3**  | Code Intelligence     | AST parsing, import graph, React component catalog | ✅ Complete |
 | **4**  | Architecture Explorer | React Flow interactive graph canvas                | ✅ Complete |
 | **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | ✅ Complete |
-| **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | ⏳ Next     |
-| **7**  | Component Preview     | Sandboxed iframe preview                           | 📅 Planned  |
+| **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | ✅ Complete |
+| **7**  | Component Preview     | Sandboxed iframe preview                           | ⏳ Next     |
 | **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | 📅 Planned  |
 | **9**  | Grounded AI Layer     | Fact-based Q&A without hallucinations              | 📅 Planned  |
 | **10** | Local Workspaces      | Drag-and-drop local directory analysis             | 📅 Planned  |
