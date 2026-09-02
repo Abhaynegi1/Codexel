@@ -275,7 +275,7 @@ const SAMPLE_SHADCN_MODEL: RepositoryModel = {
     totalComponents: 7,
     components: [
       {
-        id: "button",
+        id: "src/components/ui/button.tsx:Button",
         name: "Button",
         filePath: "src/components/ui/button.tsx",
         lineStart: 12,
@@ -284,9 +284,97 @@ const SAMPLE_SHADCN_MODEL: RepositoryModel = {
         exportName: "Button",
         category: "ui-primitive",
         props: [
-          { name: "variant", type: "'default' | 'outline' | 'ghost' | 'destructive'", isRequired: false },
-          { name: "size", type: "'default' | 'sm' | 'lg' | 'icon'", isRequired: false },
-          { name: "asChild", type: "boolean", isRequired: false },
+          { name: "variant", type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'", isRequired: false, defaultValue: "'default'" },
+          { name: "size", type: "'default' | 'sm' | 'lg' | 'icon'", isRequired: false, defaultValue: "'default'" },
+          { name: "asChild", type: "boolean", isRequired: false, defaultValue: "false" },
+          { name: "className", type: "string", isRequired: false },
+        ],
+        childComponents: ["Slot"],
+        usedBy: [
+          { filePath: "src/features/auth/login-card.tsx", componentName: "LoginCard" },
+          { filePath: "src/features/dashboard/overview.tsx", componentName: "Overview" },
+          { filePath: "src/components/layout/Header.tsx", componentName: "Header" },
+        ],
+        localDependencies: ["src/lib/utils.ts"],
+        externalPackageDependencies: ["@radix-ui/react-slot", "class-variance-authority", "clsx", "tailwind-merge"],
+        sourceCode: `export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
+
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button";
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+Button.displayName = "Button";`,
+      },
+      {
+        id: "src/components/ui/dialog.tsx:Dialog",
+        name: "Dialog",
+        filePath: "src/components/ui/dialog.tsx",
+        lineStart: 18,
+        lineEnd: 112,
+        isDefaultExport: false,
+        exportName: "Dialog",
+        category: "modal",
+        props: [
+          { name: "open", type: "boolean", isRequired: false },
+          { name: "onOpenChange", type: "(open: boolean) => void", isRequired: false },
+          { name: "children", type: "React.ReactNode", isRequired: true },
+        ],
+        childComponents: ["DialogPortal", "DialogOverlay", "DialogContent", "DialogHeader", "DialogTitle"],
+        usedBy: [{ filePath: "src/features/dashboard/overview.tsx", componentName: "Overview" }],
+        localDependencies: ["src/lib/utils.ts"],
+        externalPackageDependencies: ["@radix-ui/react-dialog", "lucide-react"],
+        sourceCode: `export const Dialog = DialogPrimitive.Root;
+
+export const DialogTrigger = DialogPrimitive.Trigger;
+
+export const DialogContent = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay />
+    <DialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100">
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
+  </DialogPortal>
+));
+DialogContent.displayName = DialogPrimitive.Content.displayName;`,
+      },
+      {
+        id: "src/components/ui/card.tsx:Card",
+        name: "Card",
+        filePath: "src/components/ui/card.tsx",
+        lineStart: 8,
+        lineEnd: 78,
+        isDefaultExport: false,
+        exportName: "Card",
+        category: "ui-primitive",
+        props: [
+          { name: "className", type: "string", isRequired: false },
+          { name: "children", type: "React.ReactNode", isRequired: false },
         ],
         childComponents: [],
         usedBy: [
@@ -294,25 +382,204 @@ const SAMPLE_SHADCN_MODEL: RepositoryModel = {
           { filePath: "src/features/dashboard/overview.tsx", componentName: "Overview" },
         ],
         localDependencies: ["src/lib/utils.ts"],
-        externalPackageDependencies: ["@radix-ui/react-slot", "class-variance-authority", "clsx", "tailwind-merge"],
+        externalPackageDependencies: ["clsx", "tailwind-merge"],
+        sourceCode: `export const Card = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "rounded-xl border bg-card text-card-foreground shadow",
+      className
+    )}
+    {...props}
+  />
+));
+Card.displayName = "Card";
+
+export const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+));
+CardHeader.displayName = "CardHeader";`,
       },
       {
-        id: "dialog",
-        name: "Dialog",
-        filePath: "src/components/ui/dialog.tsx",
-        lineStart: 18,
-        lineEnd: 112,
+        id: "src/components/ui/input.tsx:Input",
+        name: "Input",
+        filePath: "src/components/ui/input.tsx",
+        lineStart: 6,
+        lineEnd: 38,
         isDefaultExport: false,
-        exportName: "Dialog",
+        exportName: "Input",
         category: "ui-primitive",
         props: [
-          { name: "open", type: "boolean", isRequired: false },
-          { name: "onOpenChange", type: "(open: boolean) => void", isRequired: false },
+          { name: "type", type: "string", isRequired: false, defaultValue: "'text'" },
+          { name: "placeholder", type: "string", isRequired: false },
+          { name: "disabled", type: "boolean", isRequired: false },
+          { name: "className", type: "string", isRequired: false },
         ],
-        childComponents: ["DialogContent", "DialogHeader", "DialogTitle"],
-        usedBy: [{ filePath: "src/features/dashboard/overview.tsx", componentName: "Overview" }],
+        childComponents: [],
+        usedBy: [{ filePath: "src/features/auth/login-card.tsx", componentName: "LoginCard" }],
         localDependencies: ["src/lib/utils.ts"],
-        externalPackageDependencies: ["@radix-ui/react-dialog", "lucide-react"],
+        externalPackageDependencies: ["clsx", "tailwind-merge"],
+        sourceCode: `export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+Input.displayName = "Input";`,
+      },
+      {
+        id: "src/features/auth/login-card.tsx:LoginCard",
+        name: "LoginCard",
+        filePath: "src/features/auth/login-card.tsx",
+        lineStart: 14,
+        lineEnd: 125,
+        isDefaultExport: true,
+        exportName: "default",
+        category: "form",
+        props: [
+          { name: "onSuccess", type: "() => void", isRequired: false },
+          { name: "defaultEmail", type: "string", isRequired: false },
+        ],
+        childComponents: ["Card", "CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter", "Input", "Button"],
+        usedBy: [],
+        localDependencies: ["src/components/ui/card.tsx", "src/components/ui/input.tsx", "src/components/ui/button.tsx", "src/lib/utils.ts"],
+        externalPackageDependencies: ["lucide-react"],
+        sourceCode: `export default function LoginCard({ onSuccess, defaultEmail }: LoginCardProps) {
+  const [email, setEmail] = React.useState(defaultEmail || "");
+  const [password, setPassword] = React.useState("");
+
+  return (
+    <Card className="w-[350px]">
+      <CardHeader>
+        <CardTitle>Sign in to Codexel</CardTitle>
+        <CardDescription>Enter your credentials to access workspace.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <label className="text-xs font-mono text-muted-foreground">Email</label>
+          <Input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="m@example.com"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-xs font-mono text-muted-foreground">Password</label>
+          <Input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button variant="outline">Cancel</Button>
+        <Button onClick={onSuccess}>Continue</Button>
+      </CardFooter>
+    </Card>
+  );
+}`,
+      },
+      {
+        id: "src/features/dashboard/overview.tsx:Overview",
+        name: "Overview",
+        filePath: "src/features/dashboard/overview.tsx",
+        lineStart: 20,
+        lineEnd: 180,
+        isDefaultExport: false,
+        exportName: "Overview",
+        category: "feature-component",
+        props: [
+          { name: "repoName", type: "string", isRequired: true },
+          { name: "refreshInterval", type: "number", isRequired: false, defaultValue: "30000" },
+        ],
+        childComponents: ["Card", "CardHeader", "CardTitle", "CardContent", "Button", "Dialog", "DialogContent"],
+        usedBy: [],
+        localDependencies: ["src/components/ui/card.tsx", "src/components/ui/button.tsx", "src/components/ui/dialog.tsx", "src/lib/utils.ts"],
+        externalPackageDependencies: ["lucide-react"],
+        sourceCode: `export function Overview({ repoName, refreshInterval = 30000 }: OverviewProps) {
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">{repoName} Overview</h1>
+        <Button onClick={() => setDialogOpen(true)}>Export Report</Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm font-medium">Total Files</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">48 files</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <p className="text-sm">Ready to export architecture snapshot.</p>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}`,
+      },
+      {
+        id: "src/components/layout/Header.tsx:Header",
+        name: "Header",
+        filePath: "src/components/layout/Header.tsx",
+        lineStart: 10,
+        lineEnd: 60,
+        isDefaultExport: false,
+        exportName: "Header",
+        category: "navigation",
+        props: [
+          { name: "title", type: "string", isRequired: true },
+          { name: "onSearch", type: "(query: string) => void", isRequired: false },
+        ],
+        childComponents: ["Button"],
+        usedBy: [],
+        localDependencies: ["src/components/ui/button.tsx"],
+        externalPackageDependencies: ["lucide-react"],
+        sourceCode: `export function Header({ title, onSearch }: HeaderProps) {
+  return (
+    <header className="h-14 border-b px-6 flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <span className="font-bold text-sm tracking-tight">{title}</span>
+      </div>
+      <div className="flex items-center gap-3">
+        <Button variant="outline" size="sm">Documentation</Button>
+        <Button size="sm">Get Started</Button>
+      </div>
+    </header>
+  );
+}`,
       },
     ],
   },

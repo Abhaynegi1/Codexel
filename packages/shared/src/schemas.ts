@@ -122,6 +122,7 @@ export const DiscoveredComponentSchema = z.object({
   ),
   localDependencies: z.array(z.string()),
   externalPackageDependencies: z.array(z.string()),
+  sourceCode: z.string().optional(),
 });
 
 export const ComponentInventorySchema = z.object({

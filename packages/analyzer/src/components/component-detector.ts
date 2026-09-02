@@ -13,6 +13,7 @@ export interface RawDetectedComponent {
   category: DiscoveredComponent["category"];
   props: DiscoveredComponent["props"];
   childComponents: string[];
+  sourceCode?: string;
 }
 
 const PRIMITIVE_NAMES = new Set([
@@ -177,6 +178,7 @@ export function detectComponentsInFile(
       category,
       props,
       childComponents,
+      sourceCode: containerNode.getText(sourceFile),
     });
   }
 

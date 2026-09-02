@@ -25,6 +25,7 @@ import { getLayoutedElements, type LayoutDirection } from "./layout";
 
 interface ArchitectureCanvasProps {
   model: RepositoryModel;
+  onNavigateToComponents?: (componentIdOrPath?: string) => void;
 }
 
 const nodeTypes = {
@@ -32,7 +33,10 @@ const nodeTypes = {
   layerNode: LayerNode,
 };
 
-function InnerArchitectureCanvas({ model }: ArchitectureCanvasProps) {
+function InnerArchitectureCanvas({
+  model,
+  onNavigateToComponents,
+}: ArchitectureCanvasProps) {
   const { fitView, setCenter, getNode } = useReactFlow();
 
   const [viewMode, setViewMode] = useState<ExplorerViewMode>("architecture");
@@ -314,6 +318,7 @@ function InnerArchitectureCanvas({ model }: ArchitectureCanvasProps) {
             onSelectNodeById={handleSelectNodeById}
             dependencyGraph={model.dependencyGraph}
             architecture={model.architecture}
+            onNavigateToComponents={onNavigateToComponents}
           />
         )}
       </div>
@@ -321,10 +326,16 @@ function InnerArchitectureCanvas({ model }: ArchitectureCanvasProps) {
   );
 }
 
-export function ArchitectureCanvas({ model }: ArchitectureCanvasProps) {
+export function ArchitectureCanvas({
+  model,
+  onNavigateToComponents,
+}: ArchitectureCanvasProps) {
   return (
     <ReactFlowProvider>
-      <InnerArchitectureCanvas model={model} />
+      <InnerArchitectureCanvas
+        model={model}
+        onNavigateToComponents={onNavigateToComponents}
+      />
     </ReactFlowProvider>
   );
 }

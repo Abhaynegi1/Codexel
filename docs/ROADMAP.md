@@ -128,15 +128,15 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 5 — Component Explorer & Source Viewer
+### Phase 5 — Component Explorer & Source Viewer (Completed)
 
 - **Objective**: Present an automatically generated, searchable component library for the repository.
 - **Key Tasks**:
-  - [ ] Build catalog view grouping detected components by category (UI Primitives, Features, Layouts, Forms).
-  - [ ] Render component detail card: name, source path, props list, child components.
-  - [ ] Integrate code viewer with syntax highlighting (Shiki / Prism) showing exact component source.
-  - [ ] Build component usage list ("Used by: `Header.tsx`, `Sidebar.tsx`").
-  - [ ] Search and filter components by name, directory, and props.
+  - [x] Build catalog view grouping detected components by category (UI Primitives, Features, Layouts, Forms).
+  - [x] Render component detail card: name, source path, props list, child components.
+  - [x] Integrate code viewer with syntax highlighting (Shiki / Prism) showing exact component source.
+  - [x] Build component usage list ("Used by: `Header.tsx`, `Sidebar.tsx`").
+  - [x] Search and filter components by name, directory, and props.
 - **Deliverable**: Searchable, categorised component inventory displaying verified source code and usage footprints.
 
 ---
@@ -229,8 +229,8 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 | **2**  | Basic Scanner         | Ignore engine, package detector, stats summary     | ✅ Complete |
 | **3**  | Code Intelligence     | AST parsing, import graph, React component catalog | ✅ Complete |
 | **4**  | Architecture Explorer | React Flow interactive graph canvas                | ✅ Complete |
-| **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | ⏳ Next     |
-| **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | 📅 Planned  |
+| **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | ✅ Complete |
+| **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | ⏳ Next     |
 | **7**  | Component Preview     | Sandboxed iframe preview                           | 📅 Planned  |
 | **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | 📅 Planned  |
 | **9**  | Grounded AI Layer     | Fact-based Q&A without hallucinations              | 📅 Planned  |

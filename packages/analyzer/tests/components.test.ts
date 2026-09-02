@@ -79,6 +79,7 @@ describe("React Component Discovery & Metadata Extraction", () => {
 
     const variantProp = btn?.props.find((p) => p.name === "variant");
     expect(variantProp?.isRequired).toBe(false);
+    expect(btn?.sourceCode).toContain("export function Button");
 
     // Test LoginForm component
     const login = inventory.components.find((c) => c.name === "LoginForm");

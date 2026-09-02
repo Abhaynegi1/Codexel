@@ -51,6 +51,7 @@ export function buildComponentInventory(
         usedBy: [],
         localDependencies: Array.from(localDeps).sort(),
         externalPackageDependencies: Array.from(externalDeps).sort(),
+        sourceCode: raw.sourceCode,
       });
 
       if (!nameToComponents.has(raw.name)) {

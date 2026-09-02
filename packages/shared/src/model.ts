@@ -124,6 +124,7 @@ export interface DiscoveredComponent {
   }>;
   localDependencies: string[];
   externalPackageDependencies: string[];
+  sourceCode?: string;
 }
 
 export interface ComponentInventory {

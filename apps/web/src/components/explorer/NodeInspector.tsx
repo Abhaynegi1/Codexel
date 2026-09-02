@@ -26,6 +26,7 @@ interface NodeInspectorProps {
   onSelectNodeById: (nodeId: string) => void;
   dependencyGraph: DependencyGraph;
   architecture: ArchitectureSummary;
+  onNavigateToComponents?: (filePath?: string) => void;
 }
 
 export function NodeInspector({
@@ -34,6 +35,7 @@ export function NodeInspector({
   onSelectNodeById,
   dependencyGraph,
   architecture,
+  onNavigateToComponents,
 }: NodeInspectorProps) {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<"imports" | "dependents" | "details">("imports");
@@ -239,6 +241,18 @@ export function NodeInspector({
             </span>
           )}
         </div>
+
+        {nodeData.componentCount !== undefined && nodeData.componentCount > 0 && onNavigateToComponents && (
+          <button
+            type="button"
+            onClick={() => onNavigateToComponents(nodeData.filePath)}
+            className="w-full mt-2 flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md bg-primary text-white text-xs font-mono font-medium hover:bg-primary/90 transition-colors shadow-subtle"
+          >
+            <ComponentIcon className="w-3.5 h-3.5" />
+            <span>Open in Component Explorer</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        )}
       </div>
 
       {/* Tabs */}

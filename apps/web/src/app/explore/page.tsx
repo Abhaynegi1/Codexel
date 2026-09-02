@@ -12,13 +12,27 @@ import {
   ExternalLink,
   BookOpen,
   Loader2,
+  Component as ComponentIcon,
+  Network,
 } from "lucide-react";
 import type { RepositoryModel } from "@codexel/shared";
 import { ArchitectureCanvas } from "@/components/explorer/ArchitectureCanvas";
+import { ComponentExplorer } from "@/components/explorer/ComponentExplorer";
+
+export type ActiveExplorerTab = "architecture" | "components";
 
 function ExplorerContent() {
   const searchParams = useSearchParams();
   const repoParam = searchParams.get("repo") || "shadcn-ui/ui";
+  const tabParam = searchParams.get("tab");
+  const compParam = searchParams.get("component");
+
+  const [activeTab, setActiveTab] = useState<ActiveExplorerTab>(
+    tabParam === "components" ? "components" : "architecture",
+  );
+  const [selectedComponentId, setSelectedComponentId] = useState<string | null>(
+    compParam || null,
+  );
 
   const [model, setModel] = useState<RepositoryModel | null>(null);
   const [loading, setLoading] = useState(true);
@@ -117,32 +131,71 @@ function ExplorerContent() {
           </div>
         </div>
 
-        {/* Center: High-Level Architecture Stats */}
-        <div className="hidden lg:flex items-center gap-4 text-xs font-mono text-foreground-muted">
-          <div className="flex items-center gap-1.5">
+        {/* Center: View Switcher Tabs */}
+        <div className="flex items-center gap-1 bg-surface-secondary p-1 rounded-lg border border-border">
+          <button
+            type="button"
+            onClick={() => setActiveTab("architecture")}
+            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md transition-all ${
+              activeTab === "architecture"
+                ? "bg-surface text-foreground font-semibold shadow-subtle"
+                : "text-foreground-secondary hover:text-foreground"
+            }`}
+          >
             <Layers className="w-3.5 h-3.5 text-primary" />
-            <span className="text-foreground font-semibold">{architecture.layers.length}</span>
-            <span>layers</span>
-          </div>
+            <span>Architecture</span>
+          </button>
 
-          <span className="text-border-strong">&bull;</span>
-
-          <div className="flex items-center gap-1.5">
-            <Cpu className="w-3.5 h-3.5 text-foreground-secondary" />
-            <span className="text-foreground font-semibold">{fileSystem.totalFiles}</span>
-            <span>files ({fileSystem.totalLinesOfCode} loc)</span>
-          </div>
-
-          <span className="text-border-strong">&bull;</span>
-
-          <div className="flex items-center gap-1.5 text-semantic-green">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Deterministic Model</span>
-          </div>
+          <button
+            type="button"
+            onClick={() => setActiveTab("components")}
+            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md transition-all ${
+              activeTab === "components"
+                ? "bg-surface text-foreground font-semibold shadow-subtle"
+                : "text-foreground-secondary hover:text-foreground"
+            }`}
+          >
+            <ComponentIcon className="w-3.5 h-3.5 text-primary" />
+            <span>Components</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                activeTab === "components"
+                  ? "bg-primary/10 text-primary"
+                  : "bg-surface text-foreground-muted"
+              }`}
+            >
+              {components.totalComponents}
+            </span>
+          </button>
         </div>
 
-        {/* Right: Quick Links */}
-        <div className="flex items-center gap-3 text-xs font-mono">
+        {/* Right: High-Level Architecture Stats & Quick Links */}
+        <div className="flex items-center gap-4 text-xs font-mono">
+          <div className="hidden xl:flex items-center gap-3 text-foreground-muted">
+            <div className="flex items-center gap-1.5">
+              <Layers className="w-3.5 h-3.5 text-primary" />
+              <span className="text-foreground font-semibold">{architecture.layers.length}</span>
+              <span>layers</span>
+            </div>
+
+            <span className="text-border-strong">&bull;</span>
+
+            <div className="flex items-center gap-1.5">
+              <Cpu className="w-3.5 h-3.5 text-foreground-secondary" />
+              <span className="text-foreground font-semibold">{fileSystem.totalFiles}</span>
+              <span>files ({fileSystem.totalLinesOfCode} loc)</span>
+            </div>
+
+            <span className="text-border-strong">&bull;</span>
+
+            <div className="flex items-center gap-1.5 text-semantic-green">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Verified Facts</span>
+            </div>
+          </div>
+
+          <div className="h-4 w-px bg-border hidden xl:block" />
+
           <Link
             href="/how-to-use"
             className="hidden sm:inline-flex items-center gap-1 text-foreground-secondary hover:text-foreground transition-colors"
@@ -163,9 +216,29 @@ function ExplorerContent() {
         </div>
       </header>
 
-      {/* Main Interactive Canvas Area */}
+      {/* Main Interactive Canvas or Component Explorer */}
       <main className="flex-1 w-full h-full relative overflow-hidden">
-        <ArchitectureCanvas model={model} />
+        {activeTab === "architecture" ? (
+          <ArchitectureCanvas
+            model={model}
+            onNavigateToComponents={(target) => {
+              if (target) {
+                const matched =
+                  components.components.find((c) => c.id === target) ||
+                  components.components.find((c) => c.filePath === target);
+                if (matched) {
+                  setSelectedComponentId(matched.id);
+                }
+              }
+              setActiveTab("components");
+            }}
+          />
+        ) : (
+          <ComponentExplorer
+            inventory={components}
+            initialComponentId={selectedComponentId}
+          />
+        )}
       </main>
     </div>
   );
