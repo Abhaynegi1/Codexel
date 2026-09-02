@@ -52,51 +52,11 @@ Optional Grounded AI Interpretation (Zero Hallucinations)
 
 ---
 
-## 🏗️ High-Level System Architecture
+## 🏗️ Architecture
 
-```text
-                          USER / CLIENT
-                                │
-                                ▼
-                         ┌─────────────┐
-                         │ Codexel Web │ (Next.js / React Flow / Tailwind / shadcn)
-                         └──────┬──────┘
-                                │
-                                ▼
-                         ┌─────────────┐
-                         │ Analysis API│ (REST / tRPC / SSE)
-                         └──────┬──────┘
-                                │
-                                ▼
-                         ┌─────────────┐
-                         │  Job Queue  │ (Redis + BullMQ)
-                         └──────┬──────┘
-                                │
-                                ▼
-                  ┌───────────────────────────┐
-                  │      Analysis Worker      │
-                  │                           │
-                  │  1. Repository Ingestion   │ (Git Shallow Clone / Temp Sandbox)
-                  │  2. File/Directory Scanner│ (Configurable ignore rules)
-                  │  3. Tech & Config Detector│ (package.json, tsconfig, frameworks)
-                  │  4. AST & Import Analyzer │ (TS Compiler API / Tree-sitter)
-                  │  5. Component Analyzer    │ (React components, props, hierarchy)
-                  │  6. Design System Parser  │ (Tailwind, CSS vars, color extraction)
-                  │  7. Graph Synthesizer     │ (Module boundaries, call/import graph)
-                  └─────────────┬─────────────┘
-                                │
-                                ▼
-                  ┌───────────────────────────┐
-                  │ Repository Model (JSON)   │
-                  └─────────────┬─────────────┘
-                                │
-                 ┌──────────────┴──────────────┐
-                 ▼                             ▼
-       ┌───────────────────┐         ┌───────────────────┐
-       │   PostgreSQL DB   │         │   Object Cache    │
-       │ (Drizzle ORM)     │         │ (Commit SHA Keyed)│
-       └───────────────────┘         └───────────────────┘
-```
+Codexel is built on a worker-based pipeline that deterministically parses codebases, extracts module boundaries and components, and stores structured metadata keyed by commit SHA.
+
+For full technical specifications, pipeline details, caching strategy, and database schema, see [**System Architecture & Technical Specs**](./docs/ARCHITECTURE.md).
 
 ---
 
@@ -135,20 +95,6 @@ Detailed architectural and planning documents are available in the [`docs/`](./d
 - 🗺️ [**Development Roadmap & Milestones**](./docs/ROADMAP.md) — Phased rollout plan from Phase 0 (Foundation) to Milestone 1 and full production rollout.
 - 📋 [**Repository Intelligence Model Specification**](./docs/REPOSITORY_MODEL.md) — Exact TypeScript type definitions and JSON schemas representing the core data contract.
 - 🎨 [**Design System & UI Specification**](./docs/DESIGN_SYSTEM.md) — Light-first editorial design system, typography, and blueprint visual guidelines.
-
----
-
-## 🚀 Development Milestones & Phasing
-
-- [x] **Phase 0 — Project Foundation**: Monorepo setup (Turborepo/pnpm), shared configs, database migrations, base UI. (Completed)
-- [ ] **Phase 1 — Repository Ingestion**: Secure shallow cloning, temporary workspace sandboxing, rate limiting, and size boundaries.
-- [ ] **Phase 2 — Basic Analyzer**: Deterministic file scanning, manifest analysis, tech stack detection, and statistics.
-- [ ] **Phase 3 — Code Intelligence**: AST parsing, module import/export graph, React component extraction.
-- [ ] **Phase 4 — Architecture Explorer**: Interactive React Flow graph, boundary detection, clickable navigation.
-- [ ] **Phase 5 — Component Explorer**: Searchable component catalog, source viewer, usage graph, and dependency tracking.
-- [ ] **Phase 6 — Design Intelligence**: CSS variables, theme tokens, color palettes, and typographic scale extraction.
-- [ ] **Phase 7 & 8 — Previews & Reuse**: Isolated safe rendering, dependency closure bundling, and 1-click component export.
-- [ ] **Phase 9+ — AI Layer, CLI & Local Workspaces**: Grounded Q&A assistant, local CLI (`codexel analyze .`), and offline exploration.
 
 ---
 
