@@ -15,33 +15,42 @@ export function Logo({
   href,
   className = "",
 }: LogoProps) {
-  const dimensions = {
-    sm: { icon: 20, text: "text-sm", gap: "gap-1.5" },
-    md: { icon: 26, text: "text-lg", gap: "gap-2" },
-    lg: { icon: 34, text: "text-2xl", gap: "gap-2.5" },
-    xl: { icon: 48, text: "text-3xl", gap: "gap-3" },
+  const fullDimensions = {
+    sm: { width: 78, height: 24 },
+    md: { width: 98, height: 30 },
+    lg: { width: 124, height: 38 },
+    xl: { width: 156, height: 48 },
+  }[size];
+
+  const iconDimensions = {
+    sm: 20,
+    md: 26,
+    lg: 34,
+    xl: 48,
   }[size];
 
   const content = (
-    <div className={`inline-flex items-center ${dimensions.gap} ${className}`}>
-      <div className="relative shrink-0 flex items-center justify-center">
+    <div className={`inline-flex items-center shrink-0 ${className}`}>
+      {showWordmark ? (
         <Image
-          src="/logo.png"
-          alt="Codexel Cube Logo"
-          width={dimensions.icon}
-          height={dimensions.icon}
+          src="/logo-full.png"
+          alt="Codexel Logo"
+          width={fullDimensions.width}
+          height={fullDimensions.height}
           className="object-contain"
           style={{ imageRendering: "pixelated" }}
           priority
         />
-      </div>
-
-      {showWordmark && (
-        <span
-          className={`font-semibold tracking-tight text-foreground ${dimensions.text} select-none`}
-        >
-          code<span className="text-orange-500 font-bold">x</span>el
-        </span>
+      ) : (
+        <Image
+          src="/logo.png"
+          alt="Codexel Cube Icon"
+          width={iconDimensions}
+          height={iconDimensions}
+          className="object-contain"
+          style={{ imageRendering: "pixelated" }}
+          priority
+        />
       )}
     </div>
   );
@@ -50,7 +59,7 @@ export function Logo({
     return (
       <Link
         href={href}
-        className="hover:opacity-90 transition-opacity focus:outline-none"
+        className="inline-flex items-center hover:opacity-90 transition-opacity focus:outline-none"
       >
         {content}
       </Link>
