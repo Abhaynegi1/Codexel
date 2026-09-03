@@ -16,18 +16,20 @@ export interface ParsedCssTokens {
  * Normalizes CSS color values like:
  * - "222.2 84% 4.9%" -> "hsl(222.2, 84%, 4.9%)"
  * - "0 0% 100%" -> "hsl(0, 0%, 100%)"
- * - "#ffffff", "rgb(...)", "hsl(...)" -> preserved
+ * - "#ffffff", "rgb(...)", "hsl(...)", "oklch(...)" -> preserved
  */
 export function normalizeCssColor(raw: string): string {
   const trimmed = raw.trim().replace(/;$/, "");
 
-  // If it's already a valid hex, rgb, rgba, hsl, hsla, or named color
+  // If it's already a valid hex, rgb, rgba, hsl, hsla, oklch, or named color
   if (
     trimmed.startsWith("#") ||
     trimmed.startsWith("rgb(") ||
     trimmed.startsWith("rgba(") ||
     trimmed.startsWith("hsl(") ||
-    trimmed.startsWith("hsla(")
+    trimmed.startsWith("hsla(") ||
+    trimmed.startsWith("oklch(") ||
+    trimmed.startsWith("color(")
   ) {
     return trimmed;
   }
@@ -48,7 +50,8 @@ export function normalizeCssColor(raw: string): string {
 }
 
 /**
- * Parses CSS stylesheet contents to extract custom properties and classified design tokens.
+ * Parses CSS stylesheet contents to extract custom properties, Tailwind v4 @theme tokens,
+ * and classified design tokens.
  */
 export function parseCssVariablesFromContent(
   cssContent: string,
@@ -76,8 +79,9 @@ export function parseCssVariablesFromContent(
     const lowerName = varName.toLowerCase();
     const lowerVal = rawVal.toLowerCase();
 
-    // 1. Check for Color tokens
+    // 1. Check for Color tokens (including Tailwind v4 --color-* definitions)
     const isColorName =
+      lowerName.startsWith("--color-") ||
       lowerName.includes("color") ||
       lowerName.includes("bg") ||
       lowerName.includes("background") ||
@@ -91,18 +95,25 @@ export function parseCssVariablesFromContent(
       lowerName.includes("ring") ||
       lowerName.includes("input") ||
       lowerName.includes("card") ||
-      lowerName.includes("popover");
+      lowerName.includes("popover") ||
+      lowerName.includes("sidebar");
 
     const looksLikeColorVal =
       rawVal.startsWith("#") ||
       rawVal.startsWith("rgb") ||
       rawVal.startsWith("hsl") ||
+      rawVal.startsWith("oklch") ||
+      rawVal.startsWith("color(") ||
       /^\d+(\.\d+)?\s+\d+(\.\d+)?%\s+\d+(\.\d+)?%/.test(rawVal);
 
     if (isColorName || looksLikeColorVal) {
       const normalized = normalizeCssColor(rawVal);
-      const cleanColorName = varName.replace(/^--/, "");
-      // Avoid duplicate color names (prefer :root definition)
+      let cleanColorName = varName.replace(/^--/, "");
+      if (cleanColorName.startsWith("color-")) {
+        cleanColorName = cleanColorName.slice("color-".length);
+      }
+
+      // Avoid duplicate color names (prefer first definition)
       if (!colors.some((c) => c.name === cleanColorName)) {
         colors.push({
           name: cleanColorName,
@@ -113,12 +124,23 @@ export function parseCssVariablesFromContent(
       continue;
     }
 
-    // 2. Check for Font tokens
-    if (lowerName.includes("font") || lowerName.includes("family")) {
+    // 2. Check for Font, Spacing, and Radius tokens
+    if (
+      lowerName.startsWith("--font-") ||
+      lowerName.includes("font") ||
+      lowerName.includes("family")
+    ) {
       fontFamilies.add(rawVal.replace(/['"]/g, ""));
-    } else if (lowerName.includes("radius")) {
+    } else if (
+      lowerName.startsWith("--radius-") ||
+      lowerName.includes("radius")
+    ) {
       borderRadii.add(rawVal);
-    } else if (lowerName.includes("spacing") || lowerName.includes("gap")) {
+    } else if (
+      lowerName.startsWith("--spacing-") ||
+      lowerName.includes("spacing") ||
+      lowerName.includes("gap")
+    ) {
       spacing.add(rawVal);
     }
   }
@@ -132,6 +154,48 @@ export function parseCssVariablesFromContent(
     borderRadii: Array.from(borderRadii),
     variables,
   };
+}
+
+/**
+ * Recursively walks directory to discover all CSS and SCSS stylesheets.
+ */
+async function discoverCssFilesRecursively(
+  dir: string,
+  workspacePath: string,
+): Promise<string[]> {
+  const results: string[] = [];
+  try {
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (
+        entry.name === "node_modules" ||
+        entry.name === ".git" ||
+        entry.name === ".next" ||
+        entry.name === "dist" ||
+        entry.name === "build" ||
+        entry.name === ".turbo" ||
+        entry.name === "coverage"
+      ) {
+        continue;
+      }
+
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        const sub = await discoverCssFilesRecursively(full, workspacePath);
+        results.push(...sub);
+      } else if (
+        entry.name.endsWith(".css") ||
+        entry.name.endsWith(".scss") ||
+        entry.name.endsWith(".sass") ||
+        entry.name.endsWith(".less")
+      ) {
+        results.push(path.relative(workspacePath, full));
+      }
+    }
+  } catch {
+    // Ignore read errors
+  }
+  return results;
 }
 
 /**
@@ -153,33 +217,26 @@ export async function parseWorkspaceCss(
 
   const cssPaths: string[] = [];
 
-  if (files) {
+  if (files && files.length > 0) {
     for (const file of files) {
-      if (file.extension === ".css" || file.extension === ".scss") {
+      if (
+        file.extension === ".css" ||
+        file.extension === ".scss" ||
+        file.extension === ".sass" ||
+        file.extension === ".less"
+      ) {
         cssPaths.push(file.path);
       }
     }
-  } else {
-    // Fallback: check typical stylesheet locations
-    const candidates = [
-      "src/app/globals.css",
-      "src/globals.css",
-      "src/index.css",
-      "src/styles/globals.css",
-      "src/styles/index.css",
-      "app/globals.css",
-      "styles/globals.css",
-    ];
+  }
 
-    for (const rel of candidates) {
-      const full = path.join(workspacePath, rel);
-      try {
-        await fs.access(full);
-        cssPaths.push(rel);
-      } catch {
-        // Not found
-      }
-    }
+  // If no CSS files found in files metadata, recursively discover across workspace
+  if (cssPaths.length === 0) {
+    const discovered = await discoverCssFilesRecursively(
+      workspacePath,
+      workspacePath,
+    );
+    cssPaths.push(...discovered);
   }
 
   for (const relPath of cssPaths) {

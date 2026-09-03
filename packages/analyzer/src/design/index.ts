@@ -4,11 +4,13 @@ import { parseWorkspaceCss } from "./css-parser";
 import { parseTailwindConfig } from "./tailwind-parser";
 import { scanTopTailwindClasses } from "./utility-scanner";
 import { detectDesignLibraries } from "./library-detector";
+import { resolveColorFromUtility } from "./tailwind-colors";
 
 export * from "./css-parser";
 export * from "./tailwind-parser";
 export * from "./utility-scanner";
 export * from "./library-detector";
+export * from "./tailwind-colors";
 
 const DEFAULT_FONT_SIZES = [
   "12px",
@@ -44,8 +46,8 @@ export async function extractDesignSystem(
   // 1. Parse CSS variables from stylesheets
   const cssTokens = await parseWorkspaceCss(workspacePath, files);
 
-  // 2. Parse Tailwind configuration
-  const tailwindTokens = await parseTailwindConfig(workspacePath);
+  // 2. Parse Tailwind configuration (supports nested configs)
+  const tailwindTokens = await parseTailwindConfig(workspacePath, files);
 
   // 3. Scan top 50 recurring utility classes
   const topClasses = await scanTopTailwindClasses(workspacePath, files, 50);
@@ -71,6 +73,18 @@ export async function extractDesignSystem(
   for (const c of tailwindTokens.colors) {
     if (!colorMap.has(c.name)) {
       colorMap.set(c.name, c);
+    }
+  }
+
+  // If color palette is sparse, mine active colors from component utility classes
+  for (const item of topClasses) {
+    const resolved = resolveColorFromUtility(item.className);
+    if (resolved && !colorMap.has(resolved.name)) {
+      colorMap.set(resolved.name, {
+        name: resolved.name,
+        value: resolved.value,
+        source: "theme-object",
+      });
     }
   }
 

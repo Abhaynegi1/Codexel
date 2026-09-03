@@ -1,7 +1,7 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import ts from "typescript";
-import type { DesignTokenColor } from "@codexel/shared";
+import type { DesignTokenColor, FileMetadata } from "@codexel/shared";
 
 export interface ParsedTailwindConfig {
   hasConfig: boolean;
@@ -63,9 +63,11 @@ function extractObjectProperties(
  */
 export async function parseTailwindConfig(
   workspacePath: string,
+  files?: FileMetadata[],
 ): Promise<ParsedTailwindConfig> {
   let foundConfigPath: string | null = null;
 
+  // 1. Try finding root config first
   for (const configName of TAILWIND_CONFIG_NAMES) {
     const candidate = path.join(workspacePath, configName);
     try {
@@ -74,6 +76,47 @@ export async function parseTailwindConfig(
       break;
     } catch {
       // Continue
+    }
+  }
+
+  // 2. If not found at root, check files metadata for nested config
+  if (!foundConfigPath && files && files.length > 0) {
+    for (const f of files) {
+      const base = path.basename(f.path);
+      if (TAILWIND_CONFIG_NAMES.includes(base)) {
+        foundConfigPath = path.isAbsolute(f.path)
+          ? f.path
+          : path.join(workspacePath, f.path);
+        break;
+      }
+    }
+  }
+
+  // 3. Fallback: check typical nested app/package directories
+  if (!foundConfigPath) {
+    const nestedCandidates = [
+      "apps/web/tailwind.config.ts",
+      "apps/web/tailwind.config.js",
+      "apps/frontend/tailwind.config.ts",
+      "apps/frontend/tailwind.config.js",
+      "packages/ui/tailwind.config.ts",
+      "packages/ui/tailwind.config.js",
+      "frontend/tailwind.config.ts",
+      "frontend/tailwind.config.js",
+      "client/tailwind.config.ts",
+      "client/tailwind.config.js",
+      "src/tailwind.config.ts",
+      "src/tailwind.config.js",
+    ];
+    for (const rel of nestedCandidates) {
+      const candidate = path.join(workspacePath, rel);
+      try {
+        await fs.access(candidate);
+        foundConfigPath = candidate;
+        break;
+      } catch {
+        // Continue
+      }
     }
   }
 

@@ -155,4 +155,63 @@ describe("Design System Intelligence & Token Extraction", () => {
       true,
     );
   });
+
+  it("mines colors from utility classes when no custom CSS variables are defined", async () => {
+    await fs.mkdir(path.join(tempDir, "src"), { recursive: true });
+
+    await fs.writeFile(
+      path.join(tempDir, "package.json"),
+      JSON.stringify({
+        dependencies: {
+          react: "^18.0.0",
+        },
+      }),
+    );
+
+    // Component using standard Tailwind colors & arbitrary hex
+    await fs.writeFile(
+      path.join(tempDir, "src", "Hero.tsx"),
+      `export function Hero() {
+        return (
+          <div className="bg-indigo-600 text-slate-900 border-emerald-500 bg-[#0f172a]">
+            <h1 className="text-amber-500">Hello</h1>
+          </div>
+        );
+      }`,
+    );
+
+    const summary = await extractDesignSystem(tempDir);
+    expect(() => DesignSystemSummarySchema.parse(summary)).not.toThrow();
+    expect(summary.colorPalette.length).toBeGreaterThan(0);
+
+    const indigo = summary.colorPalette.find((c) => c.name === "indigo-600");
+    expect(indigo).toBeDefined();
+    expect(indigo?.value).toBe("#4f46e5");
+    expect(indigo?.source).toBe("theme-object");
+
+    const customHex = summary.colorPalette.find((c) => c.value === "#0f172a");
+    expect(customHex).toBeDefined();
+  });
+
+  it("extracts Tailwind v4 @theme tokens from stylesheets", () => {
+    const v4Css = `
+      @theme {
+        --color-brand: #3b82f6;
+        --color-accent: oklch(0.6 0.2 240);
+        --font-display: "Cabinet Grotesk", sans-serif;
+        --radius-lg: 1rem;
+      }
+    `;
+
+    const parsed = parseCssVariablesFromContent(v4Css);
+    expect(parsed.variables["--color-brand"]).toBe("#3b82f6");
+    expect(parsed.variables["--color-accent"]).toBe("oklch(0.6 0.2 240)");
+
+    const brand = parsed.colors.find((c) => c.name === "brand");
+    expect(brand).toBeDefined();
+    expect(brand?.value).toBe("#3b82f6");
+
+    expect(parsed.borderRadii).toContain("1rem");
+    expect(parsed.fontFamilies).toContain("Cabinet Grotesk, sans-serif");
+  });
 });

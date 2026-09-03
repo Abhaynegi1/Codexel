@@ -156,9 +156,23 @@ export function ColorPaletteView({
       </div>
 
       {/* Swatches Grid */}
-      {filteredColors.length === 0 ? (
+      {colorPalette.length === 0 ? (
+        <div className="p-8 text-center bg-surface rounded-lg border border-border text-foreground-muted font-mono text-xs space-y-2">
+          <Palette className="w-6 h-6 text-foreground-muted mx-auto opacity-50 mb-1" />
+          <p className="font-semibold text-foreground">
+            No explicit custom color tokens found
+          </p>
+          <p className="text-foreground-secondary max-w-md mx-auto text-[11px]">
+            This repository may be using default Tailwind utilities or inline
+            styles directly. Check out the{" "}
+            <span className="text-primary font-bold">Top 50 Utilities</span> and{" "}
+            <span className="text-primary font-bold">UI Ecosystem</span> tabs to
+            inspect styling usage.
+          </p>
+        </div>
+      ) : filteredColors.length === 0 ? (
         <div className="p-8 text-center bg-surface rounded-lg border border-border text-foreground-muted font-mono text-xs">
-          No color tokens match your search.
+          No color tokens match your search or filter.
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">

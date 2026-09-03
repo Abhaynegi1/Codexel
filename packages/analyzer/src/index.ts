@@ -86,7 +86,10 @@ export async function analyzeRepository(
     routes,
     components,
   });
-  const designSystem = await extractDesignSystem(options.workspacePath);
+  const designSystem = await extractDesignSystem(
+    options.workspacePath,
+    fileSystem.files,
+  );
 
   const totalDurationMs = Date.now() - startTime;
 

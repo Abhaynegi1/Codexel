@@ -198,7 +198,11 @@ function ExplorerContent() {
                   : "bg-surface text-foreground-muted"
               }`}
             >
-              {model.designSystem.colorPalette.length}
+              {model.designSystem.colorPalette.length > 0
+                ? model.designSystem.colorPalette.length
+                : model.designSystem.topTailwindClasses.length > 0
+                  ? model.designSystem.topTailwindClasses.length
+                  : Object.keys(model.designSystem.detectedCssVariables).length}
             </span>
           </button>
         </div>
