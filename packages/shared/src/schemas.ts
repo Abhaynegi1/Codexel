@@ -130,6 +130,43 @@ export const ComponentInventorySchema = z.object({
   components: z.array(DiscoveredComponentSchema),
 });
 
+export const ComponentBundleFileSchema = z.object({
+  filePath: z.string(),
+  fileName: z.string(),
+  relativePath: z.string(),
+  content: z.string(),
+  isMainComponent: z.boolean(),
+  fileType: z.enum(["component", "utility", "style", "config", "other"]),
+  linesOfCode: z.number().int().nonnegative(),
+  sizeBytes: z.number().int().nonnegative(),
+});
+
+export const PackageDependencyRequirementSchema = z.object({
+  name: z.string(),
+  version: z.string().optional(),
+  isDev: z.boolean().optional(),
+});
+
+export const ComponentBundleSchema = z.object({
+  componentId: z.string(),
+  componentName: z.string(),
+  rootFilePath: z.string(),
+  files: z.array(ComponentBundleFileSchema),
+  externalPackages: z.array(PackageDependencyRequirementSchema),
+  installCommands: z.object({
+    npm: z.string(),
+    pnpm: z.string(),
+    yarn: z.string(),
+    bun: z.string(),
+  }),
+  summary: z.object({
+    totalFiles: z.number().int().nonnegative(),
+    totalLinesOfCode: z.number().int().nonnegative(),
+    totalSizeBytes: z.number().int().nonnegative(),
+    hasStyles: z.boolean(),
+  }),
+});
+
 export const GraphNodeSchema = z.object({
   id: z.string(),
   label: z.string(),

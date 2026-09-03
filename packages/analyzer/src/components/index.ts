@@ -18,6 +18,7 @@ import { buildComponentInventory } from "./usage-tracker";
 export * from "./props-extractor";
 export * from "./component-detector";
 export * from "./usage-tracker";
+export * from "./closure-resolver";
 
 /**
  * Deterministically scans source files, discovers React components, extracts props interfaces,

@@ -132,6 +132,43 @@ export interface ComponentInventory {
   components: DiscoveredComponent[];
 }
 
+export interface ComponentBundleFile {
+  filePath: string;
+  fileName: string;
+  relativePath: string;
+  content: string;
+  isMainComponent: boolean;
+  fileType: "component" | "utility" | "style" | "config" | "other";
+  linesOfCode: number;
+  sizeBytes: number;
+}
+
+export interface PackageDependencyRequirement {
+  name: string;
+  version?: string;
+  isDev?: boolean;
+}
+
+export interface ComponentBundle {
+  componentId: string;
+  componentName: string;
+  rootFilePath: string;
+  files: ComponentBundleFile[];
+  externalPackages: PackageDependencyRequirement[];
+  installCommands: {
+    npm: string;
+    pnpm: string;
+    yarn: string;
+    bun: string;
+  };
+  summary: {
+    totalFiles: number;
+    totalLinesOfCode: number;
+    totalSizeBytes: number;
+    hasStyles: boolean;
+  };
+}
+
 export interface GraphNode {
   id: string;
   label: string;

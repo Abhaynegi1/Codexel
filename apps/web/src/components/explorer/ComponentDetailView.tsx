@@ -28,6 +28,7 @@ interface ComponentDetailViewProps {
   onClose: () => void;
   onSelectComponentById: (componentId: string) => void;
   onSelectComponentByName: (name: string) => void;
+  onExport?: (component: DiscoveredComponent) => void;
 }
 
 export function ComponentDetailView({
@@ -36,6 +37,7 @@ export function ComponentDetailView({
   onClose,
   onSelectComponentById,
   onSelectComponentByName,
+  onExport,
 }: ComponentDetailViewProps) {
   const isPreviewCategory = [
     "ui-primitive",
@@ -108,14 +110,28 @@ export function ComponentDetailView({
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-1.5 rounded-md hover:bg-surface-secondary text-foreground-muted hover:text-foreground transition-colors shrink-0"
-            title="Close inspector"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            {onExport && (
+              <button
+                type="button"
+                onClick={() => onExport(component)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-white text-xs font-mono font-semibold transition-colors shadow-subtle"
+                title="Export complete component dependency closure"
+              >
+                <Boxes className="w-3.5 h-3.5" />
+                <span>Export Bundle</span>
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-1.5 rounded-md hover:bg-surface-secondary text-foreground-muted hover:text-foreground transition-colors"
+              title="Close inspector"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Navigation Tabs */}
@@ -341,6 +357,30 @@ export function ComponentDetailView({
           {/* Tab 4: Dependencies (Downstream Imports) */}
           {activeTab === "deps" && (
             <div className="space-y-5">
+              {/* Dependency Closure Export Card */}
+              {onExport && (
+                <div className="p-3.5 rounded-xl border border-primary/30 bg-primary/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-1.5 font-bold text-foreground text-xs">
+                      <Sparkles className="w-3.5 h-3.5 text-primary" />
+                      <span>Transitive Dependency Closure Ready</span>
+                    </div>
+                    <p className="text-[11px] text-foreground-muted">
+                      Package this component with all child modules, local
+                      utils, and npm packages.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onExport(component)}
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-mono font-semibold text-xs shadow-subtle transition-colors shrink-0"
+                  >
+                    <Boxes className="w-3.5 h-3.5" />
+                    <span>Open Export Modal</span>
+                  </button>
+                </div>
+              )}
+
               {/* Nested Child Components */}
               <div className="space-y-2.5">
                 <span className="text-[10px] font-bold text-foreground-muted uppercase tracking-wider">

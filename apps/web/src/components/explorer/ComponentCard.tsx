@@ -9,6 +9,7 @@ import {
   Sparkles,
   Shield,
   Eye,
+  Boxes,
 } from "lucide-react";
 import type { DiscoveredComponent } from "@codexel/shared";
 
@@ -16,6 +17,7 @@ interface ComponentCardProps {
   component: DiscoveredComponent;
   isSelected: boolean;
   onSelect: (component: DiscoveredComponent) => void;
+  onExport?: (component: DiscoveredComponent) => void;
 }
 
 const CATEGORY_COLORS: Record<
@@ -95,6 +97,7 @@ export function ComponentCard({
   component,
   isSelected,
   onSelect,
+  onExport,
 }: ComponentCardProps) {
   const categoryStyle: CategoryStyle =
     CATEGORY_COLORS[component.category] ?? DEFAULT_CATEGORY_STYLE;
@@ -178,7 +181,20 @@ export function ComponentCard({
           </span>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
+          {onExport && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onExport(component);
+              }}
+              title="Export component bundle with dependencies"
+              className="p-1 rounded hover:bg-surface text-foreground-muted hover:text-primary transition-colors opacity-80 hover:opacity-100"
+            >
+              <Boxes className="w-3.5 h-3.5" />
+            </button>
+          )}
           {usageCount > 0 ? (
             <span
               className="px-1.5 py-0.2 rounded bg-primary/10 text-primary font-medium text-[10px]"

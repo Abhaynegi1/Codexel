@@ -279,6 +279,7 @@ function ExplorerContent() {
           <ComponentExplorer
             inventory={components}
             initialComponentId={selectedComponentId}
+            model={model}
           />
         ) : (
           <DesignSystemExplorer designSystem={model.designSystem} />

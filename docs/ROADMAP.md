@@ -167,15 +167,15 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 8 — Component Reuse & Dependency Closure
+### Phase 8 — Component Reuse & Dependency Closure (Completed)
 
 - **Objective**: Enable developers to copy a component together with all transitive local dependencies and packages.
 - **Key Tasks**:
-  - [ ] Implement Transitive Dependency Closure graph traversal:
+  - [x] Implement Transitive Dependency Closure graph traversal:
     - Trace local module imports recursively from target component file.
     - Identify required local utility files (e.g., `utils.ts`, `theme.ts`, `buttonVariants.ts`).
-  - [ ] Identify required npm packages and their minimum versions.
-  - [ ] Build "Copy Component Bundle" modal:
+  - [x] Identify required npm packages and their minimum versions.
+  - [x] Build "Copy Component Bundle" modal:
     - View all bundled files with individual copy buttons.
     - View `npm install` command for required external dependencies.
     - Download zip bundle option.
@@ -232,7 +232,7 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 | **5**  | Component Explorer    | Component inventory, source viewer, usage graph    | ✅ Complete |
 | **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | ✅ Complete |
 | **7**  | Component Preview     | Sandboxed iframe preview                           | ✅ Complete |
-| **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | ⏳ Next     |
-| **9**  | Grounded AI Layer     | Fact-based Q&A without hallucinations              | 📅 Planned  |
+| **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | ✅ Complete |
+| **9**  | Grounded AI Layer     | Fact-based Q&A without hallucinations              | ⏳ Next     |
 | **10** | Local Workspaces      | Drag-and-drop local directory analysis             | 📅 Planned  |
 | **11** | Codexel CLI           | `codexel analyze .` command-line utility           | 📅 Planned  |

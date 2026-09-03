@@ -15,13 +15,21 @@ import {
   LayoutGrid,
   List,
 } from "lucide-react";
-import type { ComponentInventory, DiscoveredComponent } from "@codexel/shared";
+import type {
+  ComponentInventory,
+  DiscoveredComponent,
+  RepositoryModel,
+  ComponentBundle,
+} from "@codexel/shared";
 import { ComponentCard } from "./ComponentCard";
 import { ComponentDetailView } from "./ComponentDetailView";
+import { ComponentExportModal } from "./export/ComponentExportModal";
+import { resolveComponentBundle } from "@/lib/bundle-resolver";
 
 interface ComponentExplorerProps {
   inventory: ComponentInventory;
   initialComponentId?: string | null;
+  model?: RepositoryModel | null;
 }
 
 type SortOption = "name-asc" | "props-desc" | "usage-desc" | "lines-desc";
@@ -41,6 +49,7 @@ const CATEGORY_TABS: Array<{ id: string; label: string }> = [
 export function ComponentExplorer({
   inventory,
   initialComponentId,
+  model,
 }: ComponentExplorerProps) {
   const components = inventory.components;
 
@@ -50,6 +59,76 @@ export function ComponentExplorer({
   const [selectedComponentId, setSelectedComponentId] = useState<string | null>(
     initialComponentId || (components[0]?.id ?? null),
   );
+  const [exportBundle, setExportBundle] = useState<ComponentBundle | null>(
+    null,
+  );
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+
+  const handleOpenExport = (comp: DiscoveredComponent) => {
+    try {
+      const fallbackModel: RepositoryModel = model || {
+        schemaVersion: "1.0.0",
+        metadata: {
+          url: "",
+          owner: "",
+          name: "",
+          defaultBranch: "main",
+          commitSha: "",
+          isPrivate: false,
+          analyzedAt: new Date().toISOString(),
+        },
+        technologyStack: {
+          primaryLanguage: "TypeScript",
+          languages: [],
+          frameworks: [],
+          styling: [],
+          database: [],
+          stateManagement: [],
+          uiLibraries: [],
+          buildTools: [],
+        },
+        fileSystem: {
+          totalFiles: components.length,
+          totalDirectories: 1,
+          totalLinesOfCode: 1000,
+          rootDirectories: ["src"],
+          ignoredCount: 0,
+          files: [],
+        },
+        architecture: { layers: [], boundaries: [] },
+        components: inventory,
+        dependencyGraph: { nodes: [], edges: [] },
+        routes: { routerType: "next-app-router", routes: [] },
+        designSystem: {
+          colorPalette: [],
+          typography: { fontFamilies: [], fontSizes: [], fontWeights: [] },
+          spacing: [],
+          borderRadii: [],
+          detectedCssVariables: {},
+          topTailwindClasses: [],
+          libraries: {},
+        },
+        analysisStats: {
+          engineVersion: "1.0.0",
+          totalDurationMs: 0,
+          timings: {
+            cloningMs: 0,
+            scanningMs: 0,
+            astParsingMs: 0,
+            graphBuildingMs: 0,
+            designExtractionMs: 0,
+          },
+          peakMemoryMb: 0,
+        },
+      };
+
+      const bundle = resolveComponentBundle(fallbackModel, comp.id);
+      setExportBundle(bundle);
+      setIsExportModalOpen(true);
+    } catch (err) {
+      console.error("Failed to generate component bundle:", err);
+    }
+  };
 
   // Sync when initialComponentId changes
   useEffect(() => {
@@ -246,6 +325,7 @@ export function ComponentExplorer({
                   component={comp}
                   isSelected={selectedComponent?.id === comp.id}
                   onSelect={(c) => setSelectedComponentId(c.id)}
+                  onExport={handleOpenExport}
                 />
               ))}
             </div>
@@ -261,6 +341,7 @@ export function ComponentExplorer({
               onClose={() => setSelectedComponentId(null)}
               onSelectComponentById={(id) => setSelectedComponentId(id)}
               onSelectComponentByName={handleSelectByName}
+              onExport={handleOpenExport}
             />
           </div>
         )}
@@ -275,9 +356,17 @@ export function ComponentExplorer({
             onClose={() => setSelectedComponentId(null)}
             onSelectComponentById={(id) => setSelectedComponentId(id)}
             onSelectComponentByName={handleSelectByName}
+            onExport={handleOpenExport}
           />
         </div>
       )}
+
+      {/* Component Dependency Closure Export Modal */}
+      <ComponentExportModal
+        bundle={exportBundle}
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+      />
     </div>
   );
 }
