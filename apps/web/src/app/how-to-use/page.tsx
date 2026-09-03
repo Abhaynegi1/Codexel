@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   GitBranch,
 } from "lucide-react";
+import { Logo } from "@/components/common/Logo";
 
 export default function HowToUsePage() {
   const [selectedNode, setSelectedNode] = useState<{
@@ -37,15 +38,7 @@ export default function HowToUsePage() {
       {/* Navigation */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-foreground font-semibold text-lg tracking-tight"
-          >
-            <span className="text-primary font-bold text-xl leading-none">
-              ◇
-            </span>
-            <span>codexel</span>
-          </Link>
+          <Logo href="/" size="md" />
 
           <div className="flex items-center gap-5 text-sm text-foreground-secondary font-medium">
             <Link
@@ -705,8 +698,7 @@ export default function HowToUsePage() {
       <footer className="border-t border-border py-8 bg-surface">
         <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-foreground-muted font-mono">
           <div className="flex items-center gap-2">
-            <span className="text-primary font-bold">◇</span>
-            <span className="text-foreground font-medium">codexel</span>
+            <Logo href="/" size="sm" showWordmark={true} />
             <span>&bull; Visual Developer Workspace</span>
           </div>
           <div>Open a codebase and look inside.</div>

@@ -5,6 +5,11 @@ export const metadata: Metadata = {
   title: "Codexel — Understand any codebase visually",
   description:
     "Visualize architecture, explore components, and uncover the design system behind any repository.",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({

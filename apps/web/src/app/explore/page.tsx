@@ -20,6 +20,7 @@ import type { RepositoryModel } from "@codexel/shared";
 import { ArchitectureCanvas } from "@/components/explorer/ArchitectureCanvas";
 import { ComponentExplorer } from "@/components/explorer/ComponentExplorer";
 import { DesignSystemExplorer } from "@/components/explorer/design/DesignSystemExplorer";
+import { Logo } from "@/components/common/Logo";
 
 export type ActiveExplorerTab = "architecture" | "components" | "design-system";
 
@@ -131,9 +132,7 @@ function ExplorerContent() {
           <div className="h-4 w-px bg-border" />
 
           <div className="flex items-center gap-2">
-            <span className="text-primary font-bold text-lg leading-none">
-              ◇
-            </span>
+            <Logo size="sm" showWordmark={false} href="/" />
             <span className="font-bold text-sm text-foreground tracking-tight font-sans">
               {metadata.owner}/{metadata.name}
             </span>
