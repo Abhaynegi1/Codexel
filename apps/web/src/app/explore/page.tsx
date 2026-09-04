@@ -15,11 +15,13 @@ import {
   Component as ComponentIcon,
   Network,
   Palette,
+  Sparkles,
 } from "lucide-react";
 import type { RepositoryModel } from "@codexel/shared";
 import { ArchitectureCanvas } from "@/components/explorer/ArchitectureCanvas";
 import { ComponentExplorer } from "@/components/explorer/ComponentExplorer";
 import { DesignSystemExplorer } from "@/components/explorer/design/DesignSystemExplorer";
+import { AIAssistantDrawer } from "@/components/explorer/ai/AIAssistantDrawer";
 import { Logo } from "@/components/common/Logo";
 
 export type ActiveExplorerTab = "architecture" | "components" | "design-system";
@@ -41,6 +43,7 @@ function ExplorerContent() {
     compParam || null,
   );
 
+  const [isAiAssistantOpen, setIsAiAssistantOpen] = useState(false);
   const [model, setModel] = useState<RepositoryModel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,6 +76,20 @@ function ExplorerContent() {
       isCancelled = true;
     };
   }, [repoParam]);
+
+  // Global keyboard shortcut for AI Assistant (Cmd+K / Ctrl+K)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setIsAiAssistantOpen((prev) => !prev);
+      } else if (e.key === "Escape" && isAiAssistantOpen) {
+        setIsAiAssistantOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isAiAssistantOpen]);
 
   if (loading) {
     return (
@@ -114,6 +131,25 @@ function ExplorerContent() {
 
   const { metadata, technologyStack, fileSystem, architecture, components } =
     model;
+
+  const handleSelectCitation = (
+    filePath: string,
+    lineStart?: number,
+    lineEnd?: number,
+  ) => {
+    // If cited file matches a component, switch to components tab
+    const matchedComp = components.components.find(
+      (c) => c.filePath === filePath || c.filePath.includes(filePath),
+    );
+
+    if (matchedComp) {
+      setSelectedComponentId(matchedComp.id);
+      setActiveTab("components");
+    } else {
+      // Fall back to architecture canvas navigation
+      setActiveTab("architecture");
+    }
+  };
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden bg-background">
@@ -206,8 +242,21 @@ function ExplorerContent() {
           </button>
         </div>
 
-        {/* Right: High-Level Architecture Stats & Quick Links */}
-        <div className="flex items-center gap-4 text-xs font-mono">
+        {/* Right: AI Assistant Button + Stats & Links */}
+        <div className="flex items-center gap-3 text-xs font-mono">
+          {/* Grounded AI Assistant Trigger */}
+          <button
+            type="button"
+            onClick={() => setIsAiAssistantOpen(true)}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 hover:border-primary font-medium transition-all shadow-xs group"
+          >
+            <Sparkles className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+            <span className="font-semibold">AI Assistant</span>
+            <span className="hidden sm:inline text-[10px] px-1 py-0.2 bg-primary/20 rounded text-primary border border-primary/30">
+              Ctrl+K
+            </span>
+          </button>
+
           <div className="hidden xl:flex items-center gap-3 text-foreground-muted">
             <div className="flex items-center gap-1.5">
               <Layers className="w-3.5 h-3.5 text-primary" />
@@ -288,6 +337,14 @@ function ExplorerContent() {
           <DesignSystemExplorer designSystem={model.designSystem} />
         )}
       </main>
+
+      {/* Grounded AI Assistant Drawer */}
+      <AIAssistantDrawer
+        isOpen={isAiAssistantOpen}
+        onClose={() => setIsAiAssistantOpen(false)}
+        model={model}
+        onSelectCitation={handleSelectCitation}
+      />
     </div>
   );
 }

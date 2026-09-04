@@ -20,6 +20,7 @@ export * from "./components/index";
 export * from "./routes/index";
 export * from "./architecture/index";
 export * from "./design/index";
+export * from "./ai/index";
 export * from "./model/index";
 export * from "./ingestion/index";
 
