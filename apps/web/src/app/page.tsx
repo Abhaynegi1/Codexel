@@ -3,12 +3,20 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FolderUp, ArrowRight, ExternalLink, BookOpen } from "lucide-react";
+import {
+  FolderUp,
+  ArrowRight,
+  ExternalLink,
+  BookOpen,
+  FolderOpen,
+} from "lucide-react";
 import { Logo } from "@/components/common/Logo";
+import { LocalFolderPicker } from "@/components/ingestion/LocalFolderPicker";
 
 export default function HomePage() {
   const router = useRouter();
   const [repoUrl, setRepoUrl] = useState("github.com/shadcn-ui/ui");
+  const [isLocalPickerOpen, setIsLocalPickerOpen] = useState(false);
 
   const handleExplore = (targetUrl?: string) => {
     const urlToExplore = targetUrl || repoUrl;
@@ -19,12 +27,26 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground bg-blueprint-grid flex flex-col justify-between">
+      {/* Local Folder Ingestion Modal */}
+      <LocalFolderPicker
+        isOpen={isLocalPickerOpen}
+        onClose={() => setIsLocalPickerOpen(false)}
+      />
+
       {/* Minimal Top Header Navigation */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Logo href="/" size="md" />
 
-          <nav className="flex items-center gap-6 text-sm text-foreground-secondary font-medium">
+          <nav className="flex items-center gap-4 sm:gap-6 text-sm text-foreground-secondary font-medium">
+            <button
+              type="button"
+              onClick={() => setIsLocalPickerOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-surface border border-border hover:border-border-strong hover:text-foreground text-xs font-mono transition-colors"
+            >
+              <FolderOpen className="w-3.5 h-3.5 text-primary" />
+              <span>Open Local Folder</span>
+            </button>
             <Link
               href="/how-to-use"
               className="hover:text-foreground transition-colors"
@@ -104,16 +126,16 @@ export default function HomePage() {
             </div>
           </form>
 
-          {/* Folder Drop Secondary Option */}
+          {/* Folder Ingestion Option */}
           <div className="flex items-center justify-center gap-2 text-xs text-foreground-muted font-mono">
             <span>or</span>
             <button
               type="button"
-              onClick={() => handleExplore("local/project")}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-dashed border-border-strong bg-surface hover:bg-surface-secondary text-foreground-secondary transition-colors"
+              onClick={() => setIsLocalPickerOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-dashed border-border-strong bg-surface hover:bg-surface-secondary text-foreground hover:text-primary transition-colors cursor-pointer group"
             >
-              <FolderUp className="w-3.5 h-3.5 text-primary" />
-              <span>Explore local workspace sample</span>
+              <FolderUp className="w-3.5 h-3.5 text-primary group-hover:scale-110 transition-transform" />
+              <span>Open or Drop Local Project Folder</span>
             </button>
           </div>
 

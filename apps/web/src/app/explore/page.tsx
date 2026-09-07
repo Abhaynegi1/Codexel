@@ -23,6 +23,8 @@ import { ComponentExplorer } from "@/components/explorer/ComponentExplorer";
 import { DesignSystemExplorer } from "@/components/explorer/design/DesignSystemExplorer";
 import { AIAssistantDrawer } from "@/components/explorer/ai/AIAssistantDrawer";
 import { Logo } from "@/components/common/Logo";
+import { getLocalModel } from "@/lib/local-storage-model";
+import { LocalFolderPicker } from "@/components/ingestion/LocalFolderPicker";
 
 export type ActiveExplorerTab = "architecture" | "components" | "design-system";
 
@@ -44,6 +46,7 @@ function ExplorerContent() {
   );
 
   const [isAiAssistantOpen, setIsAiAssistantOpen] = useState(false);
+  const [isLocalPickerOpen, setIsLocalPickerOpen] = useState(false);
   const [model, setModel] = useState<RepositoryModel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,6 +55,16 @@ function ExplorerContent() {
     let isCancelled = false;
     setLoading(true);
     setError(null);
+
+    // If this is a locally ingested workspace, load instantly from client storage
+    if (repoParam.startsWith("local:")) {
+      const cachedLocalModel = getLocalModel(repoParam);
+      if (cachedLocalModel) {
+        setModel(cachedLocalModel);
+        setLoading(false);
+        return;
+      }
+    }
 
     fetch(`/api/analyze?repo=${encodeURIComponent(repoParam)}`)
       .then((res) => {
@@ -286,6 +299,15 @@ function ExplorerContent() {
 
           <div className="h-4 w-px bg-border hidden xl:block" />
 
+          <button
+            type="button"
+            onClick={() => setIsLocalPickerOpen(true)}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-border bg-surface hover:bg-surface-secondary text-foreground-secondary hover:text-foreground transition-colors"
+            title="Open another local workspace"
+          >
+            <span>Open Folder</span>
+          </button>
+
           <Link
             href="/how-to-use"
             className="hidden sm:inline-flex items-center gap-1 text-foreground-secondary hover:text-foreground transition-colors"
@@ -294,19 +316,21 @@ function ExplorerContent() {
             <span>Guide</span>
           </Link>
 
-          <a
-            href={
-              metadata.url.startsWith("http")
-                ? metadata.url
-                : `https://${metadata.url}`
-            }
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-border bg-surface hover:bg-surface-secondary text-foreground-secondary hover:text-foreground transition-colors"
-          >
-            <span>GitHub</span>
-            <ExternalLink className="w-3 h-3" />
-          </a>
+          {!metadata.url.startsWith("local://") && (
+            <a
+              href={
+                metadata.url.startsWith("http")
+                  ? metadata.url
+                  : `https://${metadata.url}`
+              }
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md border border-border bg-surface hover:bg-surface-secondary text-foreground-secondary hover:text-foreground transition-colors"
+            >
+              <span>GitHub</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          )}
         </div>
       </header>
 
@@ -344,6 +368,13 @@ function ExplorerContent() {
         onClose={() => setIsAiAssistantOpen(false)}
         model={model}
         onSelectCitation={handleSelectCitation}
+      />
+
+      {/* Local Folder Ingestion Modal */}
+      <LocalFolderPicker
+        isOpen={isLocalPickerOpen}
+        onClose={() => setIsLocalPickerOpen(false)}
+        onSuccess={(newModel) => setModel(newModel)}
       />
     </div>
   );

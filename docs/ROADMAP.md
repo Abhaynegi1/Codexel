@@ -202,9 +202,9 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 - **Objective**: Support analyzing private or local repositories directly on the user's machine without GitHub.
 - **Key Tasks**:
-  - [ ] Add directory picker API (`window.showDirectoryPicker()`) and folder drag-and-drop.
-  - [ ] Feed local directory path directly into the analyzer pipeline.
-  - [ ] Ensure parity between GitHub clone results and local directory scan results.
+  - [x] Add directory picker API (`window.showDirectoryPicker()`) and folder drag-and-drop.
+  - [x] Feed local directory path directly into the analyzer pipeline.
+  - [x] Ensure parity between GitHub clone results and local directory scan results.
 - **Deliverable**: Users can drag a local project folder onto Codexel and explore it immediately.
 
 ---
@@ -233,6 +233,6 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 | **6**  | Design Intelligence   | Color swatches, CSS vars, Tailwind tokens          | ✅ Complete |
 | **7**  | Component Preview     | Sandboxed iframe preview                           | ✅ Complete |
 | **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | ✅ Complete |
-| **9**  | Grounded AI Layer     | Fact-based Q&A without hallucinations              | ⏳ Next     |
-| **10** | Local Workspaces      | Drag-and-drop local directory analysis             | 📅 Planned  |
-| **11** | Codexel CLI           | `codexel analyze .` command-line utility           | 📅 Planned  |
+| **9**  | Grounded AI Layer     | Fact-based Q&A without hallucinations              | ✅ Complete |
+| **10** | Local Workspaces      | Drag-and-drop local directory analysis             | ✅ Complete |
+| **11** | Codexel CLI           | `codexel analyze .` command-line utility           | ⏳ Next     |
