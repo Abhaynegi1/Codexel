@@ -97,20 +97,30 @@ export class Sandbox {
 
   /**
    * Cleans up the ephemeral sandbox directory.
-   * Includes exponential backoff retries to handle locked file handles on Windows.
+   * Includes exponential backoff retries and native retry options to handle locked file handles on Windows.
    */
   public async cleanup(): Promise<void> {
     if (this.isCleanedUp) return;
 
     activeSandboxes.delete(this);
 
+    // On Windows, a brief tick gives child git processes and antivirus scanners time to release locks
+    if (process.platform === "win32") {
+      await new Promise((resolve) => setTimeout(resolve, 80));
+    }
+
     let attempts = 0;
-    const maxAttempts = 5;
-    let delayMs = 50;
+    const maxAttempts = 10;
+    let delayMs = 100;
 
     while (attempts < maxAttempts) {
       try {
-        await fs.rm(this.path, { recursive: true, force: true });
+        await fs.rm(this.path, {
+          recursive: true,
+          force: true,
+          maxRetries: 10,
+          retryDelay: 150,
+        });
         this.isCleanedUp = true;
         return;
       } catch (err: any) {
@@ -125,7 +135,7 @@ export class Sandbox {
         }
 
         await new Promise((resolve) => setTimeout(resolve, delayMs));
-        delayMs *= 2;
+        delayMs = Math.min(delayMs * 1.5, 1000);
       }
     }
   }
@@ -252,9 +262,29 @@ export async function withSandbox<T>(
   options?: IngestionOptions,
 ): Promise<T> {
   const sandbox = await createSandbox(targetUrl, options);
+  let errorInsideFn: unknown;
   try {
     return await fn(sandbox);
+  } catch (err) {
+    errorInsideFn = err;
+    throw err;
   } finally {
-    await sandbox.cleanup();
+    try {
+      await sandbox.cleanup();
+    } catch (cleanupErr) {
+      if (errorInsideFn) {
+        // If user function failed, log cleanup error and let the original error bubble
+        console.warn(
+          `Sandbox cleanup error after function failure:`,
+          cleanupErr,
+        );
+      } else {
+        // If user function succeeded, log warning and schedule a deferred background purge
+        console.warn(`Sandbox deferred cleanup warning:`, cleanupErr);
+        setTimeout(() => {
+          fs.rm(sandbox.path, { recursive: true, force: true }).catch(() => {});
+        }, 3000);
+      }
+    }
   }
 }
