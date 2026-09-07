@@ -188,11 +188,13 @@ export async function createSandbox(
   const cloneStart = Date.now();
 
   try {
-    // 3. Construct git clone arguments: shallow, single branch, CRLF normalization
+    // 3. Construct git clone arguments: shallow, single branch, no tags, CRLF normalization
     const gitArgs = [
       "clone",
       "--depth",
       "1",
+      "--single-branch",
+      "--no-tags",
       "--config",
       "core.autocrlf=false",
     ];

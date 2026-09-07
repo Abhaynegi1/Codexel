@@ -239,6 +239,7 @@ const PARSABLE_EXTENSIONS = new Set([
 
 /**
  * Parses all parsable source files in the repository and returns a map of AST summaries.
+ * Uses concurrent batching to maximize CPU throughput across multiple files.
  */
 export async function parseAllSourceFiles(
   workspacePath: string,
@@ -249,15 +250,21 @@ export async function parseAllSourceFiles(
     (f) => f.isSource && PARSABLE_EXTENSIONS.has(f.extension.toLowerCase()),
   );
 
-  for (const file of sourceFiles) {
-    try {
-      const fullPath = path.join(workspacePath, file.path);
-      const content = await fs.readFile(fullPath, "utf-8");
-      const summary = parseSourceFileAst(file.path, content);
-      summaries.set(file.path, summary);
-    } catch {
-      // Non-fatal if single file has read/syntax errors
-    }
+  const BATCH_SIZE = 32;
+  for (let i = 0; i < sourceFiles.length; i += BATCH_SIZE) {
+    const batch = sourceFiles.slice(i, i + BATCH_SIZE);
+    await Promise.all(
+      batch.map(async (file) => {
+        try {
+          const fullPath = path.join(workspacePath, file.path);
+          const content = await fs.readFile(fullPath, "utf-8");
+          const summary = parseSourceFileAst(file.path, content);
+          summaries.set(file.path, summary);
+        } catch {
+          // Non-fatal if single file has read/syntax errors
+        }
+      }),
+    );
   }
 
   return summaries;

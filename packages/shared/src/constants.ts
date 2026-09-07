@@ -10,7 +10,7 @@ export const DEFAULT_ANALYZER_LIMITS = {
 export const DEFAULT_INGESTION_LIMITS = {
   maxFiles: 10_000,
   maxSizeBytes: 150 * 1024 * 1024, // 150 MB
-  fetchTimeoutMs: 60_000, // 60 seconds
+  fetchTimeoutMs: 120_000, // 120 seconds
   remoteTimeoutMs: 30_000, // 30 seconds
 } as const;
 
