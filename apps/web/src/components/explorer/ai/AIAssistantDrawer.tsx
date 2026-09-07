@@ -297,13 +297,13 @@ export function AIAssistantDrawer({
               )}
 
               {/* Message Content */}
-              <div className="prose prose-xs max-w-none text-xs dark:prose-invert space-y-2 font-sans">
+              <div className="text-xs space-y-2 font-sans">
                 {msg.role === "user" ? (
                   <p className="whitespace-pre-wrap font-medium">
                     {msg.content}
                   </p>
                 ) : (
-                  <div className="space-y-2 whitespace-pre-wrap font-sans leading-relaxed">
+                  <div className="font-sans leading-relaxed text-xs">
                     {msg.content ? (
                       renderMarkdownWithCitations(msg.content, onSelectCitation)
                     ) : (
