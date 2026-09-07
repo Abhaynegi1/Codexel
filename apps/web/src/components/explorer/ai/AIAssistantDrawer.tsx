@@ -19,7 +19,7 @@ import {
   Check,
 } from "lucide-react";
 import type { RepositoryModel } from "@codexel/shared";
-import { PRESET_PROMPTS } from "@codexel/analyzer";
+import { PRESET_PROMPTS } from "@codexel/shared";
 import { renderMarkdownWithCitations } from "./CitationBadge";
 
 interface AIAssistantDrawerProps {

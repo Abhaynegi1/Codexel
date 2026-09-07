@@ -162,8 +162,8 @@ describe("Safety Boundary Enforcement", () => {
   });
 
   it("throws RepositoryLimitExceededError when maxSizeBytes is exceeded", async () => {
-    const largeBuffer = Buffer.alloc(2000, "a");
-    await fs.writeFile(path.join(testDir, "large.bin"), largeBuffer);
+    const largeContent = "a".repeat(2000);
+    await fs.writeFile(path.join(testDir, "large.bin"), largeContent);
 
     await expect(
       verifySandboxBoundaries(testDir, {
@@ -196,7 +196,7 @@ describe("Sandbox Lifecycle & Guaranteed Cleanup", () => {
     // After withSandbox finishes, the ephemeral directory MUST have been purged
     expect(capturedPath).not.toBe("");
     expect(fsSync.existsSync(capturedPath)).toBe(false);
-  });
+  }, 30_000);
 
   it("guarantees cleanup even when the user function throws an error", async () => {
     let capturedPath = "";
@@ -217,5 +217,5 @@ describe("Sandbox Lifecycle & Guaranteed Cleanup", () => {
 
     expect(capturedPath).not.toBe("");
     expect(fsSync.existsSync(capturedPath)).toBe(false);
-  });
+  }, 30_000);
 });

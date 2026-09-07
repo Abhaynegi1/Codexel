@@ -76,6 +76,66 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    if (geminiApiKey) {
+      try {
+        const facts = serializeModelToFacts(model);
+        const userPrompt = constructGroundedUserPrompt(query, facts);
+
+        const geminiRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              system_instruction: {
+                parts: [{ text: GROUNDED_SYSTEM_PROMPT }],
+              },
+              contents: [
+                {
+                  parts: [{ text: userPrompt }],
+                },
+              ],
+            }),
+          },
+        );
+
+        if (geminiRes.ok) {
+          const data = await geminiRes.json();
+          const generatedText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+          if (generatedText) {
+            const encoder = new TextEncoder();
+            const chunks = generatedText.split(/(\s+|\n+)/);
+
+            const stream = new ReadableStream({
+              async start(controller) {
+                for (const chunk of chunks) {
+                  controller.enqueue(encoder.encode(chunk));
+                  await new Promise((resolve) => setTimeout(resolve, 8));
+                }
+                controller.close();
+              },
+            });
+
+            return new Response(stream, {
+              headers: {
+                "Content-Type": "text/plain; charset=utf-8",
+                "Cache-Control": "no-cache",
+                Connection: "keep-alive",
+              },
+            });
+          }
+        }
+      } catch (err) {
+        console.warn(
+          "External Gemini call failed, using deterministic engine:",
+          err,
+        );
+      }
+    }
+
     // Fallback: Built-in deterministic grounded engine with simulated streaming
     const answer = generateDeterministicGroundedResponse(query, model);
 
