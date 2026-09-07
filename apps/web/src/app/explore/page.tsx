@@ -22,6 +22,7 @@ import { ArchitectureCanvas } from "@/components/explorer/ArchitectureCanvas";
 import { ComponentExplorer } from "@/components/explorer/ComponentExplorer";
 import { DesignSystemExplorer } from "@/components/explorer/design/DesignSystemExplorer";
 import { AIAssistantDrawer } from "@/components/explorer/ai/AIAssistantDrawer";
+import { AnalyzingLoader } from "@/components/common/AnalyzingLoader";
 import { Logo } from "@/components/common/Logo";
 import { getLocalModel } from "@/lib/local-storage-model";
 import { LocalFolderPicker } from "@/components/ingestion/LocalFolderPicker";
@@ -105,21 +106,7 @@ function ExplorerContent() {
   }, [isAiAssistantOpen]);
 
   if (loading) {
-    return (
-      <div className="flex-1 flex flex-col items-center justify-center space-y-4 p-8 text-center bg-background bg-blueprint-grid">
-        <div className="p-4 rounded-full bg-surface border border-border shadow-subtle animate-pulse">
-          <Loader2 className="w-8 h-8 text-primary animate-spin" />
-        </div>
-        <div className="space-y-1 font-mono">
-          <h2 className="text-sm font-bold text-foreground">
-            Synthesizing Architecture Graph
-          </h2>
-          <p className="text-xs text-foreground-muted">
-            Resolving AST symbols &amp; classifying layers for {repoParam}...
-          </p>
-        </div>
-      </div>
-    );
+    return <AnalyzingLoader repoName={repoParam} />;
   }
 
   if (error || !model) {

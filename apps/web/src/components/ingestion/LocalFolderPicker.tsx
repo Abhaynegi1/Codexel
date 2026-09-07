@@ -13,6 +13,7 @@ import {
   CheckCircle2,
   HardDrive,
 } from "lucide-react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import type { RepositoryModel } from "@codexel/shared";
 import { saveLocalModel } from "@/lib/local-storage-model";
 
@@ -440,7 +441,14 @@ export function LocalFolderPicker({
               </div>
             ) : status === "reading" || status === "analyzing" ? (
               <div className="space-y-3 py-2">
-                <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto" />
+                <div className="w-24 h-24 mx-auto">
+                  <DotLottieReact
+                    src="/animations/loader.lottie"
+                    loop
+                    autoplay
+                    className="w-full h-full"
+                  />
+                </div>
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-foreground">
                     {status === "reading"

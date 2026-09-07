@@ -15,6 +15,7 @@
     "@codexel/shared": "workspace:*",
     "@codexel/ui": "workspace:*",
     "@dagrejs/dagre": "^3.1.1",
+    "@lottiefiles/dotlottie-react": "^0.19.16",
     "@xyflow/react": "^12.11.6",
     "clsx": "^2.1.1",
     "jszip": "^3.10.1",
