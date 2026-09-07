@@ -187,13 +187,13 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 - **Objective**: Natural language query engine strictly grounded in the structured Repository Model.
 - **Key Tasks**:
-  - [ ] Implement prompt templates injecting only deterministic model facts (never raw unparsed source).
-  - [ ] Features:
-    - "Explain this repository architecture."
-    - "Where is authentication or data fetching handled?"
-    - "Summarize the design system and UI library choices."
-    - "Generate onboarding guide for new engineers."
-  - [ ] Enforce source attribution: AI responses must cite exact file paths and line ranges from the model.
+  - [x] Implement prompt templates injecting only deterministic model facts (never raw unparsed source).
+  - [x] Features:
+    - [x] "Explain this repository architecture."
+    - [x] "Where is authentication or data fetching handled?"
+    - [x] "Summarize the design system and UI library choices."
+    - [x] "Generate onboarding guide for new engineers."
+  - [x] Enforce source attribution: AI responses must cite exact file paths and line ranges from the model.
 - **Deliverable**: Conversational assistant that answers questions with zero hallucinations, backed by verified code facts.
 
 ---
