@@ -52,6 +52,43 @@ Optional Grounded AI Interpretation (Zero Hallucinations)
 
 ---
 
+## ⚡ Codexel CLI
+
+Analyze any local codebase directly from your terminal and generate visual reports or launch interactive dashboards:
+
+```bash
+# Run analysis on the current directory
+npx codexel analyze .
+
+# Launch local interactive web viewer on localhost:3800
+npx codexel analyze . --serve
+
+# Generate a self-contained standalone HTML report
+npx codexel analyze . --html codexel-report.html
+
+# Export pure JSON repository model to stdout or file
+npx codexel analyze . --json -o codexel-model.json
+
+# Run in CI/CD pipeline mode
+npx codexel analyze . --ci
+```
+
+### 🛠️ CLI Commands & Options Reference
+
+| Command / Option         | Description                                                   | Example                                |
+| :----------------------- | :------------------------------------------------------------ | :------------------------------------- |
+| `codexel analyze [path]` | Runs static code analysis on target path (defaults to `.`)    | `codexel analyze ./src`                |
+| `--serve`                | Launches local web server on `localhost:3800` & opens browser | `codexel analyze . --serve`            |
+| `-p, --port <number>`    | Custom port for local server (default: `3800`)                | `codexel analyze . --serve -p 4000`    |
+| `--no-open`              | Disables automatic browser opening when using `--serve`       | `codexel analyze . --serve --no-open`  |
+| `--html [path]`          | Generates an offline, single-file interactive HTML report     | `codexel analyze . --html report.html` |
+| `--json`                 | Outputs raw structured JSON Repository Model                  | `codexel analyze . --json`             |
+| `-o, --output <path>`    | Writes JSON or HTML report to the specified file destination  | `codexel analyze . -o model.json`      |
+| `--ci`                   | Runs non-interactively with concise status for CI/CD          | `codexel analyze . --ci`               |
+| `codexel info`           | Displays CLI and analyzer engine versions                     | `codexel info`                         |
+
+---
+
 ## 🏗️ Architecture
 
 Codexel is built on a worker-based pipeline that deterministically parses codebases, extracts module boundaries and components, and stores structured metadata keyed by commit SHA.
@@ -69,6 +106,7 @@ codexel/
 │   └── worker/                 # Asynchronous analysis worker (BullMQ consumer)
 │
 ├── packages/
+│   ├── cli/                    # Codexel CLI binary (npx codexel analyze .)
 │   ├── analyzer/               # Core deterministic intelligence engine
 │   │   ├── scanner/            # File system walker, glob & ignore filter
 │   │   ├── parsers/            # TypeScript / JavaScript AST & CSS parsers
