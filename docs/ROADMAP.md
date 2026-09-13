@@ -209,13 +209,13 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 
 ---
 
-### Phase 11 — Codexel CLI
+### Phase 11 — Codexel CLI (Completed)
 
 - **Objective**: Command-line tool to analyze repositories locally in terminal environments.
 - **Key Tasks**:
-  - [ ] Create `packages/cli` binary (`codexel analyze .`).
-  - [ ] Reuse `packages/analyzer` package directly.
-  - [ ] Generate static standalone HTML report or launch local web viewer on `localhost:3800`.
+  - [x] Create `packages/cli` binary (`codexel analyze .`).
+  - [x] Reuse `packages/analyzer` package directly.
+  - [x] Generate static standalone HTML report or launch local web viewer on `localhost:3800`.
 - **Deliverable**: `npx codexel analyze .` executes in terminal and opens local interactive explorer.
 
 ---
@@ -235,4 +235,4 @@ Foundations ──► Ingestion ──► Static Engine ──► Visual Explore
 | **8**  | Component Reuse       | Dependency closure export ("Copy Component")       | ✅ Complete |
 | **9**  | Grounded AI Layer     | Fact-based Q&A without hallucinations              | ✅ Complete |
 | **10** | Local Workspaces      | Drag-and-drop local directory analysis             | ✅ Complete |
-| **11** | Codexel CLI           | `codexel analyze .` command-line utility           | ⏳ Next     |
+| **11** | Codexel CLI           | `codexel analyze .` command-line utility           | ✅ Complete |

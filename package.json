@@ -15,6 +15,7 @@
     "check:hygiene": "pnpm format:check && pnpm check:duplication && pnpm check:docs",
     "db:generate": "pnpm --filter @codexel/database run db:generate",
     "db:migrate": "pnpm --filter @codexel/database run db:migrate",
+    "codexel": "tsx packages/cli/src/index.ts",
     "prepare": "husky"
   },
   "devDependencies": {
