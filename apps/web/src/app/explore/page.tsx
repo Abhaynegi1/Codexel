@@ -25,7 +25,6 @@ import { AIAssistantDrawer } from "@/components/explorer/ai/AIAssistantDrawer";
 import { AnalyzingLoader } from "@/components/common/AnalyzingLoader";
 import { Logo } from "@/components/common/Logo";
 import { getLocalModel } from "@/lib/local-storage-model";
-import { LocalFolderPicker } from "@/components/ingestion/LocalFolderPicker";
 
 export type ActiveExplorerTab = "architecture" | "components" | "design-system";
 
@@ -47,7 +46,6 @@ function ExplorerContent() {
   );
 
   const [isAiAssistantOpen, setIsAiAssistantOpen] = useState(false);
-  const [isLocalPickerOpen, setIsLocalPickerOpen] = useState(false);
   const [model, setModel] = useState<RepositoryModel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -286,15 +284,6 @@ function ExplorerContent() {
 
           <div className="h-4 w-px bg-border hidden xl:block" />
 
-          <button
-            type="button"
-            onClick={() => setIsLocalPickerOpen(true)}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-border bg-surface hover:bg-surface-secondary text-foreground-secondary hover:text-foreground transition-colors"
-            title="Open another local workspace"
-          >
-            <span>Open Folder</span>
-          </button>
-
           <Link
             href="/how-to-use"
             className="hidden sm:inline-flex items-center gap-1 text-foreground-secondary hover:text-foreground transition-colors"
@@ -355,13 +344,6 @@ function ExplorerContent() {
         onClose={() => setIsAiAssistantOpen(false)}
         model={model}
         onSelectCitation={handleSelectCitation}
-      />
-
-      {/* Local Folder Ingestion Modal */}
-      <LocalFolderPicker
-        isOpen={isLocalPickerOpen}
-        onClose={() => setIsLocalPickerOpen(false)}
-        onSuccess={(newModel) => setModel(newModel)}
       />
     </div>
   );
