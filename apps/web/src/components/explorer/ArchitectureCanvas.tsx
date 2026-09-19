@@ -26,6 +26,7 @@ import {
 } from "./ExplorerToolbar";
 import { NodeInspector } from "./NodeInspector";
 import { getLayoutedElements, type LayoutDirection } from "./layout";
+import { useTheme } from "@/components/theme/ThemeProvider";
 
 interface ArchitectureCanvasProps {
   model: RepositoryModel;
@@ -42,6 +43,8 @@ function InnerArchitectureCanvas({
   onNavigateToComponents,
 }: ArchitectureCanvasProps) {
   const { fitView, setCenter, getNode } = useReactFlow();
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   const [viewMode, setViewMode] = useState<ExplorerViewMode>("architecture");
   const [filterRole, setFilterRole] = useState<ExplorerFilterRole>("all");
@@ -71,32 +74,51 @@ function InnerArchitectureCanvas({
       }),
     );
 
-    const edges: Edge[] = model.architecture.boundaries.map((boundary) => ({
-      id: `boundary:${boundary.sourceLayerId}->${boundary.targetLayerId}`,
-      source: boundary.sourceLayerId,
-      target: boundary.targetLayerId,
-      type: "smoothstep",
-      animated: true,
-      label: `${boundary.importCount} refs`,
-      labelStyle: { fill: "#5F5C56", fontSize: 10, fontFamily: "monospace" },
-      labelBgStyle: { fill: "#FFFFFF", fillOpacity: 0.9, stroke: "#E5E2DA" },
-      labelBgPadding: [4, 2],
-      labelBgBorderRadius: 4,
-      style: {
-        stroke: boundary.isAllowedByConvention ? "#3B82F6" : "#EF4444",
-        strokeWidth: 2,
-        strokeDasharray: boundary.isAllowedByConvention ? undefined : "5 5",
-      },
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-        color: boundary.isAllowedByConvention ? "#3B82F6" : "#EF4444",
-        width: 15,
-        height: 15,
-      },
-    }));
+    const edges: Edge[] = model.architecture.boundaries.map((boundary) => {
+      const isAllowed = boundary.isAllowedByConvention;
+      const strokeColor = isAllowed
+        ? isDark
+          ? "#60A5FA"
+          : "#3B82F6"
+        : isDark
+          ? "#F87171"
+          : "#EF4444";
+
+      return {
+        id: `boundary:${boundary.sourceLayerId}->${boundary.targetLayerId}`,
+        source: boundary.sourceLayerId,
+        target: boundary.targetLayerId,
+        type: "smoothstep",
+        animated: true,
+        label: `${boundary.importCount} refs`,
+        labelStyle: {
+          fill: isDark ? "#B8B3A8" : "#5F5C56",
+          fontSize: 10,
+          fontFamily: "monospace",
+        },
+        labelBgStyle: {
+          fill: isDark ? "#211F1B" : "#FFFFFF",
+          fillOpacity: 0.95,
+          stroke: isDark ? "#39362F" : "#E5E2DA",
+        },
+        labelBgPadding: [4, 2],
+        labelBgBorderRadius: 4,
+        style: {
+          stroke: strokeColor,
+          strokeWidth: 2,
+          strokeDasharray: isAllowed ? undefined : "5 5",
+        },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color: strokeColor,
+          width: 15,
+          height: 15,
+        },
+      };
+    });
 
     return { architectureNodes: nodes, architectureEdges: edges };
-  }, [model.architecture]);
+  }, [model.architecture, isDark]);
 
   // Build raw nodes & edges for "Module Graph" view
   const { moduleNodes, moduleEdges } = useMemo(() => {
@@ -144,22 +166,25 @@ function InnerArchitectureCanvas({
       },
     );
 
+    const edgeColor = isDark ? "#514D45" : "#D5D1C8";
+    const markerColor = isDark ? "#514D45" : "#8B8881";
+
     const edges: Edge[] = model.dependencyGraph.edges.map((e) => ({
       id: e.id,
       source: e.source,
       target: e.target,
       type: "smoothstep",
-      style: { stroke: "#D5D1C8", strokeWidth: 1.5 },
+      style: { stroke: edgeColor, strokeWidth: 1.5 },
       markerEnd: {
         type: MarkerType.ArrowClosed,
-        color: "#8B8881",
+        color: markerColor,
         width: 12,
         height: 12,
       },
     }));
 
     return { moduleNodes: nodes, moduleEdges: edges };
-  }, [model.dependencyGraph]);
+  }, [model.dependencyGraph, isDark]);
 
   // Filter nodes based on view mode, role filter, and search query
   const { nodes: activeNodes, edges: activeEdges } = useMemo(() => {
@@ -299,7 +324,7 @@ function InnerArchitectureCanvas({
       />
 
       {/* Canvas Area with Inspector */}
-      <div className="relative flex-1 w-full h-full flex overflow-hidden">
+      <div className="relative flex-1 w-full h-full flex overflow-hidden bg-canvas">
         <div className="flex-1 h-full w-full relative">
           <ReactFlow
             nodes={nodes}
@@ -315,15 +340,22 @@ function InnerArchitectureCanvas({
             defaultEdgeOptions={{ type: "smoothstep" }}
             proOptions={{ hideAttribution: true }}
           >
-            <Background color="#D5D1C8" gap={20} size={1} />
+            <Background
+              color={isDark ? "#39362F" : "#D5D1C8"}
+              gap={20}
+              size={1}
+            />
             <Controls className="!bg-surface !border !border-border !shadow-subtle !rounded-md" />
             <MiniMap
               className="!bg-surface/90 !border !border-border !rounded-md !shadow-subtle hidden sm:block"
               nodeColor={(n) => {
-                if (n.type === "layerNode") return "#3B82F6";
+                if (n.type === "layerNode")
+                  return isDark ? "#60A5FA" : "#3B82F6";
                 return "#F59E0B";
               }}
-              maskColor="rgba(248, 247, 243, 0.7)"
+              maskColor={
+                isDark ? "rgba(27, 25, 22, 0.75)" : "rgba(248, 247, 243, 0.7)"
+              }
             />
           </ReactFlow>
         </div>

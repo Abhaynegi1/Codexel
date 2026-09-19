@@ -3,21 +3,91 @@
 @tailwind utilities;
 
 :root {
+  /* Canvas & Surfaces */
   --bg-color: #F8F7F3;
+  --canvas-bg: #F8F7F3;
   --surface-color: #FFFFFF;
   --surface-secondary: #F3F2EE;
+  --surface-tertiary: #EBE9E2;
+
+  /* Borders & Grid */
   --border-color: #E5E2DA;
   --border-strong: #D5D1C8;
+  --grid-color: #D5D1C8;
+
+  /* Typography */
   --text-primary: #171717;
   --text-secondary: #5F5C56;
   --text-muted: #8B8881;
+  --text-disabled: #A8A59E;
+
+  /* Brand / Amber */
   --primary-accent: #F59E0B;
+  --primary-hover: #D97706;
+  --primary-pressed: #B45309;
+  --primary-soft: #FEF3C7;
+  --primary-border: #FDE68A;
+
+  /* Semantic Architecture */
+  --semantic-blue: #3B82F6;
+  --semantic-green: #22C55E;
+  --semantic-red: #EF4444;
+  --semantic-purple: #8B5CF6;
+  --semantic-teal: #14B8A6;
+  --semantic-orange: #F59E0B;
+
+  /* Canvas Graph & Nodes */
+  --node-bg: #FFFFFF;
+  --node-border: #E5E2DA;
+  --graph-edge: #D5D1C8;
+  --graph-edge-hover: #F59E0B;
+}
+
+.dark {
+  /* Canvas & Surfaces */
+  --bg-color: #171614;
+  --canvas-bg: #1B1916;
+  --surface-color: #211F1B;
+  --surface-secondary: #2A2823;
+  --surface-tertiary: #302E28;
+
+  /* Borders & Grid */
+  --border-color: #39362F;
+  --border-strong: #4A463D;
+  --grid-color: #39362F;
+
+  /* Typography */
+  --text-primary: #F1EEE7;
+  --text-secondary: #B8B3A8;
+  --text-muted: #817C72;
+  --text-disabled: #5F5B53;
+
+  /* Brand / Amber */
+  --primary-accent: #F59E0B;
+  --primary-hover: #FBBF24;
+  --primary-pressed: #D97706;
+  --primary-soft: #3A2B12;
+  --primary-border: #6B4A14;
+
+  /* Semantic Architecture */
+  --semantic-blue: #60A5FA;
+  --semantic-green: #4ADE80;
+  --semantic-red: #F87171;
+  --semantic-purple: #A78BFA;
+  --semantic-teal: #2DD4BF;
+  --semantic-orange: #FBBF24;
+
+  /* Canvas Graph & Nodes */
+  --node-bg: #25231F;
+  --node-border: #3D3931;
+  --graph-edge: #514D45;
+  --graph-edge-hover: #F59E0B;
 }
 
 body {
   color: var(--text-primary);
   background-color: var(--bg-color);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI Roboto", sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -26,17 +96,82 @@ body {
 /* Subtle blueprint dot matrix background */
 .bg-blueprint-grid {
   background-size: 24px 24px;
-  background-image: radial-gradient(circle, #D5D1C8 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--grid-color) 1px, transparent 1px);
 }
 
 /* Structured technical panel */
 .technical-panel {
-  background-color: #FFFFFF;
-  border: 1px solid #E5E2DA;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
 }
 
+.dark .technical-panel {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
+}
+
 .technical-panel-secondary {
-  background-color: #F3F2EE;
-  border: 1px solid #E5E2DA;
+  background-color: var(--surface-secondary);
+  border: 1px solid var(--border-color);
+}
+
+/* Prism.js warm syntax highlighting for source code viewer */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #68635A;
+  font-style: italic;
+}
+
+.token.punctuation {
+  color: #A8A49D;
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #F87171;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #4ADE80;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #B8B3A8;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: #FBBF24;
+}
+
+.token.function,
+.token.class-name {
+  color: #60A5FA;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #A78BFA;
 }

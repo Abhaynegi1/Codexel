@@ -24,6 +24,7 @@ import { DesignSystemExplorer } from "@/components/explorer/design/DesignSystemE
 import { AIAssistantDrawer } from "@/components/explorer/ai/AIAssistantDrawer";
 import { AnalyzingLoader } from "@/components/common/AnalyzingLoader";
 import { Logo } from "@/components/common/Logo";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { getLocalModel } from "@/lib/local-storage-model";
 
 export type ActiveExplorerTab = "architecture" | "components" | "design-system";
@@ -307,6 +308,8 @@ function ExplorerContent() {
               <ExternalLink className="w-3 h-3" />
             </a>
           )}
+
+          <ThemeToggle />
         </div>
       </header>
 

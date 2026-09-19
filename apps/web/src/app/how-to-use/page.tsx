@@ -15,6 +15,7 @@ import {
   GitBranch,
 } from "lucide-react";
 import { Logo } from "@/components/common/Logo";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export default function HowToUsePage() {
   const [selectedNode, setSelectedNode] = useState<{
@@ -40,7 +41,7 @@ export default function HowToUsePage() {
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Logo href="/" size="md" />
 
-          <div className="flex items-center gap-5 text-sm text-foreground-secondary font-medium">
+          <div className="flex items-center gap-4 text-sm text-foreground-secondary font-medium">
             <Link
               href="/"
               className="flex items-center gap-1 hover:text-foreground transition-colors"
@@ -56,6 +57,7 @@ export default function HowToUsePage() {
             >
               GitHub <ExternalLink className="w-3.5 h-3.5" />
             </a>
+            <ThemeToggle />
           </div>
         </div>
       </header>

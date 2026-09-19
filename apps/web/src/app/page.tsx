@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/common/Logo";
 import { LocalFolderPicker } from "@/components/ingestion/LocalFolderPicker";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export default function HomePage() {
   const router = useRouter();
@@ -38,7 +39,7 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
           <Logo href="/" size="md" />
 
-          <nav className="flex items-center gap-4 sm:gap-6 text-sm text-foreground-secondary font-medium">
+          <nav className="flex items-center gap-3 sm:gap-5 text-sm text-foreground-secondary font-medium">
             <button
               type="button"
               onClick={() => setIsLocalPickerOpen(true)}
@@ -61,13 +62,14 @@ export default function HomePage() {
             >
               GitHub <ExternalLink className="w-3.5 h-3.5" />
             </a>
+            <ThemeToggle />
           </nav>
         </div>
       </header>
 
       {/* Main Hero Container */}
       <main className="max-w-3xl mx-auto px-6 py-20 my-auto text-center space-y-8">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-mono text-foreground-secondary bg-surface-secondary border border-border">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-mono text-foreground-secondary bg-surface-secondary border border-border dark:bg-primary-soft dark:border-primary-border dark:text-primary-hover">
           <span className="w-2 h-2 rounded-full bg-primary" />
           <span>Deterministic Blueprint &bull; No Hallucinations</span>
         </div>
@@ -118,7 +120,7 @@ export default function HomePage() {
               </div>
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-md bg-primary hover:bg-primary-hover text-white font-medium text-sm transition-colors flex items-center justify-center gap-1.5 shrink-0"
+                className="px-5 py-2.5 rounded-md bg-primary hover:bg-primary-hover active:bg-primary-pressed text-white dark:text-[#171614] font-semibold text-sm transition-colors flex items-center justify-center gap-1.5 shrink-0"
               >
                 <span>Explore</span>
                 <ArrowRight className="w-4 h-4" />

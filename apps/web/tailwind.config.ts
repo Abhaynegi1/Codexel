@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "../../packages/ui/src/**/*.{js,ts,jsx,tsx}",
@@ -8,33 +9,42 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#F8F7F3",
+        background: "var(--bg-color)",
+        canvas: "var(--canvas-bg)",
         surface: {
-          DEFAULT: "#FFFFFF",
-          secondary: "#F3F2EE",
+          DEFAULT: "var(--surface-color)",
+          secondary: "var(--surface-secondary)",
+          tertiary: "var(--surface-tertiary)",
         },
         border: {
-          DEFAULT: "#E5E2DA",
-          strong: "#D5D1C8",
+          DEFAULT: "var(--border-color)",
+          strong: "var(--border-strong)",
         },
         foreground: {
-          DEFAULT: "#171717",
-          secondary: "#5F5C56",
-          muted: "#8B8881",
+          DEFAULT: "var(--text-primary)",
+          secondary: "var(--text-secondary)",
+          muted: "var(--text-muted)",
+          disabled: "var(--text-disabled)",
         },
         primary: {
-          DEFAULT: "#F59E0B",
-          hover: "#D97706",
-          soft: "#FEF3C7",
-          dark: "#B45309",
+          DEFAULT: "var(--primary-accent)",
+          hover: "var(--primary-hover)",
+          pressed: "var(--primary-pressed)",
+          soft: "var(--primary-soft)",
+          border: "var(--primary-border)",
+          dark: "var(--primary-pressed)",
         },
         semantic: {
-          blue: "#3B82F6",
-          green: "#22C55E",
-          red: "#EF4444",
-          purple: "#8B5CF6",
-          teal: "#14B8A6",
-          orange: "#F59E0B",
+          blue: "var(--semantic-blue)",
+          green: "var(--semantic-green)",
+          red: "var(--semantic-red)",
+          purple: "var(--semantic-purple)",
+          teal: "var(--semantic-teal)",
+          orange: "var(--semantic-orange)",
+        },
+        node: {
+          bg: "var(--node-bg)",
+          border: "var(--node-border)",
         },
       },
       borderRadius: {
@@ -49,9 +59,10 @@ const config: Config = {
         mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       boxShadow: {
-        subtle: "0 1px 2px 0 rgba(0, 0, 0, 0.04)",
+        subtle: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
         panel:
-          "0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)",
+          "0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.08)",
+        modal: "0 12px 32px 0 rgba(0, 0, 0, 0.30)",
       },
     },
   },
