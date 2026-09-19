@@ -16,12 +16,14 @@ import {
   Network,
   Palette,
   Sparkles,
+  FileDown,
 } from "lucide-react";
 import type { RepositoryModel } from "@codexel/shared";
 import { ArchitectureCanvas } from "@/components/explorer/ArchitectureCanvas";
 import { ComponentExplorer } from "@/components/explorer/ComponentExplorer";
 import { DesignSystemExplorer } from "@/components/explorer/design/DesignSystemExplorer";
 import { AIAssistantDrawer } from "@/components/explorer/ai/AIAssistantDrawer";
+import { ExportMarkdownModal } from "@/components/explorer/export/ExportMarkdownModal";
 import { AnalyzingLoader } from "@/components/common/AnalyzingLoader";
 import { Logo } from "@/components/common/Logo";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
@@ -47,6 +49,7 @@ function ExplorerContent() {
   );
 
   const [isAiAssistantOpen, setIsAiAssistantOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [model, setModel] = useState<RepositoryModel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -293,6 +296,16 @@ function ExplorerContent() {
             <span>Guide</span>
           </Link>
 
+          <button
+            type="button"
+            onClick={() => setIsExportModalOpen(true)}
+            title="Download architectural documentation (.md)"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-border bg-surface hover:bg-surface-secondary text-foreground-secondary hover:text-foreground transition-colors font-mono text-xs"
+          >
+            <FileDown className="w-3.5 h-3.5 text-primary" />
+            <span className="hidden md:inline">Download MD</span>
+          </button>
+
           {!metadata.url.startsWith("local://") && (
             <a
               href={
@@ -312,6 +325,15 @@ function ExplorerContent() {
           <ThemeToggle />
         </div>
       </header>
+
+      {/* Export Markdown Modal */}
+      {model && (
+        <ExportMarkdownModal
+          isOpen={isExportModalOpen}
+          onClose={() => setIsExportModalOpen(false)}
+          model={model}
+        />
+      )}
 
       {/* Main Interactive Canvas, Component Explorer, or Design System Explorer */}
       <main className="flex-1 w-full h-full relative overflow-hidden">
