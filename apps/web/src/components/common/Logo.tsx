@@ -32,15 +32,26 @@ export function Logo({
   const content = (
     <div className={`inline-flex items-center shrink-0 ${className}`}>
       {showWordmark ? (
-        <Image
-          src="/logo-full.png"
-          alt="Codexel Logo"
-          width={fullDimensions.width}
-          height={fullDimensions.height}
-          className="object-contain"
-          style={{ imageRendering: "pixelated" }}
-          priority
-        />
+        <>
+          <Image
+            src="/logo-full-light.png"
+            alt="Codexel Logo"
+            width={fullDimensions.width}
+            height={fullDimensions.height}
+            className="object-contain dark:hidden"
+            style={{ imageRendering: "pixelated" }}
+            priority
+          />
+          <Image
+            src="/logo-full-dark.png"
+            alt="Codexel Logo"
+            width={fullDimensions.width}
+            height={fullDimensions.height}
+            className="object-contain hidden dark:block"
+            style={{ imageRendering: "pixelated" }}
+            priority
+          />
+        </>
       ) : (
         <Image
           src="/logo.png"
