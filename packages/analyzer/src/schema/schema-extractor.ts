@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import ts from "typescript";
 import type {
   DatabaseColumn,
   DatabaseTable,
@@ -45,7 +46,8 @@ export async function extractDatabaseSchema(
       (f.path.includes("schema") ||
         f.path.includes("database") ||
         f.path.includes("db") ||
-        f.path.includes("models")) &&
+        f.path.includes("models") ||
+        f.path.includes("entities")) &&
       (f.path.endsWith(".ts") || f.path.endsWith(".js")),
   );
 
@@ -54,9 +56,9 @@ export async function extractDatabaseSchema(
       const fullPath = path.join(workspacePath, candidate.path);
       const content = await fs.readFile(fullPath, "utf-8");
       if (
-        content.includes("pgTable(") ||
-        content.includes("mysqlTable(") ||
-        content.includes("sqliteTable(")
+        content.includes("pgTable") ||
+        content.includes("mysqlTable") ||
+        content.includes("sqliteTable")
       ) {
         const drizzleParsed = parseDrizzleSchema(content, candidate.path);
         if (drizzleParsed.tables.length > 0) {
@@ -137,7 +139,9 @@ export async function extractDatabaseSchema(
 }
 
 /**
- * Parses Drizzle ORM schema definitions (pgTable, mysqlTable, sqliteTable).
+ * Deterministically parses Drizzle ORM schema definitions using the TypeScript compiler AST.
+ * Handles multi-line chained methods, nested object options ({ length: 100 }, { withTimezone: true }),
+ * custom pgEnum / enums, and foreign key relations without truncation.
  */
 export function parseDrizzleSchema(
   content: string,
@@ -146,105 +150,214 @@ export function parseDrizzleSchema(
   const tables: DatabaseTable[] = [];
   const relations: DatabaseRelation[] = [];
 
-  const tableRegex =
-    /(?:export\s+const\s+(\w+)\s*=\s*(?:pgTable|mysqlTable|sqliteTable)\s*\(\s*["']([^"']+)["']\s*,\s*\{([\s\S]*?)\}\s*\);?)/g;
+  const sourceFile = ts.createSourceFile(
+    filePath,
+    content,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  );
 
-  let match: RegExpExecArray | null;
-  while ((match = tableRegex.exec(content)) !== null) {
-    const varName = match[1] ?? "";
-    const tableName = match[2] ?? "";
-    const body = match[3] ?? "";
-    if (!tableName || !body) continue;
+  // Map of enum definitions if present, e.g. export const attendeeRoleEnum = pgEnum("attendee_role", ...)
+  const enumMap = new Map<string, string>();
 
-    const columns: DatabaseColumn[] = [];
-    const primaryKey: string[] = [];
-    const foreignKeys: Array<{
-      column: string;
-      targetTable: string;
-      targetColumn: string;
-    }> = [];
-
-    const columnLines = body.split("\n");
-    for (const line of columnLines) {
-      const colMatch = line.match(
-        /^\s*(\w+)\s*:\s*(uuid|varchar|text|integer|serial|boolean|timestamp|jsonb|json|decimal|float|bigint)\s*\(\s*(?:["']([^"']+)["'])?/,
-      );
-
-      if (colMatch && colMatch[1] && colMatch[2]) {
-        const fieldName = colMatch[1];
-        const colType = colMatch[2];
-        const dbColName = colMatch[3] || fieldName;
-
-        const isPrimaryKey =
-          line.includes(".primaryKey()") || fieldName === "id";
-        const isNullable = !line.includes(".notNull()");
-        const isUnique = line.includes(".unique()");
-
-        let isForeignKey = false;
-        let references: { table: string; column: string } | undefined =
-          undefined;
-
-        const refMatch = line.match(
-          /\.references\s*\(\s*\(\)\s*=>\s*(\w+)\.(\w+)/,
-        );
-        if (refMatch && refMatch[1] && refMatch[2]) {
-          const targetRef = refMatch[1];
-          const targetCol = refMatch[2];
-          isForeignKey = true;
-          references = {
-            table: targetRef,
-            column: targetCol,
-          };
-          foreignKeys.push({
-            column: dbColName,
-            targetTable: targetRef,
-            targetColumn: targetCol,
-          });
-
-          relations.push({
-            id: `rel:${tableName}.${dbColName}->${targetRef}.${targetCol}`,
-            sourceTable: tableName,
-            sourceColumn: dbColName,
-            targetTable: targetRef,
-            targetColumn: targetCol,
-            type: "N:1",
-            onDelete: line.includes('onDelete: "cascade"')
-              ? "CASCADE"
-              : line.includes('onDelete: "set null"')
-                ? "SET NULL"
-                : undefined,
-          });
+  function findEnums(node: ts.Node) {
+    if (
+      ts.isVariableDeclaration(node) &&
+      node.initializer &&
+      ts.isCallExpression(node.initializer)
+    ) {
+      const call = node.initializer;
+      const fnName = call.expression.getText(sourceFile);
+      if (
+        (fnName === "pgEnum" || fnName === "mysqlEnum") &&
+        call.arguments.length > 0
+      ) {
+        const firstArg = call.arguments[0];
+        const enumDbName = firstArg
+          ? firstArg.getText(sourceFile).replace(/["']/g, "")
+          : "";
+        const varName = node.name.getText(sourceFile);
+        if (enumDbName && varName) {
+          enumMap.set(varName, enumDbName);
         }
+      }
+    }
+    ts.forEachChild(node, findEnums);
+  }
+  findEnums(sourceFile);
 
-        if (isPrimaryKey) {
-          primaryKey.push(dbColName);
+  function visit(node: ts.Node) {
+    if (ts.isCallExpression(node)) {
+      const fnName = node.expression.getText(sourceFile);
+      if (
+        fnName === "pgTable" ||
+        fnName === "mysqlTable" ||
+        fnName === "sqliteTable"
+      ) {
+        if (node.arguments.length >= 2) {
+          const tableNameArg = node.arguments[0];
+          const columnsArg = node.arguments[1];
+
+          if (
+            tableNameArg &&
+            columnsArg &&
+            ts.isObjectLiteralExpression(columnsArg)
+          ) {
+            const tableName = tableNameArg
+              .getText(sourceFile)
+              .replace(/["']/g, "");
+            const columns: DatabaseColumn[] = [];
+            const primaryKey: string[] = [];
+            const foreignKeys: Array<{
+              column: string;
+              targetTable: string;
+              targetColumn: string;
+            }> = [];
+
+            for (const prop of columnsArg.properties) {
+              if (ts.isPropertyAssignment(prop)) {
+                const colPropName = prop.name
+                  .getText(sourceFile)
+                  .replace(/["']/g, "");
+                const initText = prop.initializer.getText(sourceFile);
+
+                let dbColName = colPropName;
+                let colType = "text";
+
+                // Traverse to innermost call expression to get helper function name & arguments
+                let currentExpr: ts.Expression = prop.initializer;
+                let innerCall: ts.CallExpression | null = null;
+
+                while (ts.isCallExpression(currentExpr)) {
+                  innerCall = currentExpr;
+                  if (ts.isPropertyAccessExpression(currentExpr.expression)) {
+                    currentExpr = currentExpr.expression.expression;
+                  } else {
+                    break;
+                  }
+                }
+
+                if (innerCall) {
+                  const helperName = innerCall.expression.getText(sourceFile);
+
+                  if (enumMap.has(helperName)) {
+                    colType = enumMap.get(helperName) || helperName;
+                  } else if (helperName.toLowerCase().endsWith("enum")) {
+                    colType = helperName
+                      .replace(/enum$/i, "")
+                      .replace(/([A-Z])/g, "_$1")
+                      .toLowerCase()
+                      .replace(/^_/, "");
+                  } else {
+                    colType = helperName;
+                  }
+
+                  // If first argument is a string literal, that is the explicit database column name!
+                  if (innerCall.arguments.length > 0) {
+                    const firstArg = innerCall.arguments[0];
+                    if (
+                      firstArg &&
+                      (ts.isStringLiteral(firstArg) ||
+                        ts.isNoSubstitutionTemplateLiteral(firstArg))
+                    ) {
+                      dbColName = firstArg.text;
+                    }
+                  }
+
+                  // Check if length/precision option object is supplied (e.g. { length: 100 })
+                  for (const arg of innerCall.arguments) {
+                    if (ts.isObjectLiteralExpression(arg)) {
+                      for (const opt of arg.properties) {
+                        if (ts.isPropertyAssignment(opt)) {
+                          const optName = opt.name.getText(sourceFile);
+                          if (optName === "length" || optName === "precision") {
+                            colType = `${colType}(${opt.initializer.getText(sourceFile)})`;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+
+                const isPrimaryKey =
+                  initText.includes(".primaryKey()") || colPropName === "id";
+                const isNullable = !initText.includes(".notNull()");
+                const isUnique = initText.includes(".unique()");
+
+                let isForeignKey = false;
+                let references: { table: string; column: string } | undefined =
+                  undefined;
+
+                // Match .references(() => targetTable.targetColumn, { onDelete: ... })
+                const refMatch = initText.match(
+                  /\.references\s*\(\s*\(\)\s*=>\s*(\w+)\.(\w+)/,
+                );
+                if (refMatch && refMatch[1] && refMatch[2]) {
+                  const targetRef = refMatch[1];
+                  const targetCol = refMatch[2];
+                  isForeignKey = true;
+                  references = {
+                    table: targetRef,
+                    column: targetCol,
+                  };
+                  foreignKeys.push({
+                    column: dbColName,
+                    targetTable: targetRef,
+                    targetColumn: targetCol,
+                  });
+
+                  relations.push({
+                    id: `rel:${tableName}.${dbColName}->${targetRef}.${targetCol}`,
+                    sourceTable: tableName,
+                    sourceColumn: dbColName,
+                    targetTable: targetRef,
+                    targetColumn: targetCol,
+                    type: "N:1",
+                    onDelete: initText.includes('onDelete: "cascade"')
+                      ? "CASCADE"
+                      : initText.includes('onDelete: "set null"')
+                        ? "SET NULL"
+                        : undefined,
+                  });
+                }
+
+                if (isPrimaryKey) {
+                  primaryKey.push(dbColName);
+                }
+
+                columns.push({
+                  name: dbColName,
+                  type: colType,
+                  isPrimaryKey,
+                  isNullable,
+                  isUnique,
+                  isForeignKey,
+                  references,
+                });
+              }
+            }
+
+            if (columns.length > 0) {
+              tables.push({
+                id: `table:${tableName}`,
+                name: tableName,
+                filePath,
+                columns,
+                primaryKey: primaryKey.length > 0 ? primaryKey : ["id"],
+                foreignKeys,
+                description: `Drizzle ORM entity (${tableName})`,
+              });
+            }
+          }
         }
-
-        columns.push({
-          name: dbColName,
-          type: colType,
-          isPrimaryKey,
-          isNullable,
-          isUnique,
-          isForeignKey,
-          references,
-        });
       }
     }
 
-    if (columns.length > 0) {
-      tables.push({
-        id: `table:${tableName}`,
-        name: tableName,
-        filePath,
-        columns,
-        primaryKey: primaryKey.length > 0 ? primaryKey : ["id"],
-        foreignKeys,
-        description: `Drizzle ORM entity (${varName})`,
-      });
-    }
+    ts.forEachChild(node, visit);
   }
 
+  visit(sourceFile);
   return { tables, relations };
 }
 
