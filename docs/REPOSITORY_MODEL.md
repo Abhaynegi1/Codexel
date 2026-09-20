@@ -41,6 +41,9 @@ export interface RepositoryModel {
   /** Extracted design system, tokens, colors, and typography */
   designSystem: DesignSystemSummary;
 
+  /** Extracted database schema (tables, columns, relations) */
+  databaseSchema?: DatabaseSchemaModel;
+
   /** Analysis execution statistics (timings, engine version) */
   analysisStats: AnalysisExecutionStats;
 }
@@ -313,7 +316,64 @@ export interface DesignSystemSummary {
 
 ---
 
-### 2.9. Analysis Stats (`analysisStats`)
+### 2.9. Database Schema (`databaseSchema`)
+
+```typescript
+export interface DatabaseColumn {
+  name: string;
+  type: string;
+  isPrimaryKey: boolean;
+  isNullable: boolean;
+  isForeignKey?: boolean;
+  isUnique?: boolean;
+  references?: {
+    table: string;
+    column: string;
+  };
+  defaultValue?: string;
+  comment?: string;
+}
+
+export interface DatabaseTable {
+  id: string;
+  name: string;
+  filePath?: string;
+  columns: DatabaseColumn[];
+  primaryKey: string[];
+  foreignKeys?: Array<{
+    column: string;
+    targetTable: string;
+    targetColumn: string;
+  }>;
+  rowCountEstimate?: number;
+  description?: string;
+}
+
+export interface DatabaseRelation {
+  id: string;
+  sourceTable: string;
+  sourceColumn: string;
+  targetTable: string;
+  targetColumn: string;
+  type: "1:1" | "1:N" | "N:1" | "N:M";
+  onDelete?: "CASCADE" | "SET NULL" | "RESTRICT" | "NO ACTION";
+}
+
+export interface DatabaseSchemaModel {
+  orm?: "drizzle" | "prisma" | "typeorm" | "supabase" | "sql" | "inferred";
+  tables: DatabaseTable[];
+  relations: DatabaseRelation[];
+  stats: {
+    totalTables: number;
+    totalColumns: number;
+    totalRelations: number;
+  };
+}
+```
+
+---
+
+### 2.10. Analysis Stats (`analysisStats`)
 
 ```typescript
 export interface AnalysisExecutionStats {

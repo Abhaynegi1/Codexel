@@ -329,6 +329,53 @@ export function generateRepositoryMarkdown(
     }
   }
 
+  // 8. Database Schema & Relational Model
+  if (model.databaseSchema && model.databaseSchema.tables.length > 0) {
+    const { tables, relations, orm } = model.databaseSchema;
+    parts.push(
+      `## 8. Database Schema & ER Model (${tables.length} Tables, ${relations.length} Relations)\n`,
+    );
+    if (orm) {
+      parts.push(`*Detected ORM / Schema Engine: **${orm.toUpperCase()}***\n`);
+    }
+
+    for (const table of tables) {
+      parts.push(`### Table: \`${table.name}\`\n`);
+      if (table.description) {
+        parts.push(`> ${table.description}\n`);
+      }
+      parts.push(`| Column | Type | Constraints | References |`);
+      parts.push(`| :--- | :--- | :--- | :--- |`);
+      for (const col of table.columns) {
+        const isPK = col.isPrimaryKey || table.primaryKey.includes(col.name);
+        const pkBadge = isPK ? "**PK** " : "";
+        const notNullBadge = !col.isNullable ? "NOT NULL" : "NULL";
+        const uniqueBadge = col.isUnique ? ", UNIQUE" : "";
+        const refStr = col.references
+          ? `\`${col.references.table}.${col.references.column}\``
+          : "—";
+        parts.push(
+          `| ${pkBadge}\`${col.name}\` | \`${col.type}\` | ${notNullBadge}${uniqueBadge} | ${refStr} |`,
+        );
+      }
+      parts.push(`\n`);
+    }
+
+    if (relations.length > 0) {
+      parts.push(`### Entity Relationships\n`);
+      parts.push(
+        `| Source Table.Column | Type | Target Table.Column | On Delete |`,
+      );
+      parts.push(`| :--- | :--- | :--- | :--- |`);
+      for (const rel of relations) {
+        parts.push(
+          `| \`${rel.sourceTable}.${rel.sourceColumn}\` | **${rel.type}** | \`${rel.targetTable}.${rel.targetColumn}\` | ${rel.onDelete || "RESTRICT"} |`,
+        );
+      }
+      parts.push(`\n`);
+    }
+  }
+
   // Document Footer
   parts.push(`---\n`);
   parts.push(

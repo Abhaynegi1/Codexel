@@ -12,6 +12,7 @@ import { classifyArchitecture } from "./architecture/index";
 import { extractComponentInventory } from "./components/index";
 import { extractDesignSystem } from "./design/index";
 import { detectRoutes } from "./routes/index";
+import { extractDatabaseSchema } from "./schema/index";
 
 export * from "./scanner/index";
 export * from "./detectors/index";
@@ -20,6 +21,7 @@ export * from "./components/index";
 export * from "./routes/index";
 export * from "./architecture/index";
 export * from "./design/index";
+export * from "./schema/index";
 export * from "./ai/index";
 export * from "./model/index";
 export * from "./ingestion/index";
@@ -91,6 +93,10 @@ export async function analyzeRepository(
     options.workspacePath,
     fileSystem.files,
   );
+  const databaseSchema = await extractDatabaseSchema(
+    options.workspacePath,
+    fileSystem.files,
+  );
 
   const totalDurationMs = Date.now() - startTime;
 
@@ -112,6 +118,7 @@ export async function analyzeRepository(
     dependencyGraph,
     routes,
     designSystem,
+    databaseSchema,
     analysisStats: {
       engineVersion: ANALYZER_ENGINE_VERSION,
       totalDurationMs,

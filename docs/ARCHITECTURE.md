@@ -36,7 +36,8 @@ Codexel transforms arbitrary codebases into an interactive, visual, and semantic
 │  - Architecture Graph     │               │  - Architecture QA        │
 │  - Component Inventory    │               │  - Onboarding Brief       │
 │  - Design System Explorer │               │  - Never hallucinates     │
-│  - Source Inspection      │               │    underlying code facts  │
+│  - Database Schema ER     │               │    underlying code facts  │
+│  - Source Inspection      │               │                           │
 └───────────────────────────┘               └───────────────────────────┘
 ```
 
@@ -178,7 +179,12 @@ The parser extracts exact structural semantics from source files:
    - Identifies functions returning JSX (`JSX.Element`, React function signatures).
    - Extracts Component Name, Export Status, Line Range, and Props Interface.
    - Traces child JSX elements to map the parent-child rendering hierarchy.
-3. **Routing Detection**:
+3. **Database Schema Extraction**:
+   - Detects and parses Drizzle ORM definitions (`pgTable`, `mysqlTable`, `sqliteTable`, `.primaryKey()`, `.references(() => ...)`).
+   - Detects and parses Prisma schemas (`schema.prisma`) for models, fields, and `@relation` foreign keys.
+   - Detects and parses SQL DDL files (`CREATE TABLE`, `PRIMARY KEY`, `FOREIGN KEY ... REFERENCES ...`).
+   - Generates structured relational models and cardinalities (`1:N`, `N:1`, `1:1`) for interactive ER diagram rendering.
+4. **Routing Detection**:
    - Next.js App Router (`app/**/page.tsx`, `layout.tsx`, `route.ts`).
    - Next.js Pages Router (`pages/**/*.tsx`).
    - React Router / TanStack Router route definitions.

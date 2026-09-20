@@ -21,6 +21,7 @@ Developers spend a massive amount of time deciphering unfamiliar repositories. D
 - 🗺️ **Architecture Explorer** — Interactive graph visualization of boundaries, feature modules, API layers, and data flows.
 - 🧩 **Component Explorer** — Automatically generated, cataloged inventory of UI components, their props, dependencies, and usages.
 - 🎨 **Design Intelligence** — Extracted design systems, CSS variables, Tailwind tokens, color palettes, and typographic scales.
+- 🗄️ **Database Schema Visualizer** — Interactive ER diagram of database tables, column types, constraints, and foreign key relations (supporting Drizzle, Prisma, and SQL).
 - 🔍 **Source Traceability** — Direct links and deep references from every node and component back to the verified source code.
 - ⚡ **Component Dependency Closure** — Inspect and extract isolated components along with all required local files and dependencies.
 - 🤖 **Grounded AI Assistant (Optional Layer)** — Ask questions about architecture and structure, grounded strictly in deterministic repository facts.
@@ -114,6 +115,7 @@ codexel/
 │   │   ├── architecture/       # Module boundaries & graph relationship builder
 │   │   ├── components/         # React component inventory & hierarchy extractor
 │   │   ├── design/             # Design tokens, CSS variables & Tailwind parser
+│   │   ├── schema/             # Database schema extractor (Drizzle, Prisma, SQL)
 │   │   └── model/              # Repository Model schemas & validation (Zod)
 │   │
 │   ├── shared/                 # Shared TypeScript interfaces, DTOs & utilities

@@ -256,6 +256,65 @@ export const AnalysisExecutionStatsSchema = z.object({
   peakMemoryMb: z.number().nonnegative(),
 });
 
+export const DatabaseColumnSchema = z.object({
+  name: z.string(),
+  type: z.string(),
+  isPrimaryKey: z.boolean(),
+  isNullable: z.boolean(),
+  isForeignKey: z.boolean().optional(),
+  isUnique: z.boolean().optional(),
+  references: z
+    .object({
+      table: z.string(),
+      column: z.string(),
+    })
+    .optional(),
+  defaultValue: z.string().optional(),
+  comment: z.string().optional(),
+});
+
+export const DatabaseTableSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  filePath: z.string().optional(),
+  columns: z.array(DatabaseColumnSchema),
+  primaryKey: z.array(z.string()),
+  foreignKeys: z
+    .array(
+      z.object({
+        column: z.string(),
+        targetTable: z.string(),
+        targetColumn: z.string(),
+      }),
+    )
+    .optional(),
+  rowCountEstimate: z.number().optional(),
+  description: z.string().optional(),
+});
+
+export const DatabaseRelationSchema = z.object({
+  id: z.string(),
+  sourceTable: z.string(),
+  sourceColumn: z.string(),
+  targetTable: z.string(),
+  targetColumn: z.string(),
+  type: z.enum(["1:1", "1:N", "N:1", "N:M"]),
+  onDelete: z.enum(["CASCADE", "SET NULL", "RESTRICT", "NO ACTION"]).optional(),
+});
+
+export const DatabaseSchemaModelSchema = z.object({
+  orm: z
+    .enum(["drizzle", "prisma", "typeorm", "supabase", "sql", "inferred"])
+    .optional(),
+  tables: z.array(DatabaseTableSchema),
+  relations: z.array(DatabaseRelationSchema),
+  stats: z.object({
+    totalTables: z.number().int().nonnegative(),
+    totalColumns: z.number().int().nonnegative(),
+    totalRelations: z.number().int().nonnegative(),
+  }),
+});
+
 export const RepositoryModelSchema = z.object({
   schemaVersion: z.literal("1.0.0"),
   metadata: z.object({
@@ -275,6 +334,7 @@ export const RepositoryModelSchema = z.object({
   dependencyGraph: DependencyGraphSchema,
   routes: RouteInventorySchema,
   designSystem: DesignSystemSummarySchema,
+  databaseSchema: DatabaseSchemaModelSchema.optional(),
   analysisStats: AnalysisExecutionStatsSchema,
 });
 

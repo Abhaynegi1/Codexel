@@ -15,6 +15,7 @@ import {
   Component as ComponentIcon,
   Network,
   Palette,
+  Database,
   Sparkles,
   FileDown,
 } from "lucide-react";
@@ -22,6 +23,7 @@ import type { RepositoryModel } from "@codexel/shared";
 import { ArchitectureCanvas } from "@/components/explorer/ArchitectureCanvas";
 import { ComponentExplorer } from "@/components/explorer/ComponentExplorer";
 import { DesignSystemExplorer } from "@/components/explorer/design/DesignSystemExplorer";
+import { DatabaseSchemaVisualizer } from "@/components/explorer/schema/DatabaseSchemaVisualizer";
 import { AIAssistantDrawer } from "@/components/explorer/ai/AIAssistantDrawer";
 import { ExportMarkdownModal } from "@/components/explorer/export/ExportMarkdownModal";
 import { AnalyzingLoader } from "@/components/common/AnalyzingLoader";
@@ -29,7 +31,8 @@ import { Logo } from "@/components/common/Logo";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { getLocalModel } from "@/lib/local-storage-model";
 
-export type ActiveExplorerTab = "architecture" | "components" | "design-system";
+export type ActiveExplorerTab =
+  "architecture" | "components" | "design-system" | "schema";
 
 function ExplorerContent() {
   const searchParams = useSearchParams();
@@ -38,11 +41,13 @@ function ExplorerContent() {
   const compParam = searchParams.get("component");
 
   const [activeTab, setActiveTab] = useState<ActiveExplorerTab>(
-    tabParam === "design-system"
-      ? "design-system"
-      : tabParam === "components"
-        ? "components"
-        : "architecture",
+    tabParam === "schema"
+      ? "schema"
+      : tabParam === "design-system"
+        ? "design-system"
+        : tabParam === "components"
+          ? "components"
+          : "architecture",
   );
   const [selectedComponentId, setSelectedComponentId] = useState<string | null>(
     compParam || null,
@@ -242,6 +247,28 @@ function ExplorerContent() {
                   : Object.keys(model.designSystem.detectedCssVariables).length}
             </span>
           </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab("schema")}
+            className={`flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md transition-all ${
+              activeTab === "schema"
+                ? "bg-surface text-foreground font-semibold shadow-subtle"
+                : "text-foreground-secondary hover:text-foreground"
+            }`}
+          >
+            <Database className="w-3.5 h-3.5 text-primary" />
+            <span>Database</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                activeTab === "schema"
+                  ? "bg-primary/10 text-primary"
+                  : "bg-surface text-foreground-muted"
+              }`}
+            >
+              {model.databaseSchema?.tables.length ?? 7}
+            </span>
+          </button>
         </div>
 
         {/* Right: AI Assistant Button + Stats & Links */}
@@ -358,8 +385,10 @@ function ExplorerContent() {
             initialComponentId={selectedComponentId}
             model={model}
           />
-        ) : (
+        ) : activeTab === "design-system" ? (
           <DesignSystemExplorer designSystem={model.designSystem} />
+        ) : (
+          <DatabaseSchemaVisualizer model={model} />
         )}
       </main>
 
