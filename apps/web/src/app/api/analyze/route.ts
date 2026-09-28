@@ -5,6 +5,7 @@ import {
   withSandbox,
   analyzeRepository,
   parseGitHubUrl,
+  analyzeRemoteGitHubRepoWithoutGit,
   type Sandbox,
 } from "@codexel/analyzer";
 
@@ -1522,35 +1523,6 @@ Input.displayName = "Input";`,
   },
 };
 
-/**
- * Adapts a verified model with live repository metadata when the host
- * environment lacks a native git binary (e.g., Vercel Serverless Functions).
- */
-function adaptModelForRepo(
-  baseModel: RepositoryModel,
-  owner: string,
-  name: string,
-  defaultBranch: string = "main",
-  primaryLanguage: string = "TypeScript",
-): RepositoryModel {
-  return {
-    ...baseModel,
-    metadata: {
-      ...baseModel.metadata,
-      url: `https://github.com/${owner}/${name}`,
-      owner,
-      name,
-      defaultBranch,
-      analyzedAt: new Date().toISOString(),
-    },
-    technologyStack: {
-      ...baseModel.technologyStack,
-      primaryLanguage:
-        primaryLanguage || baseModel.technologyStack.primaryLanguage,
-    },
-  };
-}
-
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const repo = searchParams.get("repo") || "shadcn-ui/ui";
@@ -1701,20 +1673,50 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Host environment limitation (e.g. Vercel Serverless Functions lack the git binary: spawn git ENOENT)
-    // If the repo is public, adapt the verified architecture model with repository metadata instead of throwing 500
+    // Host environment limitation (e.g. Vercel Serverless Functions lack git binary: spawn git ENOENT)
+    // Run serverless-native GitHub file tree & AST analysis to extract the 100% REAL codebase
     console.warn(
-      `Live git clone unavailable (${errMsg}). Serving architecture model for ${parsedUrl.owner}/${parsedUrl.repo}`,
+      `Live git clone unavailable (${errMsg}). Performing direct GitHub AST analysis for ${parsedUrl.owner}/${parsedUrl.repo}...`,
     );
 
-    const adaptedModel = adaptModelForRepo(
-      SAMPLE_SHADCN_MODEL,
-      parsedUrl.owner,
-      parsedUrl.repo,
-      ghRepoData?.default_branch || "main",
-      ghRepoData?.language || "TypeScript",
-    );
+    try {
+      const serverlessResult = await analyzeRemoteGitHubRepoWithoutGit(
+        parsedUrl.owner,
+        parsedUrl.repo,
+        70,
+      );
 
-    return NextResponse.json(adaptedModel);
+      if (serverlessResult.isPrivate) {
+        return NextResponse.json(
+          {
+            error: "PRIVATE_REPOSITORY",
+            isPrivate: true,
+            message:
+              "This repository is private or requires authentication credentials.",
+            owner: parsedUrl.owner,
+            repo: parsedUrl.repo,
+            url: parsedUrl.cleanUrl,
+          },
+          { status: 403 },
+        );
+      }
+
+      if (serverlessResult.model) {
+        return NextResponse.json(serverlessResult.model);
+      }
+    } catch (serverlessErr: any) {
+      console.warn("Direct GitHub AST analysis error:", serverlessErr);
+    }
+
+    // If completely unable to access remote repository (e.g. GitHub API rate limit)
+    return NextResponse.json(
+      {
+        error: "ANALYSIS_FAILED",
+        message:
+          "Unable to fetch repository from GitHub. The repository may be private or GitHub rate limits reached. Please use 'Open Local Project Folder' to analyze your repository safely and locally with zero limits.",
+        url: parsedUrl.cleanUrl,
+      },
+      { status: 502 },
+    );
   }
 }

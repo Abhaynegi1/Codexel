@@ -4,3 +4,4 @@ export * from "./remote-resolver";
 export * from "./safety";
 export * from "./sandbox";
 export * from "./local-analyzer";
+export * from "./github-fetcher";
