@@ -27,6 +27,8 @@ import { DatabaseSchemaVisualizer } from "@/components/explorer/schema/DatabaseS
 import { AIAssistantDrawer } from "@/components/explorer/ai/AIAssistantDrawer";
 import { ExportMarkdownModal } from "@/components/explorer/export/ExportMarkdownModal";
 import { AnalyzingLoader } from "@/components/common/AnalyzingLoader";
+import { PrivateRepoNotice } from "@/components/common/PrivateRepoNotice";
+import { LocalFolderPicker } from "@/components/ingestion/LocalFolderPicker";
 import { Logo } from "@/components/common/Logo";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { getLocalModel } from "@/lib/local-storage-model";
@@ -55,6 +57,8 @@ function ExplorerContent() {
 
   const [isAiAssistantOpen, setIsAiAssistantOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isLocalPickerOpen, setIsLocalPickerOpen] = useState(false);
+  const [isPrivateRepo, setIsPrivateRepo] = useState(false);
   const [model, setModel] = useState<RepositoryModel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -63,6 +67,7 @@ function ExplorerContent() {
     let isCancelled = false;
     setLoading(true);
     setError(null);
+    setIsPrivateRepo(false);
 
     // If this is a locally ingested workspace, load instantly from client storage
     if (repoParam.startsWith("local:")) {
@@ -75,20 +80,53 @@ function ExplorerContent() {
     }
 
     fetch(`/api/analyze?repo=${encodeURIComponent(repoParam)}`)
-      .then((res) => {
-        if (!res.ok)
-          throw new Error(`Analysis failed with status ${res.status}`);
+      .then(async (res) => {
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          const isPrivate =
+            res.status === 403 ||
+            errData.isPrivate === true ||
+            errData.error === "PRIVATE_REPOSITORY" ||
+            (errData.message &&
+              typeof errData.message === "string" &&
+              errData.message.toLowerCase().includes("private"));
+
+          if (isPrivate) {
+            if (!isCancelled) {
+              setIsPrivateRepo(true);
+              setError(
+                errData.message ||
+                  "This repository is private or requires authentication.",
+              );
+              setLoading(false);
+            }
+            return null;
+          }
+
+          throw new Error(
+            errData.message || `Analysis failed with status ${res.status}`,
+          );
+        }
         return res.json();
       })
-      .then((data: RepositoryModel) => {
-        if (!isCancelled) {
+      .then((data: RepositoryModel | null) => {
+        if (!isCancelled && data) {
           setModel(data);
           setLoading(false);
         }
       })
       .catch((err) => {
         if (!isCancelled) {
-          setError(err.message || "Failed to load repository architecture");
+          const errMsg =
+            err?.message || "Failed to load repository architecture";
+          if (
+            errMsg.toLowerCase().includes("private") ||
+            errMsg.toLowerCase().includes("authentication") ||
+            errMsg.toLowerCase().includes("credentials")
+          ) {
+            setIsPrivateRepo(true);
+          }
+          setError(errMsg);
           setLoading(false);
         }
       });
@@ -116,7 +154,43 @@ function ExplorerContent() {
     return <AnalyzingLoader repoName={repoParam} />;
   }
 
+  if (isPrivateRepo) {
+    return (
+      <>
+        <PrivateRepoNotice
+          repoUrl={repoParam}
+          onOpenLocalFolder={() => setIsLocalPickerOpen(true)}
+        />
+        <LocalFolderPicker
+          isOpen={isLocalPickerOpen}
+          onClose={() => setIsLocalPickerOpen(false)}
+        />
+      </>
+    );
+  }
+
   if (error || !model) {
+    const isPrivateFallback =
+      error?.toLowerCase().includes("private") ||
+      error?.toLowerCase().includes("authentication") ||
+      error?.toLowerCase().includes("credentials") ||
+      error?.toLowerCase().includes("could not read username");
+
+    if (isPrivateFallback) {
+      return (
+        <>
+          <PrivateRepoNotice
+            repoUrl={repoParam}
+            onOpenLocalFolder={() => setIsLocalPickerOpen(true)}
+          />
+          <LocalFolderPicker
+            isOpen={isLocalPickerOpen}
+            onClose={() => setIsLocalPickerOpen(false)}
+          />
+        </>
+      );
+    }
+
     return (
       <div className="flex-1 flex flex-col items-center justify-center space-y-4 p-8 text-center bg-background">
         <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 max-w-md space-y-2">

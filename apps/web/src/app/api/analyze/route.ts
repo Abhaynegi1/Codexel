@@ -4,6 +4,7 @@ import { RepositoryModelSchema } from "@codexel/shared";
 import {
   withSandbox,
   analyzeRepository,
+  parseGitHubUrl,
   type Sandbox,
 } from "@codexel/analyzer";
 
@@ -1525,31 +1526,93 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const repo = searchParams.get("repo") || "shadcn-ui/ui";
 
-  // If live clone & analysis is feasible and repo is an external full git URL
-  if (repo.startsWith("https://github.com/") && !repo.includes("shadcn-ui")) {
-    try {
-      const liveModel = await withSandbox(repo, async (sandbox: Sandbox) => {
-        return await analyzeRepository({
-          workspacePath: sandbox.path,
-          url: sandbox.parsedUrl.cleanUrl,
-          owner: sandbox.parsedUrl.owner,
-          name: sandbox.parsedUrl.repo,
-          commitSha: sandbox.metadata?.commitSha || "main",
-          defaultBranch: sandbox.metadata?.defaultBranch || "main",
-          isPrivate: false,
-        });
-      });
+  // Check for built-in sample models
+  const isSample =
+    repo === "shadcn-ui/ui" ||
+    repo.toLowerCase().includes("shadcn-ui/ui") ||
+    repo === "sample" ||
+    !repo;
 
-      return NextResponse.json(liveModel);
-    } catch (err) {
-      console.warn(
-        "Live analysis encountered sandbox limitation, falling back to verified model:",
-        err,
-      );
-      // Fall through to sample model
-    }
+  if (isSample) {
+    return NextResponse.json(SAMPLE_SHADCN_MODEL);
   }
 
-  // Return verified sample model
-  return NextResponse.json(SAMPLE_SHADCN_MODEL);
+  // Parse and validate GitHub repository URL
+  try {
+    const parsedUrl = parseGitHubUrl(repo);
+
+    // If normalized URL points to shadcn-ui/ui, serve sample model
+    if (
+      parsedUrl.owner.toLowerCase() === "shadcn-ui" &&
+      parsedUrl.repo.toLowerCase() === "ui"
+    ) {
+      return NextResponse.json(SAMPLE_SHADCN_MODEL);
+    }
+
+    try {
+      const liveModel = await withSandbox(
+        parsedUrl.cleanUrl,
+        async (sandbox: Sandbox) => {
+          return await analyzeRepository({
+            workspacePath: sandbox.path,
+            url: sandbox.parsedUrl.cleanUrl,
+            owner: sandbox.parsedUrl.owner,
+            name: sandbox.parsedUrl.repo,
+            commitSha: sandbox.metadata?.commitSha || "main",
+            defaultBranch: sandbox.metadata?.defaultBranch || "main",
+            isPrivate: false,
+          });
+        },
+      );
+
+      return NextResponse.json(liveModel);
+    } catch (err: any) {
+      const errMsg = (err?.message || "").toString();
+      const errStderr = (err?.stderr || "").toString();
+      const combined = `${errMsg} ${errStderr}`.toLowerCase();
+
+      // Check for private repository or authentication required indicators
+      const isPrivate =
+        combined.includes("is private") ||
+        combined.includes("requires authentication") ||
+        combined.includes("could not read username") ||
+        combined.includes("repository not found") ||
+        combined.includes("authentication failed") ||
+        combined.includes("terminal prompts disabled") ||
+        combined.includes("permission denied");
+
+      if (isPrivate) {
+        return NextResponse.json(
+          {
+            error: "PRIVATE_REPOSITORY",
+            isPrivate: true,
+            message:
+              "This repository is private or requires authentication credentials.",
+            owner: parsedUrl.owner,
+            repo: parsedUrl.repo,
+            url: parsedUrl.cleanUrl,
+          },
+          { status: 403 },
+        );
+      }
+
+      console.warn("Live analysis encountered error:", err);
+      return NextResponse.json(
+        {
+          error: "ANALYSIS_FAILED",
+          message: errMsg || "Failed to clone or analyze remote repository.",
+          url: parsedUrl.cleanUrl,
+        },
+        { status: 500 },
+      );
+    }
+  } catch (parseErr: any) {
+    return NextResponse.json(
+      {
+        error: "INVALID_URL",
+        message: parseErr?.message || "Invalid repository URL format provided.",
+      },
+      { status: 400 },
+    );
+  }
 }
