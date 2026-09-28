@@ -62,8 +62,27 @@ export function AIAssistantDrawer({
   const [isLoading, setIsLoading] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
+  const [engineMode, setEngineMode] = useState<"auto" | "deterministic">(
+    "auto",
+  );
+  const [activeEngine, setActiveEngine] = useState<string>("gemini");
+  const [rateLimitInfo, setRateLimitInfo] = useState<{
+    remainingDaily?: number;
+    isLimited?: boolean;
+  }>({});
+  const [cooldown, setCooldown] = useState<number>(0);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Cooldown timer countdown
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const interval = setInterval(() => {
+      setCooldown((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [cooldown]);
 
   // Auto-scroll to bottom when messages update
   useEffect(() => {
@@ -77,9 +96,16 @@ export function AIAssistantDrawer({
     }
   }, [isOpen]);
 
+  const MAX_QUERY_LEN = 500;
+
   const handleSendMessage = async (queryText: string) => {
     const trimmed = queryText.trim();
-    if (!trimmed || isLoading) return;
+    if (!trimmed || isLoading || cooldown > 0) return;
+
+    if (trimmed.length > MAX_QUERY_LEN) {
+      alert(`Query exceeds maximum character length of ${MAX_QUERY_LEN}.`);
+      return;
+    }
 
     const userMsgId = `user-${Date.now()}`;
     const assistantMsgId = `assistant-${Date.now()}`;
@@ -87,6 +113,9 @@ export function AIAssistantDrawer({
       hour: "2-digit",
       minute: "2-digit",
     });
+
+    // Start 3-second client cooldown
+    setCooldown(3);
 
     // Append user message and placeholder assistant message
     setMessages((prev) => [
@@ -107,11 +136,30 @@ export function AIAssistantDrawer({
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: trimmed, model }),
+        body: JSON.stringify({
+          query: trimmed,
+          model,
+          engine: engineMode,
+        }),
+      });
+
+      // Parse engine & rate limit headers
+      const engineHeader = response.headers.get("X-AI-Engine");
+      const isExceeded =
+        response.headers.get("X-RateLimit-Exceeded") === "true";
+      const remainingDay = response.headers.get("X-RateLimit-Remaining-Day");
+
+      if (engineHeader) setActiveEngine(engineHeader);
+      setRateLimitInfo({
+        remainingDaily: remainingDay ? parseInt(remainingDay, 10) : undefined,
+        isLimited: isExceeded,
       });
 
       if (!response.ok) {
-        throw new Error(`Chat API error: ${response.statusText}`);
+        const errorData = await response.json().catch(() => null);
+        throw new Error(
+          errorData?.error || `Chat API error: ${response.statusText}`,
+        );
       }
 
       if (response.body) {
@@ -196,14 +244,43 @@ export function AIAssistantDrawer({
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <h2 className="text-sm font-bold text-foreground">
                 Grounded AI Layer
               </h2>
-              <span className="flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-semantic-green/10 text-semantic-green border border-semantic-green/20">
-                <ShieldCheck className="w-3 h-3" />
-                <span>Zero Hallucinations</span>
-              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setEngineMode((prev) =>
+                    prev === "auto" ? "deterministic" : "auto",
+                  )
+                }
+                title="Click to toggle between Live Gemini AI and Offline Deterministic AST Engine"
+                className={`text-[10px] font-mono px-2 py-0.5 rounded-full border transition-all flex items-center gap-1 shadow-2xs ${
+                  engineMode === "deterministic"
+                    ? "bg-amber-500/10 text-amber-500 border-amber-500/30 hover:bg-amber-500/20"
+                    : rateLimitInfo.isLimited
+                      ? "bg-purple-500/10 text-purple-400 border-purple-500/30"
+                      : "bg-primary/10 text-primary border-primary/30 hover:bg-primary/20"
+                }`}
+              >
+                {engineMode === "deterministic" ? (
+                  <>
+                    <ShieldCheck className="w-3 h-3 text-amber-500" />
+                    <span>AST Engine (Offline)</span>
+                  </>
+                ) : rateLimitInfo.isLimited ? (
+                  <>
+                    <ShieldCheck className="w-3 h-3 text-purple-400" />
+                    <span>Safe AST Fallback</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-3 h-3 text-primary" />
+                    <span>Gemini AI (Live)</span>
+                  </>
+                )}
+              </button>
             </div>
             <p className="text-[11px] text-foreground-muted font-mono">
               Model: {model.metadata.owner}/{model.metadata.name}
@@ -356,6 +433,7 @@ export function AIAssistantDrawer({
           <textarea
             ref={inputRef}
             value={inputQuery}
+            maxLength={MAX_QUERY_LEN}
             onChange={(e) => setInputQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask about architecture, auth flows, component lines..."
@@ -366,11 +444,20 @@ export function AIAssistantDrawer({
           <div className="p-2 shrink-0">
             <button
               type="submit"
-              disabled={!inputQuery.trim() || isLoading}
-              className="p-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs"
+              disabled={!inputQuery.trim() || isLoading || cooldown > 0}
+              title={
+                cooldown > 0
+                  ? `Cooldown active: ${cooldown}s`
+                  : "Send Grounded Query"
+              }
+              className="p-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-xs flex items-center justify-center min-w-[32px] min-h-[32px]"
             >
               {isLoading ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : cooldown > 0 ? (
+                <span className="text-[11px] font-mono font-bold">
+                  {cooldown}s
+                </span>
               ) : (
                 <Send className="w-3.5 h-3.5" />
               )}
@@ -378,11 +465,31 @@ export function AIAssistantDrawer({
           </div>
         </form>
         <div className="flex items-center justify-between mt-2 px-1 text-[10px] font-mono text-foreground-muted">
-          <span>Press Enter to send, Shift+Enter for new line</span>
-          <span className="text-primary/80 flex items-center gap-1">
-            <ShieldCheck className="w-3 h-3 text-semantic-green" /> Verified
-            Citations
-          </span>
+          <div className="flex items-center gap-2">
+            <span>Press Enter to send, Shift+Enter for new line</span>
+            <span
+              className={`${
+                inputQuery.length >= MAX_QUERY_LEN
+                  ? "text-red-500 font-bold"
+                  : inputQuery.length >= MAX_QUERY_LEN - 50
+                    ? "text-amber-500 font-medium"
+                    : "text-foreground-muted"
+              }`}
+            >
+              ({inputQuery.length}/{MAX_QUERY_LEN})
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            {rateLimitInfo.remainingDaily !== undefined && (
+              <span className="text-foreground-muted">
+                {rateLimitInfo.remainingDaily} queries left
+              </span>
+            )}
+            <span className="text-primary/80 flex items-center gap-1">
+              <ShieldCheck className="w-3 h-3 text-semantic-green" /> Verified
+              Citations
+            </span>
+          </div>
         </div>
       </div>
     </div>
